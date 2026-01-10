@@ -236,7 +236,7 @@ export default function DemoPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             >
-              <h1 className="text-2xl font-bold tracking-tight">forkit.</h1>
+              <h1 className="text-2xl font-bold tracking-tight">tally.</h1>
               <p className="text-muted-foreground text-sm">Design System</p>
             </motion.div>
             <div className="flex items-center gap-3">
@@ -461,7 +461,7 @@ export default function DemoPage() {
 
         {/* Footer */}
         <footer className="py-12 text-center">
-          <p className="text-muted-foreground text-sm">forkit. — Pay your bill, your way</p>
+          <p className="text-muted-foreground text-sm">tally. — Pay your bill, your way</p>
           <p className="text-muted-foreground/60 mt-1 text-xs">© 2025 — Portfolio Project</p>
         </footer>
       </motion.div>

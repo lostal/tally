@@ -1,6 +1,6 @@
 {
-  "name": "forkit",
-  "short_name": "forkit",
+  "name": "tally",
+  "short_name": "tally",
   "description": "Bill splitting made simple",
   "start_url": "/",
   "display": "standalone",

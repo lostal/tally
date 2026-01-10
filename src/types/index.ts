@@ -1,5 +1,5 @@
 /**
- * Forkit Type Definitions
+ * Tally Type Definitions
  *
  * Central export for all TypeScript types used in the application.
  */

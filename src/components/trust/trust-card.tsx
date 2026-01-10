@@ -109,7 +109,7 @@ export function TrustCard({
 
           {/* Trust footer */}
           <p className="text-muted-foreground text-center text-xs">
-            Secure payment powered by forkit.
+            Secure payment powered by tally.
             <br />
             You&apos;ll choose your items next.
           </p>

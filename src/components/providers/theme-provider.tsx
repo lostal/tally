@@ -16,9 +16,9 @@ export interface RestaurantTheme {
   logoUrl?: string;
 }
 
-// Default theme (forkit brand)
+// Default theme (tally brand)
 const DEFAULT_THEME: RestaurantTheme = {
-  name: 'forkit',
+  name: 'tally',
   slug: 'demo',
   primaryHue: 217,
   primarySaturation: 91,

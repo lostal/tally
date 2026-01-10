@@ -17,18 +17,18 @@ const fontMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'forkit. | Pay your bill, your way',
-    template: '%s | forkit.',
+    default: 'tally. | Pay your bill, your way',
+    template: '%s | tally.',
   },
   description: 'Split the bill, pay with ease. Scan, select, and go.',
   keywords: ['restaurant', 'payment', 'split bill', 'QR code', 'mobile payment'],
-  authors: [{ name: 'forkit' }],
-  creator: 'forkit',
+  authors: [{ name: 'tally' }],
+  creator: 'tally',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'forkit.',
+    title: 'tally.',
   },
 };
 
