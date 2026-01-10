@@ -74,20 +74,22 @@ export default function PaymentPage() {
     <main className="bg-background min-h-dvh">
       {/* Header */}
       <header className="border-border/50 bg-background/95 sticky top-0 z-40 border-b backdrop-blur-sm">
-        <div className="container-app py-3">
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => router.back()}
-              disabled={paymentStep !== 'summary'}
-              className="-ml-2"
-            >
-              <ChevronLeft className="size-5" />
-            </Button>
-            <h1 className="text-sm font-semibold">Confirmar pago</h1>
-            <div className="w-9" /> {/* Spacer for centering */}
+        <div className="container-app relative flex h-16 items-center justify-between">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.back()}
+            disabled={paymentStep !== 'summary'}
+            className="z-10 -ml-2"
+          >
+            <ChevronLeft className="size-6" />
+          </Button>
+
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <h1 className="text-lg font-semibold">Confirmar pago</h1>
           </div>
+
+          <div className="z-10 w-10" />
         </div>
       </header>
 

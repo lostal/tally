@@ -72,12 +72,10 @@ export default function RestaurantPage() {
             restaurant={{
               name: restaurant.name,
               logoUrl: restaurant.logoUrl,
-              location: 'Mesa ' + table.number,
               isVerified: true,
             }}
             table={{
               number: table.number,
-              guestCount: table.guestCount,
             }}
             onContinue={handleContinue}
             isLoading={isLoading}

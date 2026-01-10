@@ -135,32 +135,32 @@ export default function BillPage() {
     <div className="bg-background flex min-h-dvh flex-col">
       {/* Header - Clean, mobile-first with restaurant branding */}
       <header className="border-border/50 bg-background/95 sticky top-0 z-40 shrink-0 border-b backdrop-blur-sm">
-        <div className="container-app py-3">
-          <div className="flex items-center justify-between">
-            {/* Left: Back button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => router.back()}
-              className="-ml-2 shrink-0"
-            >
-              <ChevronLeft className="size-5" />
-            </Button>
+        <div className="container-app relative flex h-16 items-center justify-between">
+          {/* Left: Back button - z-index higher than center */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.back()}
+            className="z-10 -ml-2 shrink-0"
+          >
+            <ChevronLeft className="size-6" />
+          </Button>
 
-            {/* Center: Restaurant name + table */}
-            <div className="flex items-center gap-3">
-              <div className="bg-primary/10 flex size-8 items-center justify-center rounded-lg">
-                <Utensils className="text-primary size-4" />
+          {/* Center: Restaurant name + table - Absolutely centered */}
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div className="pointer-events-auto flex items-center gap-3">
+              <div className="bg-primary/10 flex size-10 items-center justify-center rounded-xl">
+                <Utensils className="text-primary size-5" />
               </div>
               <div className="text-center">
-                <h1 className="text-sm leading-tight font-semibold">{restaurant.name}</h1>
-                <p className="text-muted-foreground text-xs">Mesa 7</p>
+                <h1 className="text-base leading-tight font-semibold">{restaurant.name}</h1>
+                <p className="text-muted-foreground text-sm">Mesa 7</p>
               </div>
             </div>
-
-            {/* Right: Spacer for balance */}
-            <div className="w-9" />
           </div>
+
+          {/* Right: Actions/Spacer (if needed) */}
+          <div className="z-10 w-10" />
         </div>
       </header>
 
