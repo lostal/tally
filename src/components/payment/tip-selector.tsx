@@ -57,10 +57,8 @@ export function TipSelector({
                   isSelected && 'ring-primary ring-2 ring-offset-2'
                 )}
               >
-                <span className="text-lg font-bold">
-                  {percent === 0 ? 'Sin propina' : `${percent}%`}
-                </span>
-                {tipAmount !== null && tipAmount > 0 && (
+                <span className="text-lg font-bold">{percent}%</span>
+                {tipAmount !== null && (
                   <span
                     className={cn(
                       'mt-0.5 text-xs',
