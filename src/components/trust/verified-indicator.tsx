@@ -29,7 +29,7 @@ export function VerifiedIndicator({ variant = 'badge', className }: VerifiedIndi
         <span className="bg-success/20 flex size-5 items-center justify-center rounded-full">
           <Check className="text-success size-3" strokeWidth={3} />
         </span>
-        <span className="text-muted-foreground">Verified restaurant</span>
+        <span className="text-muted-foreground">Restaurante verificado</span>
       </motion.span>
     );
   }
@@ -43,7 +43,7 @@ export function VerifiedIndicator({ variant = 'badge', className }: VerifiedIndi
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
         <Shield className="text-success size-4" />
-        <span className="text-success text-xs font-medium">Verified</span>
+        <span className="text-success text-xs font-medium">Verificado</span>
       </motion.div>
     );
   }
@@ -66,7 +66,7 @@ export function VerifiedIndicator({ variant = 'badge', className }: VerifiedIndi
       >
         <Check className="size-3.5" strokeWidth={3} />
       </motion.span>
-      Verified
+      Verificado
     </motion.div>
   );
 }

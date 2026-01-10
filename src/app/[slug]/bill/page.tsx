@@ -1,4 +1,260 @@
-// Bill page - placeholder
+'use client';
+
+import * as React from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { motion } from 'motion/react';
+import { BillItemList, SplitMethodSelector, AmountInput } from '@/components/bill';
+import { TipSelector, PaymentSummary, PaymentButton } from '@/components/payment';
+import { Button } from '@/components/ui/button';
+import { useParticipantStore, useUIStore } from '@/stores';
+import { DEMO_RESTAURANTS } from '@/components/providers/theme-provider';
+import type { SelectableOrderItem } from '@/types';
+import { ChevronLeft, Utensils } from 'lucide-react';
+
+// Total of all demo items
+const BILL_TOTAL_CENTS = 5750;
+
+// Demo bill items
+const DEMO_ITEMS: SelectableOrderItem[] = [
+  {
+    id: '1',
+    name: 'Margherita Pizza',
+    unitPriceCents: 1450,
+    quantity: 1,
+    isSelected: false,
+    claimedQuantity: 1,
+    claimedBy: [],
+  },
+  {
+    id: '2',
+    name: 'Pasta Carbonara',
+    unitPriceCents: 1600,
+    quantity: 1,
+    isSelected: false,
+    claimedQuantity: 1,
+    claimedBy: [],
+  },
+  {
+    id: '3',
+    name: 'Tiramisu',
+    unitPriceCents: 850,
+    quantity: 2,
+    isSelected: false,
+    claimedQuantity: 2,
+    claimedBy: [],
+  },
+  {
+    id: '4',
+    name: 'Sparkling Water',
+    unitPriceCents: 400,
+    quantity: 2,
+    isSelected: false,
+    claimedQuantity: 2,
+    claimedBy: [],
+  },
+  {
+    id: '5',
+    name: 'Espresso',
+    unitPriceCents: 300,
+    quantity: 2,
+    isSelected: false,
+    claimedQuantity: 2,
+    claimedBy: [],
+  },
+];
+
+/**
+ * Bill Selection Page
+ *
+ * User selects items they want to pay for.
+ */
 export default function BillPage() {
-  return <div>Bill</div>;
+  const router = useRouter();
+  const params = useParams();
+  const slug = params.slug as string;
+
+  const {
+    selectedItemIds,
+    claimedQuantities,
+    splitMethod,
+    fixedAmountCents,
+    tipPercentage,
+    toggleItem,
+    setClaimedQuantity,
+    setSplitMethod,
+    setFixedAmount,
+    setTipPercentage,
+  } = useParticipantStore();
+
+  const setCurrentStep = useUIStore((s) => s.setCurrentStep);
+
+  const restaurant =
+    DEMO_RESTAURANTS[slug as keyof typeof DEMO_RESTAURANTS] || DEMO_RESTAURANTS['forkit'];
+
+  // Calculate items with selection state
+  const itemsWithSelection = DEMO_ITEMS.map((item) => ({
+    ...item,
+    isSelected: selectedItemIds.includes(item.id),
+    claimedQuantity: claimedQuantities[item.id] || item.quantity,
+  }));
+
+  // Calculate totals
+  const equalShareCents = Math.round(BILL_TOTAL_CENTS / 2); // 2 people
+
+  const subtotalCents = React.useMemo(() => {
+    if (splitMethod === 'BY_AMOUNT') {
+      return fixedAmountCents;
+    }
+    if (splitMethod === 'EQUAL') {
+      return equalShareCents;
+    }
+    // BY_ITEMS
+    return selectedItemIds.reduce((total, itemId) => {
+      const item = DEMO_ITEMS.find((i) => i.id === itemId);
+      if (!item) return total;
+      const qty = claimedQuantities[itemId] || item.quantity;
+      return total + item.unitPriceCents * qty;
+    }, 0);
+  }, [splitMethod, fixedAmountCents, selectedItemIds, claimedQuantities, equalShareCents]);
+
+  const tipCents = Math.round((subtotalCents * tipPercentage) / 100);
+  const totalCents = subtotalCents + tipCents;
+
+  const canProceed = subtotalCents > 0;
+
+  const handleProceed = () => {
+    setCurrentStep('payment');
+    router.push(`/${slug}/payment`);
+  };
+
+  React.useEffect(() => {
+    setCurrentStep('bill');
+  }, [setCurrentStep]);
+
+  return (
+    <div className="bg-background flex min-h-dvh flex-col">
+      {/* Header - Clean, mobile-first with restaurant branding */}
+      <header className="border-border/50 bg-background/95 sticky top-0 z-40 shrink-0 border-b backdrop-blur-sm">
+        <div className="container-app py-3">
+          <div className="flex items-center justify-between">
+            {/* Left: Back button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => router.back()}
+              className="-ml-2 shrink-0"
+            >
+              <ChevronLeft className="size-5" />
+            </Button>
+
+            {/* Center: Restaurant name + table */}
+            <div className="flex items-center gap-3">
+              <div className="bg-primary/10 flex size-8 items-center justify-center rounded-lg">
+                <Utensils className="text-primary size-4" />
+              </div>
+              <div className="text-center">
+                <h1 className="text-sm leading-tight font-semibold">{restaurant.name}</h1>
+                <p className="text-muted-foreground text-xs">Mesa 7</p>
+              </div>
+            </div>
+
+            {/* Right: Spacer for balance */}
+            <div className="w-9" />
+          </div>
+        </div>
+      </header>
+
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-auto">
+        <div className="container-app space-y-8 py-6">
+          {/* Split Method Selector */}
+          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <SplitMethodSelector
+              value={splitMethod}
+              onChange={setSplitMethod}
+              participantCount={2}
+            />
+          </motion.section>
+
+          {/* Content based on split method */}
+          {splitMethod === 'BY_ITEMS' && (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <BillItemList
+                items={itemsWithSelection}
+                onItemToggle={toggleItem}
+                onItemQuantityChange={setClaimedQuantity}
+              />
+            </motion.section>
+          )}
+
+          {splitMethod === 'BY_AMOUNT' && (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <AmountInput
+                valueCents={fixedAmountCents}
+                onChange={setFixedAmount}
+                billTotalCents={5750} // Total of all items
+                remainingCents={5750}
+              />
+            </motion.section>
+          )}
+
+          {splitMethod === 'EQUAL' && (
+            <motion.section
+              className="bg-secondary rounded-2xl p-6 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <p className="text-2xl font-bold">€28.75</p>
+              <p className="text-muted-foreground mt-1 text-sm">Tu parte (€57.50 ÷ 2 personas)</p>
+            </motion.section>
+          )}
+
+          {/* Tip Selector - always visible when canProceed */}
+          {canProceed && (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="pb-4"
+            >
+              <TipSelector
+                value={tipPercentage}
+                onChange={setTipPercentage}
+                subtotalCents={subtotalCents}
+              />
+            </motion.section>
+          )}
+        </div>
+      </div>
+
+      {/* Bottom bar - sticky at bottom, reserves space */}
+      {canProceed && (
+        <motion.div
+          className="border-border bg-background sticky bottom-0 z-40 shrink-0 border-t p-4"
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        >
+          <div className="container-app space-y-4">
+            <PaymentSummary
+              subtotalCents={subtotalCents}
+              tipCents={tipCents}
+              tipPercentage={tipPercentage}
+              totalCents={totalCents}
+            />
+            <PaymentButton amountCents={totalCents} onClick={handleProceed} />
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
 }

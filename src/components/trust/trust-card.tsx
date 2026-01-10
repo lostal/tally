@@ -97,10 +97,10 @@ export function TrustCard({
               size="lg"
             >
               {isLoading ? (
-                'Loading...'
+                'Cargando...'
               ) : (
                 <>
-                  Continue to pay
+                  Continuar al pago
                   <ChevronRight className="size-5" />
                 </>
               )}
@@ -109,9 +109,8 @@ export function TrustCard({
 
           {/* Trust footer */}
           <p className="text-muted-foreground text-center text-xs">
-            Secure payment powered by tally.
-            <br />
-            You&apos;ll choose your items next.
+            Pago seguro con tally.
+            <br />A continuación elegirás tus productos.
           </p>
         </CardContent>
       </Card>
