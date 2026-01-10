@@ -18,7 +18,7 @@ const BILL_TOTAL_CENTS = 5750;
 const DEMO_ITEMS: SelectableOrderItem[] = [
   {
     id: '1',
-    name: 'Margherita Pizza',
+    name: 'Pizza Margherita',
     unitPriceCents: 1450,
     quantity: 1,
     isSelected: false,
@@ -36,7 +36,7 @@ const DEMO_ITEMS: SelectableOrderItem[] = [
   },
   {
     id: '3',
-    name: 'Tiramisu',
+    name: 'Tiramisú',
     unitPriceCents: 850,
     quantity: 2,
     isSelected: false,
@@ -45,7 +45,7 @@ const DEMO_ITEMS: SelectableOrderItem[] = [
   },
   {
     id: '4',
-    name: 'Sparkling Water',
+    name: 'Agua con gas',
     unitPriceCents: 400,
     quantity: 2,
     isSelected: false,
@@ -54,7 +54,7 @@ const DEMO_ITEMS: SelectableOrderItem[] = [
   },
   {
     id: '5',
-    name: 'Espresso',
+    name: 'Café expreso',
     unitPriceCents: 300,
     quantity: 2,
     isSelected: false,

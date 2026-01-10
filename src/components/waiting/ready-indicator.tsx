@@ -80,7 +80,7 @@ export function ReadyIndicator({ readyCount, totalCount, className }: ReadyIndic
             <span className="text-3xl font-bold tabular-nums">
               {readyCount}/{totalCount}
             </span>
-            <span className="text-muted-foreground text-xs">ready</span>
+            <span className="text-muted-foreground text-xs">listos</span>
           </>
         )}
       </div>

@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/shared';
 import { useParticipantStore, useUIStore } from '@/stores';
-import { DEMO_RESTAURANTS } from '@/components/providers/theme-provider';
 import { ChevronLeft, CreditCard, Smartphone } from 'lucide-react';
 
 type PaymentStep = 'summary' | 'processing' | 'complete';
@@ -113,7 +112,7 @@ export default function PaymentPage() {
               {/* Payment Method Selection */}
               <Card className="rounded-2xl">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium">Payment method</CardTitle>
+                  <CardTitle className="text-sm font-medium">Método de pago</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <button
@@ -130,7 +129,7 @@ export default function PaymentPage() {
                       </div>
                       <div>
                         <div className="font-medium">Apple Pay</div>
-                        <div className="text-muted-foreground text-sm">Quick & secure</div>
+                        <div className="text-muted-foreground text-sm">Rápido y seguro</div>
                       </div>
                     </div>
                   </button>
@@ -148,7 +147,7 @@ export default function PaymentPage() {
                         <CreditCard className="size-5" />
                       </div>
                       <div>
-                        <div className="font-medium">Credit / Debit Card</div>
+                        <div className="font-medium">Tarjeta de crédito / débito</div>
                         <div className="text-muted-foreground text-sm">Visa, Mastercard, Amex</div>
                       </div>
                     </div>
@@ -164,9 +163,7 @@ export default function PaymentPage() {
                   <PaymentButton amountCents={totalCents} onClick={handlePay} />
                 )}
 
-                <p className="text-muted-foreground text-center text-xs">
-                  Secure payment powered by Stripe
-                </p>
+                <p className="text-muted-foreground text-center text-xs">Pago seguro con Stripe</p>
               </div>
             </motion.div>
           )}
@@ -180,9 +177,9 @@ export default function PaymentPage() {
               exit={{ opacity: 0 }}
             >
               <LoadingSpinner size="lg" />
-              <p className="mt-4 text-lg font-medium">Processing payment...</p>
+              <p className="mt-4 text-lg font-medium">Procesando pago...</p>
               <p className="text-muted-foreground mt-2 text-sm">
-                Please don&apos;t close this page
+                Por favor, no cierres esta página
               </p>
             </motion.div>
           )}

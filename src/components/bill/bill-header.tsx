@@ -4,7 +4,6 @@ import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { RestaurantBadge } from '@/components/trust/restaurant-badge';
 import { VerifiedIndicator } from '@/components/trust/verified-indicator';
-import { Users } from 'lucide-react';
 
 interface BillHeaderProps {
   /** Restaurant information */
@@ -26,12 +25,7 @@ interface BillHeaderProps {
  *
  * Shows restaurant branding and table info in a compact format.
  */
-export function BillHeader({
-  restaurant,
-  tableNumber,
-  participantCount,
-  className,
-}: BillHeaderProps) {
+export function BillHeader({ restaurant, tableNumber, className }: BillHeaderProps) {
   return (
     <motion.div
       className={cn('flex items-center gap-4', className)}
@@ -47,13 +41,7 @@ export function BillHeader({
           {restaurant.isVerified && <VerifiedIndicator variant="badge" />}
         </div>
         <div className="text-muted-foreground flex items-center gap-3 text-sm">
-          <span>Table {tableNumber}</span>
-          {participantCount && participantCount > 1 && (
-            <span className="flex items-center gap-1">
-              <Users className="size-3.5" />
-              {participantCount}
-            </span>
-          )}
+          <span>Mesa {tableNumber}</span>
         </div>
       </div>
     </motion.div>

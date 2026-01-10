@@ -7,8 +7,8 @@ import { useParticipantStore, useUIStore } from '@/stores';
 
 // Demo participants
 const DEMO_PARTICIPANTS = [
-  { id: 'me', name: 'You', isReady: false, color: 'bg-blue-500' },
-  { id: 'p2', name: 'Maria', isReady: true, color: 'bg-purple-500' },
+  { id: 'me', name: 'Tú', isReady: false, color: 'bg-blue-500' },
+  { id: 'p2', name: 'María', isReady: true, color: 'bg-purple-500' },
 ];
 
 /**

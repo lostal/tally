@@ -19,18 +19,18 @@ export default function PaymentSuccessPage() {
 
   // Calculate values
   const prices: Record<string, { name: string; price: number }> = {
-    '1': { name: 'Margherita Pizza', price: 1450 },
+    '1': { name: 'Pizza Margherita', price: 1450 },
     '2': { name: 'Pasta Carbonara', price: 1600 },
-    '3': { name: 'Tiramisu', price: 850 },
-    '4': { name: 'Sparkling Water', price: 400 },
-    '5': { name: 'Espresso', price: 300 },
+    '3': { name: 'Tiramisú', price: 850 },
+    '4': { name: 'Agua con gas', price: 400 },
+    '5': { name: 'Café expreso', price: 300 },
   };
 
   const items = selectedItemIds.map((id) => {
     const item = prices[id];
     const qty = claimedQuantities[id] || 1;
     return {
-      name: item?.name || 'Item',
+      name: item?.name || 'Producto',
       quantity: qty,
       amountCents: (item?.price || 0) * qty,
     };
@@ -54,7 +54,7 @@ export default function PaymentSuccessPage() {
             restaurantName="Demo Restaurant"
             tableNumber="7"
             receiptNumber="RCP-001"
-            items={[{ name: 'Sample Item', quantity: 1, amountCents: 1000 }]}
+            items={[{ name: 'Producto demo', quantity: 1, amountCents: 1000 }]}
             subtotalCents={1000}
             tipCents={100}
             totalCents={1100}

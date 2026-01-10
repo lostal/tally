@@ -49,7 +49,7 @@ export function BillItemList({
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-          Select your items
+          Selecciona tus productos
         </h2>
         <span className="text-muted-foreground text-sm">
           {selectedCount}/{totalItems}
@@ -84,7 +84,7 @@ export function BillItemList({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <span className="font-medium">Your selection</span>
+          <span className="font-medium">Tu selección</span>
           <CurrencyDisplay amountCents={selectedTotalCents} size="lg" />
         </motion.div>
       )}

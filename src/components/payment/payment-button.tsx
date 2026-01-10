@@ -37,7 +37,7 @@ export function PaymentButton({
   onClick,
   isLoading = false,
   disabled = false,
-  paymentMethod,
+  paymentMethod: _paymentMethod,
   className,
 }: PaymentButtonProps) {
   return (

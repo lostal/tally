@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { MapPin, Users } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 interface LocationDisplayProps {
   /** Restaurant name */
@@ -22,13 +22,7 @@ interface LocationDisplayProps {
  *
  * Helps users verify they're at the right table in the right restaurant.
  */
-export function LocationDisplay({
-  restaurantName,
-  tableNumber,
-  guestCount,
-  location,
-  className,
-}: LocationDisplayProps) {
+export function LocationDisplay({ tableNumber, location, className }: LocationDisplayProps) {
   return (
     <motion.div
       className={cn('space-y-3', className)}
@@ -44,15 +38,9 @@ export function LocationDisplay({
         </div>
       )}
 
-      {/* Table and guests info */}
+      {/* Table info */}
       <div className="flex items-center justify-between">
-        <span className="text-muted-foreground text-sm">Table {tableNumber}</span>
-        {guestCount && guestCount > 1 && (
-          <div className="bg-secondary flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium">
-            <Users className="size-3.5" />
-            <span>{guestCount} guests</span>
-          </div>
-        )}
+        <span className="text-muted-foreground text-sm">Mesa {tableNumber}</span>
       </div>
     </motion.div>
   );
@@ -80,7 +68,7 @@ export function TableBadge({ number, className }: TableBadgeProps) {
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
       <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-        Table
+        Mesa
       </span>
       <span className="ml-2 text-2xl font-bold tabular-nums">{number}</span>
     </motion.div>

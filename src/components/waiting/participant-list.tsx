@@ -46,10 +46,10 @@ export function ParticipantList({
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-          Participants
+          Participantes
         </h2>
         <span className="text-muted-foreground text-sm">
-          {readyCount}/{participants.length} ready
+          {readyCount}/{participants.length} listos
         </span>
       </div>
 
@@ -78,13 +78,13 @@ export function ParticipantList({
                 />
                 <div className="flex-1">
                   <div className="font-medium">
-                    {participant.name || 'Guest'}
+                    {participant.name || 'Invitado'}
                     {participant.id === currentUserId && (
-                      <span className="text-muted-foreground ml-2 text-xs">(you)</span>
+                      <span className="text-muted-foreground ml-2 text-xs">(tú)</span>
                     )}
                   </div>
                   <div className="text-muted-foreground text-sm">
-                    {participant.isReady ? 'Ready' : 'Selecting items...'}
+                    {participant.isReady ? 'Listo' : 'Seleccionando...'}
                   </div>
                 </div>
               </div>

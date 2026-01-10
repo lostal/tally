@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { Utensils } from 'lucide-react';
@@ -58,10 +59,11 @@ export function RestaurantBadge({ name, logoUrl, size = 'md', className }: Resta
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
       {showImage ? (
-        <img
+        <Image
           src={logoUrl}
-          alt={`${name} logo`}
-          className="size-full object-cover"
+          alt={`Logo de ${name}`}
+          fill
+          className="object-cover"
           onError={() => setImageError(true)}
         />
       ) : (
