@@ -57,7 +57,7 @@ export function TipSelector({
                   isSelected && 'ring-primary ring-2 ring-offset-2'
                 )}
               >
-                <span className="text-lg font-bold">{percent}%</span>
+                <span className="text-lg font-bold">{percent === 0 ? 'No' : `${percent}%`}</span>
                 {tipAmount !== null && (
                   <span
                     className={cn(
