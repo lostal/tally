@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Plus, Minus, Trash2, Check, ChefHat, Receipt } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Trash2, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -76,15 +76,6 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ itemId, quantity: newQty }),
-    });
-    router.refresh();
-  };
-
-  const handleMarkServed = async (itemId: string) => {
-    await fetch(`/api/orders/${order.id}/items`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ itemId, status: 'served' }),
     });
     router.refresh();
   };
@@ -176,17 +167,6 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
                   <span className="font-semibold">
                     €{((item.quantity * item.unit_price_cents) / 100).toFixed(2)}
                   </span>
-                  {item.status === 'pending' && (
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="size-8"
-                      onClick={() => handleMarkServed(item.id)}
-                    >
-                      <ChefHat className="size-4" />
-                    </Button>
-                  )}
-                  {item.status === 'served' && <Check className="size-4 text-green-500" />}
                 </div>
               </motion.div>
             ))}

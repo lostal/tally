@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { Plus, Pencil, Trash2, FolderOpen, ChevronRight, Loader2 } from 'lucide-react';
+import { Plus, Trash2, FolderOpen, ChevronRight, Loader2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { Category, Product } from '@/types/database';
@@ -303,8 +303,13 @@ export function MenuContent({
                         variant="ghost"
                         className="size-8"
                         onClick={() => handleToggleAvailability(product)}
+                        title={product.is_available ? 'Marcar no disponible' : 'Marcar disponible'}
                       >
-                        <Pencil className="size-4" />
+                        {product.is_available ? (
+                          <EyeOff className="size-4" />
+                        ) : (
+                          <Eye className="size-4" />
+                        )}
                       </Button>
                       <Button
                         size="icon"
