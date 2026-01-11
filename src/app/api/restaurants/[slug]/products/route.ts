@@ -62,7 +62,7 @@ export async function POST(request: Request, { params }: RouteParams) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { productId, isAvailable } = body;
+    const { productId, name, description, priceCents, isAvailable } = body;
 
     if (!productId) {
       return NextResponse.json({ error: 'Product ID required' }, { status: 400 });
@@ -71,6 +71,9 @@ export async function PATCH(request: Request) {
     const supabase = createAdminClient();
 
     const updateData: Record<string, unknown> = {};
+    if (name !== undefined) updateData.name = name;
+    if (description !== undefined) updateData.description = description;
+    if (priceCents !== undefined) updateData.price_cents = priceCents;
     if (isAvailable !== undefined) updateData.is_available = isAvailable;
 
     await supabase.from('products').update(updateData).eq('id', productId);

@@ -61,7 +61,7 @@ export async function POST(request: Request, { params }: RouteParams) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { tableId, status } = body;
+    const { tableId, number, capacity, status } = body;
 
     if (!tableId) {
       return NextResponse.json({ error: 'Table ID required' }, { status: 400 });
@@ -70,7 +70,9 @@ export async function PATCH(request: Request) {
     const supabase = createAdminClient();
 
     const updateData: Record<string, unknown> = {};
-    if (status) updateData.status = status;
+    if (number !== undefined) updateData.number = number;
+    if (capacity !== undefined) updateData.capacity = capacity;
+    if (status !== undefined) updateData.status = status;
 
     await supabase.from('tables').update(updateData).eq('id', tableId);
 

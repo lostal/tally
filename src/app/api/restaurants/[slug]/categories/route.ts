@@ -76,3 +76,30 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+/**
+ * PATCH /api/restaurants/[slug]/categories
+ * Update a category
+ */
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+    const { categoryId, name } = body;
+
+    if (!categoryId) {
+      return NextResponse.json({ error: 'Category ID required' }, { status: 400 });
+    }
+
+    const supabase = createAdminClient();
+
+    const updateData: Record<string, unknown> = {};
+    if (name) updateData.name = name;
+
+    await supabase.from('categories').update(updateData).eq('id', categoryId);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

@@ -3,8 +3,9 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { Plus, Trash2, QrCode, Users, Loader2, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, QrCode, Users, Loader2, ExternalLink, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/modal';
 import { cn } from '@/lib/utils';
 import type { Table } from '@/types/database';
 
@@ -28,39 +29,60 @@ const STATUS_LABELS: Record<string, string> = {
   reserved: 'Reservada',
 };
 
-export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesContentProps) {
+export function TablesContent({ restaurantSlug, tables: initialTables }: TablesContentProps) {
   const router = useRouter();
-  const [isAdding, setIsAdding] = React.useState(false);
-  const [newTable, setNewTable] = React.useState({ number: '', capacity: '4' });
+  const [tables, setTables] = React.useState(initialTables);
   const [isLoading, setIsLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState<string | null>(null);
 
-  const handleAddTable = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTable.number.trim()) return;
+  // Modal state
+  const [tableModal, setTableModal] = React.useState<{ open: boolean; table?: Table }>({
+    open: false,
+  });
+  const [tableForm, setTableForm] = React.useState({ number: '', capacity: '4' });
 
+  const openTableModal = (table?: Table) => {
+    setTableForm({
+      number: table?.number || '',
+      capacity: table?.capacity?.toString() || '4',
+    });
+    setTableModal({ open: true, table });
+  };
+
+  const handleSaveTable = async () => {
+    if (!tableForm.number.trim()) return;
     setIsLoading(true);
-    try {
+
+    if (tableModal.table) {
+      // Edit
+      await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tableId: tableModal.table.id,
+          number: tableForm.number.trim(),
+          capacity: parseInt(tableForm.capacity) || 4,
+        }),
+      });
+    } else {
+      // Create
       await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          number: newTable.number.trim(),
-          capacity: parseInt(newTable.capacity) || 4,
+          number: tableForm.number.trim(),
+          capacity: parseInt(tableForm.capacity) || 4,
         }),
       });
-      setNewTable({ number: '', capacity: '4' });
-      setIsAdding(false);
-      router.refresh();
-    } catch (error) {
-      console.error('Error:', error);
     }
+
+    setTableModal({ open: false });
     setIsLoading(false);
+    router.refresh();
   };
 
   const handleDeleteTable = async (tableId: string) => {
     if (!confirm('¿Eliminar esta mesa?')) return;
-
     await fetch(`/api/restaurants/${restaurantSlug}/tables?id=${tableId}`, {
       method: 'DELETE',
     });
@@ -68,6 +90,11 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
   };
 
   const handleStatusChange = async (tableId: string, newStatus: string) => {
+    // Optimistic update
+    setTables(
+      tables.map((t) => (t.id === tableId ? { ...t, status: newStatus as Table['status'] } : t))
+    );
+
     await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -93,55 +120,11 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
           <h1 className="text-2xl font-bold">Gestión de Mesas</h1>
           <p className="text-muted-foreground mt-1">{tables.length} mesas configuradas</p>
         </div>
-        <Button onClick={() => setIsAdding(true)}>
+        <Button onClick={() => openTableModal()}>
           <Plus className="mr-2 size-4" />
           Nueva mesa
         </Button>
       </motion.div>
-
-      {/* Add table form */}
-      {isAdding && (
-        <motion.form
-          onSubmit={handleAddTable}
-          className="bg-card space-y-4 rounded-2xl border p-4"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h3 className="font-semibold">Añadir nueva mesa</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Número/Nombre</label>
-              <input
-                type="text"
-                value={newTable.number}
-                onChange={(e) => setNewTable({ ...newTable, number: e.target.value })}
-                placeholder="Ej: 7, Terraza 1"
-                autoFocus
-                className="border-input bg-background w-full rounded-lg border px-3 py-2"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Capacidad</label>
-              <input
-                type="number"
-                value={newTable.capacity}
-                onChange={(e) => setNewTable({ ...newTable, capacity: e.target.value })}
-                min="1"
-                className="border-input bg-background w-full rounded-lg border px-3 py-2"
-              />
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
-              Añadir mesa
-            </Button>
-            <Button type="button" variant="ghost" onClick={() => setIsAdding(false)}>
-              Cancelar
-            </Button>
-          </div>
-        </motion.form>
-      )}
 
       {/* Tables grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -177,7 +160,7 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
               ))}
             </select>
 
-            {/* Actions */}
+            {/* Actions - Always visible */}
             <div className="flex gap-2">
               <Button
                 size="sm"
@@ -192,6 +175,9 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
                 <a href={getQRUrl(table.number)} target="_blank" rel="noopener">
                   <ExternalLink className="size-4" />
                 </a>
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => openTableModal(table)}>
+                <Pencil className="size-4" />
               </Button>
               <Button
                 size="sm"
@@ -219,6 +205,46 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
           </div>
         )}
       </div>
+
+      {/* Table Modal */}
+      <Modal
+        open={tableModal.open}
+        onClose={() => setTableModal({ open: false })}
+        title={tableModal.table ? 'Editar mesa' : 'Nueva mesa'}
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Número/Nombre</label>
+            <input
+              type="text"
+              value={tableForm.number}
+              onChange={(e) => setTableForm({ ...tableForm, number: e.target.value })}
+              placeholder="Ej: 7, Terraza 1"
+              autoFocus
+              className="border-input bg-background w-full rounded-xl border px-4 py-3"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Capacidad</label>
+            <input
+              type="number"
+              value={tableForm.capacity}
+              onChange={(e) => setTableForm({ ...tableForm, capacity: e.target.value })}
+              min="1"
+              className="border-input bg-background w-full rounded-xl border px-4 py-3"
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="ghost" onClick={() => setTableModal({ open: false })}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSaveTable} disabled={isLoading}>
+              {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+              Guardar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
