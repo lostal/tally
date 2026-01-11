@@ -208,7 +208,7 @@ export default function BillPage() {
 
           {splitMethod === 'EQUAL' && (
             <motion.section
-              className="bg-secondary rounded-2xl p-6 text-center"
+              className="bg-secondary rounded-2xl border-2 p-6 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}

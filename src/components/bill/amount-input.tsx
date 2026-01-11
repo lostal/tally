@@ -105,7 +105,7 @@ export function AmountInput({
             variant={valueCents === cents ? 'default' : 'outline'}
             size="sm"
             onClick={() => handleQuickAmount(cents)}
-            className="flex-1 rounded-xl"
+            className="flex-1 rounded-xl border-2"
           >
             €{(cents / 100).toFixed(0)}
           </Button>

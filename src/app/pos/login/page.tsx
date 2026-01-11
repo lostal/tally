@@ -77,7 +77,7 @@ export default function POSLoginPage() {
   return (
     <div className="bg-background flex min-h-dvh items-center justify-center p-4">
       <motion.div
-        className="w-full max-w-xs space-y-8"
+        className="bg-card w-full max-w-sm space-y-8 rounded-2xl border-2 p-8 shadow-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -86,7 +86,7 @@ export default function POSLoginPage() {
           <div className="bg-primary/10 mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl">
             <ChefHat className="text-primary size-8" />
           </div>
-          <h1 className="text-2xl font-bold">tally POS</h1>
+          <h1 className="font-serif text-2xl font-bold">tally POS</h1>
           <p className="text-muted-foreground mt-2">Introduce tu PIN</p>
         </div>
 
@@ -121,7 +121,7 @@ export default function POSLoginPage() {
             <Button
               key={digit}
               variant={digit === 'C' || digit === '⌫' ? 'outline' : 'secondary'}
-              className="h-16 text-xl font-semibold"
+              className="h-16 rounded-xl text-xl font-semibold"
               onClick={() => {
                 if (digit === 'C') handleClear();
                 else if (digit === '⌫') handleDelete();

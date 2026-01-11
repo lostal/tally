@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
   return (
     <div className="bg-background flex min-h-dvh items-center justify-center p-4">
       <motion.div
-        className="w-full max-w-sm space-y-8"
+        className="bg-card w-full max-w-sm space-y-8 rounded-2xl border-2 p-8 shadow-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -60,7 +60,7 @@ export default function AdminLoginPage() {
           <div className="bg-primary/10 mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl">
             <ChefHat className="text-primary size-8" />
           </div>
-          <h1 className="text-2xl font-bold">Panel de Administración</h1>
+          <h1 className="font-serif text-2xl font-bold">Panel de Administración</h1>
           <p className="text-muted-foreground mt-2">Inicia sesión para gestionar tu restaurante</p>
         </div>
 
@@ -77,7 +77,7 @@ export default function AdminLoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@email.com"
               required
-              className="border-input bg-background placeholder:text-muted-foreground focus:ring-primary w-full rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
+              className="border-input bg-background placeholder:text-muted-foreground focus:ring-primary w-full rounded-xl border-2 px-4 py-3 text-sm focus:ring-2 focus:outline-none"
             />
           </div>
 
@@ -92,7 +92,7 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="border-input bg-background placeholder:text-muted-foreground focus:ring-primary w-full rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
+              className="border-input bg-background placeholder:text-muted-foreground focus:ring-primary w-full rounded-xl border-2 px-4 py-3 text-sm focus:ring-2 focus:outline-none"
             />
           </div>
 

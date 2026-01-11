@@ -51,7 +51,7 @@ export function TrustCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
     >
-      <Card className={cn('overflow-hidden rounded-3xl border-0 shadow-xl', className)}>
+      <Card className={cn('overflow-hidden rounded-2xl border-2 shadow-sm', className)}>
         <CardHeader className="space-y-4 pt-8 pb-4">
           {/* Restaurant branding */}
           <div className="flex flex-col items-center text-center">

@@ -395,8 +395,8 @@ export function MenuContent({
         animate={{ opacity: 1, y: 0 }}
       >
         <div>
-          <h1 className="text-2xl font-bold">Gestión del Menú</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="font-serif">Gestión del Menú</h1>
+          <p className="text-muted-foreground mt-2">
             {categories.length} categorías · {products.length} productos
           </p>
         </div>
@@ -405,12 +405,12 @@ export function MenuContent({
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Categories Panel */}
         <motion.div
-          className="bg-card rounded-2xl border p-4"
+          className="bg-card rounded-2xl border-2 p-6"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-semibold">Categorías</h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="font-serif text-xl">Categorías</h2>
             <Button size="sm" onClick={() => openCategoryModal()}>
               <Plus className="mr-1 size-4" />
               Añadir
@@ -426,7 +426,7 @@ export function MenuContent({
               items={categories.map((c) => c.id)}
               strategy={verticalListSortingStrategy}
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {categories.map((category) => (
                   <SortableCategory
                     key={category.id}
@@ -449,15 +449,15 @@ export function MenuContent({
 
         {/* Products Panel */}
         <motion.div
-          className="bg-card rounded-2xl border p-4 lg:col-span-2"
+          className="bg-card rounded-2xl border-2 p-6 lg:col-span-2"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-semibold">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="font-serif text-xl">
               Productos
               {selectedCategory && (
-                <span className="text-muted-foreground ml-2 font-normal">
+                <span className="text-muted-foreground ml-2 text-base font-normal">
                   ({categories.find((c) => c.id === selectedCategory)?.name})
                 </span>
               )}
@@ -478,7 +478,7 @@ export function MenuContent({
                 items={categoryProducts.map((p) => p.id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {categoryProducts.map((product) => (
                     <SortableProduct
                       key={product.id}
@@ -494,14 +494,14 @@ export function MenuContent({
           ) : null}
 
           {selectedCategory && categoryProducts.length === 0 && (
-            <p className="text-muted-foreground py-8 text-center text-sm">
+            <p className="text-muted-foreground py-12 text-center text-sm">
               No hay productos en esta categoría
             </p>
           )}
 
           {!selectedCategory && (
-            <p className="text-muted-foreground py-8 text-center text-sm">
-              Selecciona una categoría
+            <p className="text-muted-foreground py-12 text-center text-sm">
+              Selecciona una categoría para ver sus productos
             </p>
           )}
         </motion.div>

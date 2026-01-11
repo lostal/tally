@@ -74,8 +74,10 @@ export function SplitMethodSelector({
               key={option.value}
               onClick={() => onChange(option.value)}
               className={cn(
-                'relative flex items-center gap-4 rounded-2xl p-4 text-left transition-colors',
-                isSelected ? 'bg-primary text-primary-foreground' : 'bg-card hover:bg-accent'
+                'relative flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition-colors',
+                isSelected
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'bg-card hover:bg-accent border-border'
               )}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
