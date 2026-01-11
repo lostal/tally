@@ -8,19 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { useTheme } from '@/components/providers/theme-provider';
-import {
-  Check,
-  CreditCard,
-  Users,
-  Utensils,
-  Moon,
-  Sun,
-  Trash2,
-  Pencil,
-  Plus,
-  ChevronRight,
-} from 'lucide-react';
+
+import { Users, Utensils, Trash2, Pencil, Plus, ChevronRight } from 'lucide-react';
 
 /**
  * Theme System Showcase
@@ -28,20 +17,6 @@ import {
  * This page displays all UI components with the current theme.
  * In the future, restaurant owners will use this to preview their custom theme.
  */
-
-function DarkModeToggle() {
-  const { isDark, toggleDark } = useTheme();
-
-  return (
-    <motion.button
-      onClick={toggleDark}
-      className="bg-secondary text-secondary-foreground flex size-11 items-center justify-center rounded-full"
-      whileTap={{ scale: 0.95 }}
-    >
-      {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
-    </motion.button>
-  );
-}
 
 export default function ThemeShowcasePage() {
   return (
@@ -54,7 +29,6 @@ export default function ThemeShowcasePage() {
               <h1 className="font-serif text-3xl">tally.</h1>
               <p className="text-muted-foreground mt-1 text-sm">Design System</p>
             </div>
-            <DarkModeToggle />
           </div>
         </div>
       </header>

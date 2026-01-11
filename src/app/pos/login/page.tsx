@@ -37,7 +37,6 @@ export default function POSLoginPage() {
     if (pin.length === 4) {
       handleSubmit();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pin]);
 
   const handleSubmit = async () => {

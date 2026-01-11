@@ -39,7 +39,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-50 h-[100dvh] w-screen bg-black/50 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

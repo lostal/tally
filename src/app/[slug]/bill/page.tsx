@@ -12,7 +12,7 @@ const DEMO_RESTAURANT_NAMES: Record<string, string> = {
   'trattoria-mario': 'Trattoria Mario',
   'sushi-zen': 'Sushi Zen',
   'swiss-bistro': 'Swiss Bistro',
-  forkit: 'tally Demo',
+  'tally-demo': 'tally Demo',
 };
 import type { SelectableOrderItem } from '@/types';
 import { ChevronLeft, Utensils } from 'lucide-react';
@@ -139,7 +139,7 @@ export default function BillPage() {
     <div className="bg-background flex min-h-dvh flex-col">
       {/* Header - Clean, mobile-first with restaurant branding */}
       <header className="border-border/50 bg-background/95 sticky top-0 z-40 shrink-0 border-b backdrop-blur-sm">
-        <div className="container-app relative flex h-16 items-center justify-between">
+        <div className="container-app relative flex h-auto items-center justify-between py-5">
           {/* Left: Back button - z-index higher than center */}
           <Button
             variant="ghost"
@@ -153,11 +153,11 @@ export default function BillPage() {
           {/* Center: Restaurant name + table - Absolutely centered */}
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div className="pointer-events-auto flex items-center gap-3">
-              <div className="bg-primary/10 flex size-10 items-center justify-center rounded-xl">
-                <Utensils className="text-primary size-5" />
+              <div className="bg-primary/10 flex size-12 items-center justify-center rounded-xl">
+                <Utensils className="text-primary size-6" />
               </div>
               <div className="text-center">
-                <h1 className="text-base leading-tight font-semibold">{restaurantName}</h1>
+                <h1 className="text-lg leading-tight font-semibold">{restaurantName}</h1>
                 <p className="text-muted-foreground text-sm">Mesa 7</p>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function BillPage() {
 
       {/* Scrollable content area */}
       <div className="flex-1 overflow-auto">
-        <div className="container-app space-y-8 py-6">
+        <div className="container-app space-y-8 py-8">
           {/* Split Method Selector */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <SplitMethodSelector value={splitMethod} onChange={setSplitMethod} />

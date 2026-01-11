@@ -36,10 +36,10 @@ export default function POSLayout({ children }: POSLayoutProps) {
   return (
     <div className="bg-background min-h-dvh">
       {/* Top bar */}
-      <header className="border-border bg-background fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between border-b px-4">
+      <header className="border-border bg-background fixed top-0 right-0 left-0 z-50 flex h-auto items-center justify-between border-b px-6 py-5">
         <div className="flex items-center gap-3">
-          <ChefHat className="text-primary size-6" />
-          <span className="font-semibold">tally POS</span>
+          <ChefHat className="text-primary size-7" />
+          <span className="text-lg font-semibold">tally POS</span>
         </div>
 
         {/* Navigation */}
@@ -54,13 +54,13 @@ export default function POSLayout({ children }: POSLayoutProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors',
+                  'flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors',
                   isActive
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 )}
               >
-                <Icon className="size-4" />
+                <Icon className="size-5" />
                 <span className="hidden sm:inline">{item.label}</span>
               </Link>
             );
@@ -73,8 +73,8 @@ export default function POSLayout({ children }: POSLayoutProps) {
       </header>
 
       {/* Main content */}
-      <main className="pt-16">
-        <div className="min-h-[calc(100dvh-4rem)] p-6">{children}</div>
+      <main className="pt-20">
+        <div className="min-h-[calc(100dvh-5rem)] px-6 py-8">{children}</div>
       </main>
     </div>
   );

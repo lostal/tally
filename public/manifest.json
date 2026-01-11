@@ -1,7 +1,7 @@
 {
   "name": "tally",
   "short_name": "tally",
-  "description": "Bill splitting made simple",
+  "description": "Paga sin levantarte",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

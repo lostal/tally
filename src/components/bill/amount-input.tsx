@@ -34,7 +34,7 @@ export function AmountInput({
   onChange,
   billTotalCents,
   remainingCents,
-  currency = 'EUR',
+  currency: _currency = 'EUR',
   className,
 }: AmountInputProps) {
   const [inputValue, setInputValue] = React.useState(

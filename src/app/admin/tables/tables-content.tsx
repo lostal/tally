@@ -22,12 +22,49 @@ interface TablesContentProps {
   tables: Table[];
 }
 
-// Minimal status config
-const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  available: { label: 'Libre', className: 'bg-secondary' },
-  occupied: { label: 'Ocupada', className: 'bg-primary' },
-  paying: { label: 'Pagando', className: 'bg-muted' },
-  reserved: { label: 'Reservada', className: 'bg-secondary' },
+// Status styles matching Design System (src/app/page.tsx)
+const STATUS_CONFIG: Record<
+  string,
+  {
+    label: string;
+    containerClass: string;
+    dotClass: string;
+    mutedTextClass: string;
+    selectClass?: string;
+    actionButtonClass?: string;
+    actionButtonGhostClass?: string;
+  }
+> = {
+  available: {
+    label: 'Libre',
+    containerClass: 'border-border bg-background',
+    dotClass: 'bg-emerald-500',
+    mutedTextClass: 'text-muted-foreground',
+  },
+  occupied: {
+    label: 'Ocupada',
+    containerClass: 'border-primary bg-primary text-primary-foreground shadow-lg',
+    dotClass: 'bg-amber-400',
+    mutedTextClass: 'text-primary-foreground/80',
+    selectClass:
+      'bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 hover:bg-primary-foreground/20 focus:ring-primary-foreground/50',
+    actionButtonClass:
+      'border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground hover:text-primary',
+    actionButtonGhostClass:
+      'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground',
+  },
+  paying: {
+    label: 'Pagando',
+    containerClass: 'border-muted bg-muted/30',
+    dotClass: 'bg-blue-500',
+    mutedTextClass: 'text-muted-foreground',
+  },
+  reserved: {
+    label: 'Reservada',
+    containerClass: 'border-border border-dashed bg-secondary/50',
+    dotClass: 'bg-orange-500',
+    mutedTextClass: 'text-muted-foreground',
+  },
 };
 
 export function TablesContent({ restaurantSlug, tables: initialTables }: TablesContentProps) {
@@ -59,8 +96,8 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tableId: tableModal.table.id,
-          number: tableForm.number.trim(),
-          capacity: parseInt(tableForm.capacity) || 4,
+          number: tableForm.number,
+          capacity: parseInt(tableForm.capacity),
         }),
       });
     } else {
@@ -68,24 +105,30 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          number: tableForm.number.trim(),
-          capacity: parseInt(tableForm.capacity) || 4,
+          number: tableForm.number,
+          capacity: parseInt(tableForm.capacity),
         }),
       });
     }
 
+    router.refresh();
     setTableModal({ open: false });
+    setIsLoading(false);
+  };
+
+  const handleDeleteTable = async (tableId: string) => {
+    if (!confirm('¿Seguro que quieres eliminar esta mesa?')) return;
+    setIsLoading(true);
+    await fetch(`/api/restaurants/${restaurantSlug}/tables?id=${tableId}`, {
+      method: 'DELETE',
+    });
+    setTables(tables.filter((t) => t.id !== tableId));
     setIsLoading(false);
     router.refresh();
   };
 
-  const handleDeleteTable = async (tableId: string) => {
-    if (!confirm('¿Eliminar esta mesa?')) return;
-    await fetch(`/api/restaurants/${restaurantSlug}/tables?id=${tableId}`, { method: 'DELETE' });
-    router.refresh();
-  };
-
   const handleStatusChange = async (tableId: string, newStatus: string) => {
+    // Optimistic update
     setTables(
       tables.map((t) => (t.id === tableId ? { ...t, status: newStatus as Table['status'] } : t))
     );
@@ -128,7 +171,10 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
           return (
             <motion.div
               key={table.id}
-              className="border-border space-y-4 rounded-2xl border-2 p-6"
+              className={cn(
+                'space-y-4 rounded-2xl border-2 p-6 transition-all duration-300',
+                config.containerClass
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.03 }}
@@ -137,12 +183,14 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="font-serif text-2xl">Mesa {table.number}</h3>
-                  <div className="text-muted-foreground mt-1 flex items-center gap-2 text-sm">
+                  <div
+                    className={cn('mt-1 flex items-center gap-2 text-sm', config.mutedTextClass)}
+                  >
                     <Users className="size-4" />
                     <span>{table.capacity} personas</span>
                   </div>
                 </div>
-                <div className={cn('size-3 rounded-full', config.className)} />
+                <div className={cn('size-3 rounded-full shadow-sm', config.dotClass)} />
               </div>
 
               {/* Status selector - using accessible standard select */}
@@ -150,7 +198,7 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
                 value={table.status}
                 onValueChange={(value) => handleStatusChange(table.id, value)}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className={cn('w-full', config.selectClass)}>
                   <SelectValue placeholder="Estado" />
                 </SelectTrigger>
                 <SelectContent>
@@ -167,21 +215,36 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
                 <Button
                   size="sm"
                   variant="outline"
-                  className="flex-1"
+                  className={cn('flex-1', config.actionButtonClass)}
                   onClick={() => setShowQR(showQR === table.id ? null : table.id)}
                 >
                   <QrCode className="mr-1 size-4" />
                   QR
                 </Button>
-                <Button size="sm" variant="outline" asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className={cn(config.actionButtonClass)}
+                  asChild
+                >
                   <a href={getQRUrl(table.number)} target="_blank" rel="noopener">
                     <ExternalLink className="size-4" />
                   </a>
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => openTableModal(table)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className={cn(config.actionButtonClass)}
+                  onClick={() => openTableModal(table)}
+                >
                   <Pencil className="size-4" />
                 </Button>
-                <Button size="sm" variant="ghost" onClick={() => handleDeleteTable(table.id)}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className={cn(config.actionButtonGhostClass)}
+                  onClick={() => handleDeleteTable(table.id)}
+                >
                   <Trash2 className="size-4" />
                 </Button>
               </div>

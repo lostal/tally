@@ -23,11 +23,11 @@ const fontSerif = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: 'tally. | Pay your bill, your way',
-    template: '%s | tally.',
+    default: 'tally: Paga sin levantarte',
+    template: '%s | tally',
   },
-  description: 'Split the bill, pay with ease. Scan, select, and go.',
-  keywords: ['restaurant', 'payment', 'split bill', 'QR code', 'mobile payment'],
+  description: 'Paga sin levantarte. Escanea, divide y paga en segundos.',
+  keywords: ['restaurante', 'pago', 'dividir cuenta', 'código QR', 'pago móvil'],
   authors: [{ name: 'tally' }],
   creator: 'tally',
   manifest: '/manifest.json',

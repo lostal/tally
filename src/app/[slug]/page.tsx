@@ -10,7 +10,7 @@ const DEMO_RESTAURANT_NAMES: Record<string, string> = {
   'trattoria-mario': 'Trattoria Mario',
   'sushi-zen': 'Sushi Zen',
   'swiss-bistro': 'Swiss Bistro',
-  forkit: 'tally Demo',
+  'tally-demo': 'tally Demo',
 };
 
 // Demo data - in production this would come from API
@@ -18,7 +18,7 @@ const DEMO_TABLES = {
   'trattoria-mario': { number: '7' },
   'sushi-zen': { number: '12' },
   'swiss-bistro': { number: '3' },
-  forkit: { number: '1' },
+  'tally-demo': { number: '1' },
 };
 
 /**
@@ -37,7 +37,7 @@ export default function RestaurantPage() {
 
   // Get restaurant data (from demo or would be API)
   const restaurantName = DEMO_RESTAURANT_NAMES[slug] || slug;
-  const table = DEMO_TABLES[slug as keyof typeof DEMO_TABLES] || DEMO_TABLES['forkit'];
+  const table = DEMO_TABLES[slug as keyof typeof DEMO_TABLES] || DEMO_TABLES['tally-demo'];
 
   const handleContinue = async () => {
     setIsLoading(true);

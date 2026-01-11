@@ -40,7 +40,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'border-border bg-popover text-popover-foreground animate-in fade-in-80 relative z-50 min-w-[8rem] overflow-hidden rounded-xl border shadow-lg',
+        'border-border bg-popover text-popover-foreground animate-in fade-in-80 relative z-50 min-w-32 overflow-hidden rounded-xl border shadow-lg',
         position === 'popper' && 'translate-y-1',
         className
       )}
@@ -51,7 +51,7 @@ const SelectContent = React.forwardRef<
         className={cn(
           'p-1',
           position === 'popper' &&
-            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
+            'h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width)'
         )}
       >
         {children}
@@ -80,7 +80,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'focus:bg-accent focus:text-accent-foreground hover:bg-accent relative flex w-full cursor-pointer items-center rounded-lg py-2.5 pr-2 pl-8 text-sm transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'focus:bg-accent focus:text-accent-foreground hover:bg-accent relative flex w-full cursor-pointer items-center rounded-lg py-2.5 pr-2 pl-8 text-sm transition-colors outline-none select-none data-disabled:pointer-events-none data-disabled:opacity-50',
       className
     )}
     {...props}
