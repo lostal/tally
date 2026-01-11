@@ -5,7 +5,13 @@ import { useRouter, useParams } from 'next/navigation';
 import { motion } from 'motion/react';
 import { TrustCard } from '@/components/trust';
 import { useUIStore } from '@/stores';
-import { DEMO_RESTAURANTS } from '@/components/providers/theme-provider';
+// Demo restaurant data (in production would come from API)
+const DEMO_RESTAURANT_NAMES: Record<string, string> = {
+  'trattoria-mario': 'Trattoria Mario',
+  'sushi-zen': 'Sushi Zen',
+  'swiss-bistro': 'Swiss Bistro',
+  forkit: 'tally Demo',
+};
 
 // Demo data - in production this would come from API
 const DEMO_TABLES = {
@@ -30,8 +36,7 @@ export default function RestaurantPage() {
   const [isLoading, setIsLoading] = React.useState(false);
 
   // Get restaurant data (from demo or would be API)
-  const restaurant =
-    DEMO_RESTAURANTS[slug as keyof typeof DEMO_RESTAURANTS] || DEMO_RESTAURANTS['forkit'];
+  const restaurantName = DEMO_RESTAURANT_NAMES[slug] || slug;
   const table = DEMO_TABLES[slug as keyof typeof DEMO_TABLES] || DEMO_TABLES['forkit'];
 
   const handleContinue = async () => {
@@ -70,8 +75,7 @@ export default function RestaurantPage() {
           {/* Trust Card */}
           <TrustCard
             restaurant={{
-              name: restaurant.name,
-              logoUrl: restaurant.logoUrl,
+              name: restaurantName,
               isVerified: true,
             }}
             table={{

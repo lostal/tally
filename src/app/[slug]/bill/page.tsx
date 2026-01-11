@@ -7,7 +7,13 @@ import { BillItemList, SplitMethodSelector, AmountInput } from '@/components/bil
 import { TipSelector, PaymentSummary, PaymentButton } from '@/components/payment';
 import { Button } from '@/components/ui/button';
 import { useParticipantStore, useUIStore } from '@/stores';
-import { DEMO_RESTAURANTS } from '@/components/providers/theme-provider';
+// Demo restaurant names
+const DEMO_RESTAURANT_NAMES: Record<string, string> = {
+  'trattoria-mario': 'Trattoria Mario',
+  'sushi-zen': 'Sushi Zen',
+  'swiss-bistro': 'Swiss Bistro',
+  forkit: 'tally Demo',
+};
 import type { SelectableOrderItem } from '@/types';
 import { ChevronLeft, Utensils } from 'lucide-react';
 
@@ -88,8 +94,7 @@ export default function BillPage() {
 
   const setCurrentStep = useUIStore((s) => s.setCurrentStep);
 
-  const restaurant =
-    DEMO_RESTAURANTS[slug as keyof typeof DEMO_RESTAURANTS] || DEMO_RESTAURANTS['forkit'];
+  const restaurantName = DEMO_RESTAURANT_NAMES[slug] || slug;
 
   // Calculate items with selection state
   const itemsWithSelection = DEMO_ITEMS.map((item) => ({
@@ -152,7 +157,7 @@ export default function BillPage() {
                 <Utensils className="text-primary size-5" />
               </div>
               <div className="text-center">
-                <h1 className="text-base leading-tight font-semibold">{restaurant.name}</h1>
+                <h1 className="text-base leading-tight font-semibold">{restaurantName}</h1>
                 <p className="text-muted-foreground text-sm">Mesa 7</p>
               </div>
             </div>

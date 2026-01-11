@@ -2,62 +2,30 @@
 
 import * as React from 'react';
 
-// Restaurant theme configuration
+/**
+ * Theme Provider (Simplified)
+ *
+ * For now, we use a single default theme defined in globals.css.
+ * In the future, this will support dynamic themes based on restaurant branding.
+ */
+
+// Restaurant theme configuration (for future dynamic theming)
 export interface RestaurantTheme {
   name: string;
   slug: string;
-  // Primary brand color (HSL values without hsl())
-  primaryHue: number;
-  primarySaturation: number;
-  primaryLightness: number;
-  // Border radius multiplier (1 = default, 1.5 = more rounded, 0.5 = more square)
-  radiusMultiplier?: number;
-  // Logo URL (optional)
-  logoUrl?: string;
 }
 
-// Default theme (tally brand)
+// Default theme
 const DEFAULT_THEME: RestaurantTheme = {
   name: 'tally',
-  slug: 'demo',
-  primaryHue: 217,
-  primarySaturation: 91,
-  primaryLightness: 60,
-  radiusMultiplier: 1,
-};
-
-// Example restaurant themes
-export const DEMO_RESTAURANTS: Record<string, RestaurantTheme> = {
-  demo: DEFAULT_THEME,
-  'trattoria-mario': {
-    name: 'Trattoria Mario',
-    slug: 'trattoria-mario',
-    primaryHue: 15, // Warm terracotta orange
-    primarySaturation: 75,
-    primaryLightness: 50,
-    radiusMultiplier: 1.2,
-  },
-  'sushi-zen': {
-    name: 'Sushi Zen',
-    slug: 'sushi-zen',
-    primaryHue: 0, // Deep red
-    primarySaturation: 72,
-    primaryLightness: 45,
-    radiusMultiplier: 0.6, // More angular
-  },
-  'swiss-bistro': {
-    name: 'Swiss Bistro',
-    slug: 'swiss-bistro',
-    primaryHue: 0, // Neutral black
-    primarySaturation: 0,
-    primaryLightness: 15,
-    radiusMultiplier: 0.8,
-  },
+  slug: 'default',
 };
 
 interface ThemeContextValue {
   theme: RestaurantTheme;
   setTheme: (theme: RestaurantTheme) => void;
+  isDark: boolean;
+  toggleDark: () => void;
 }
 
 const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
@@ -72,44 +40,34 @@ export function useTheme() {
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  initialTheme?: RestaurantTheme;
 }
 
-export function ThemeProvider({ children, initialTheme = DEFAULT_THEME }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState<RestaurantTheme>(initialTheme);
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const [theme, setTheme] = React.useState<RestaurantTheme>(DEFAULT_THEME);
+  const [isDark, setIsDark] = React.useState(false);
 
-  // Inject CSS variables when theme changes
+  // Initialize dark mode from system preference
   React.useEffect(() => {
-    const root = document.documentElement;
-    const { primaryHue, primarySaturation, primaryLightness, radiusMultiplier = 1 } = theme;
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDark(darkQuery.matches || document.documentElement.classList.contains('dark'));
+  }, []);
 
-    // Primary color variants
-    root.style.setProperty('--primary', `${primaryHue} ${primarySaturation}% ${primaryLightness}%`);
-    root.style.setProperty(
-      '--primary-hover',
-      `${primaryHue} ${primarySaturation}% ${primaryLightness - 5}%`
-    );
-    root.style.setProperty(
-      '--primary-active',
-      `${primaryHue} ${primarySaturation}% ${primaryLightness - 10}%`
-    );
-    root.style.setProperty('--primary-subtle', `${primaryHue} ${primarySaturation}% 95%`);
+  const toggleDark = React.useCallback(() => {
+    setIsDark((prev) => {
+      const next = !prev;
+      document.documentElement.classList.toggle('dark', next);
+      return next;
+    });
+  }, []);
 
-    // Update oklch primary for shadcn compatibility
-    const l = primaryLightness / 100;
-    const c = (primarySaturation / 100) * 0.4; // Convert saturation to chroma
-    const h = primaryHue;
-    root.style.setProperty('--primary', `oklch(${l.toFixed(3)} ${c.toFixed(3)} ${h})`);
-
-    // Border radius scaling
-    const baseRadius = 0.625;
-    root.style.setProperty('--radius', `${baseRadius * radiusMultiplier}rem`);
-  }, [theme]);
-
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme, isDark, toggleDark }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
-// Helper to get theme by slug
+// Helper to get theme by slug (for future use)
 export function getThemeBySlug(slug: string): RestaurantTheme {
-  return DEMO_RESTAURANTS[slug] || DEFAULT_THEME;
+  return { name: slug, slug };
 }

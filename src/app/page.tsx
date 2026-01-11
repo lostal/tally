@@ -1,470 +1,274 @@
 'use client';
 
 import * as React from 'react';
-import NumberFlow from '@number-flow/react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { useTheme, DEMO_RESTAURANTS } from '@/components/providers/theme-provider';
+import { useTheme } from '@/components/providers/theme-provider';
 import {
   Check,
   CreditCard,
   Users,
   Utensils,
-  ChevronRight,
-  Sparkles,
   Moon,
   Sun,
+  Trash2,
+  Pencil,
+  Plus,
+  ChevronRight,
 } from 'lucide-react';
 
-// Demo bill item
-interface BillItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  selected: boolean;
-}
-
-const DEMO_ITEMS: BillItem[] = [
-  { id: '1', name: 'Margherita Pizza', price: 14.5, quantity: 1, selected: false },
-  { id: '2', name: 'Pasta Carbonara', price: 16.0, quantity: 1, selected: false },
-  { id: '3', name: 'Tiramisu', price: 8.5, quantity: 2, selected: false },
-  { id: '4', name: 'Sparkling Water', price: 4.0, quantity: 2, selected: true },
-  { id: '5', name: 'Espresso', price: 3.0, quantity: 2, selected: true },
-];
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring' as const,
-      stiffness: 300,
-      damping: 24,
-    },
-  },
-} as const;
-
-function ThemeSelector() {
-  const { theme, setTheme } = useTheme();
-  const themes = Object.values(DEMO_RESTAURANTS);
-
-  return (
-    <div className="flex flex-wrap gap-3">
-      {themes.map((t) => (
-        <motion.div key={t.slug} whileTap={{ scale: 0.95 }}>
-          <Button
-            variant={theme.slug === t.slug ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setTheme(t)}
-            className="rounded-full px-4"
-          >
-            {t.name}
-          </Button>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
+/**
+ * Theme System Showcase
+ *
+ * This page displays all UI components with the current theme.
+ * In the future, restaurant owners will use this to preview their custom theme.
+ */
 
 function DarkModeToggle() {
-  const [isDark, setIsDark] = React.useState(false);
-
-  const toggle = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
-  };
+  const { isDark, toggleDark } = useTheme();
 
   return (
     <motion.button
-      onClick={toggle}
-      className="bg-secondary text-secondary-foreground flex size-10 items-center justify-center rounded-full"
-      whileTap={{ scale: 0.9 }}
-      whileHover={{ scale: 1.05 }}
+      onClick={toggleDark}
+      className="bg-secondary text-secondary-foreground flex size-11 items-center justify-center rounded-full"
+      whileTap={{ scale: 0.95 }}
     >
-      <AnimatePresence mode="wait">
-        {isDark ? (
-          <motion.div
-            key="sun"
-            initial={{ rotate: -90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: 90, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Sun className="size-5" />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="moon"
-            initial={{ rotate: 90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: -90, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Moon className="size-5" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
     </motion.button>
   );
 }
 
-function BillItemCard({
-  item,
-  onToggle,
-  index,
-}: {
-  item: BillItem;
-  onToggle: () => void;
-  index: number;
-}) {
-  return (
-    <motion.button
-      onClick={onToggle}
-      className={`w-full rounded-2xl border-2 p-5 text-left transition-colors ${
-        item.selected
-          ? 'border-primary bg-primary/5'
-          : 'bg-card hover:border-border border-transparent'
-      }`}
-      whileTap={{ scale: 0.98 }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        delay: index * 0.05,
-        type: 'spring',
-        stiffness: 300,
-        damping: 24,
-      }}
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-foreground font-medium">{item.name}</span>
-            {item.quantity > 1 && (
-              <Badge variant="secondary" className="rounded-full text-xs">
-                ×{item.quantity}
-              </Badge>
-            )}
-          </div>
-          <div className="text-foreground mt-2 text-lg font-semibold tabular-nums">
-            €{(item.price * item.quantity).toFixed(2)}
-          </div>
-        </div>
-        <motion.div
-          className={`flex size-7 items-center justify-center rounded-full border-2 transition-colors ${
-            item.selected
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-background'
-          }`}
-          animate={item.selected ? { scale: [1, 1.2, 1] } : { scale: 1 }}
-          transition={{ duration: 0.2 }}
-        >
-          {item.selected && <Check className="size-4" strokeWidth={3} />}
-        </motion.div>
-      </div>
-    </motion.button>
-  );
-}
-
-function TipButton({
-  percent,
-  isActive,
-  onClick,
-}: {
-  percent: number;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <motion.div whileTap={{ scale: 0.95 }}>
-      <Button
-        variant={isActive ? 'default' : 'outline'}
-        size="lg"
-        onClick={onClick}
-        className="w-full rounded-xl text-base font-medium"
-      >
-        {percent === 0 ? 'No tip' : `${percent}%`}
-      </Button>
-    </motion.div>
-  );
-}
-
-export default function DemoPage() {
-  const { theme } = useTheme();
-  const [items, setItems] = React.useState(DEMO_ITEMS);
-  const [tipPercent, setTipPercent] = React.useState(10);
-
-  const selectedTotal = items
-    .filter((i) => i.selected)
-    .reduce((sum, i) => sum + i.price * i.quantity, 0);
-
-  const tipAmount = (selectedTotal * tipPercent) / 100;
-  const grandTotal = selectedTotal + tipAmount;
-
-  const toggleItem = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, selected: !item.selected } : item))
-    );
-  };
-
+export default function ThemeShowcasePage() {
   return (
     <main className="bg-background min-h-dvh">
-      {/* Header - Glassmorphism */}
-      <header className="glass border-border/50 sticky top-0 z-50 border-b">
-        <div className="container-app py-5">
+      {/* Header */}
+      <header className="border-border border-b">
+        <div className="container-app py-6">
           <div className="flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-            >
-              <h1 className="text-2xl font-bold tracking-tight">tally.</h1>
-              <p className="text-muted-foreground text-sm">Design System</p>
-            </motion.div>
-            <div className="flex items-center gap-3">
-              <Badge variant="outline" className="rounded-full">
-                {theme.name}
-              </Badge>
-              <DarkModeToggle />
+            <div>
+              <h1 className="font-serif text-3xl">tally.</h1>
+              <p className="text-muted-foreground mt-1 text-sm">Design System</p>
             </div>
+            <DarkModeToggle />
           </div>
         </div>
       </header>
 
-      <motion.div
-        className="container-app space-y-10 py-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Theme Selector */}
-        <motion.section className="space-y-4" variants={itemVariants}>
-          <div className="flex items-center gap-2">
-            <Sparkles className="text-primary size-4" />
-            <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-              Restaurant Theme
-            </h2>
-          </div>
-          <ThemeSelector />
-        </motion.section>
-
-        {/* Trust Badge - More generous spacing */}
-        <motion.section variants={itemVariants}>
-          <Card className="shadow-foreground/5 overflow-hidden rounded-3xl border-0 shadow-lg">
-            <CardHeader className="pt-6 pb-4">
-              <div className="flex items-center gap-4">
-                <div className="bg-primary/10 flex size-14 items-center justify-center rounded-2xl">
-                  <Utensils className="text-primary size-7" />
-                </div>
-                <div className="flex-1">
-                  <CardTitle className="text-xl">{theme.name}</CardTitle>
-                  <CardDescription className="mt-1 flex items-center gap-2">
-                    <span className="bg-success/20 flex size-5 items-center justify-center rounded-full">
-                      <Check className="text-success size-3" />
-                    </span>
-                    <span>Verified restaurant</span>
-                  </CardDescription>
-                </div>
+      <div className="container-app space-y-12 py-10">
+        {/* Color Palette */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Color Palette</h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {[
+              { name: 'Background', var: 'bg-background', text: 'text-foreground' },
+              { name: 'Card', var: 'bg-card', text: 'text-card-foreground' },
+              { name: 'Primary', var: 'bg-primary', text: 'text-primary-foreground' },
+              { name: 'Secondary', var: 'bg-secondary', text: 'text-secondary-foreground' },
+              { name: 'Muted', var: 'bg-muted', text: 'text-muted-foreground' },
+              { name: 'Accent', var: 'bg-accent', text: 'text-accent-foreground' },
+              { name: 'Destructive', var: 'bg-destructive', text: 'text-white' },
+              { name: 'Border', var: 'bg-border', text: 'text-foreground' },
+            ].map((color) => (
+              <div
+                key={color.name}
+                className={`${color.var} ${color.text} border-border rounded-2xl border-2 p-4`}
+              >
+                <span className="text-sm font-medium">{color.name}</span>
               </div>
-            </CardHeader>
-            <Separator />
-            <CardContent className="py-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Table 7 • 2 guests</span>
-                <Badge variant="secondary" className="gap-1.5 rounded-full">
-                  <Users className="size-3.5" />
-                  <span>Shared bill</span>
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.section>
-
-        {/* Bill Items - More padding */}
-        <motion.section className="space-y-5" variants={itemVariants}>
-          <div className="flex items-center justify-between">
-            <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-              Select your items
-            </h2>
-            <span className="text-muted-foreground text-sm">
-              {items.filter((i) => i.selected).length}/{items.length}
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            {items.map((item, index) => (
-              <BillItemCard
-                key={item.id}
-                item={item}
-                index={index}
-                onToggle={() => toggleItem(item.id)}
-              />
             ))}
           </div>
-        </motion.section>
-
-        {/* Tip Selector - Grid with more space */}
-        <motion.section className="space-y-5" variants={itemVariants}>
-          <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-            Add a tip
-          </h2>
-          <div className="grid grid-cols-4 gap-3">
-            {[0, 10, 15, 20].map((percent) => (
-              <TipButton
-                key={percent}
-                percent={percent}
-                isActive={tipPercent === percent}
-                onClick={() => setTipPercent(percent)}
-              />
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Total with Animated Numbers */}
-        <motion.section variants={itemVariants}>
-          <Card className="rounded-3xl shadow-lg">
-            <CardContent className="space-y-4 p-6">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-medium tabular-nums">
-                  €<NumberFlow value={selectedTotal} format={{ minimumFractionDigits: 2 }} />
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Tip ({tipPercent}%)</span>
-                <span className="font-medium tabular-nums">
-                  €<NumberFlow value={tipAmount} format={{ minimumFractionDigits: 2 }} />
-                </span>
-              </div>
-              <Separator />
-              <div className="flex items-center justify-between pt-1">
-                <span className="text-lg font-semibold">Total</span>
-                <span className="text-primary text-3xl font-bold tabular-nums">
-                  €<NumberFlow value={grandTotal} format={{ minimumFractionDigits: 2 }} />
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.section>
-
-        {/* Pay Button - Full width, prominent */}
-        <motion.section className="pb-6" variants={itemVariants}>
-          <motion.div whileTap={{ scale: 0.98 }}>
-            <Button className="h-16 w-full gap-3 rounded-2xl text-lg font-semibold" size="lg">
-              <CreditCard className="size-6" />
-              Pay €{grandTotal.toFixed(2)}
-              <ChevronRight className="ml-auto size-5" />
-            </Button>
-          </motion.div>
-          <p className="text-muted-foreground mt-4 text-center text-xs">
-            Secure payment powered by Stripe
-          </p>
-        </motion.section>
+        </section>
 
         <Separator />
 
-        {/* Component Showcase */}
-        <motion.section className="space-y-6" variants={itemVariants}>
-          <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-            UI Components
-          </h2>
+        {/* Typography */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Typography</h2>
+          <div className="space-y-4">
+            <div>
+              <p className="text-muted-foreground mb-2 text-xs tracking-wider uppercase">
+                Heading 1 (Lora)
+              </p>
+              <h1 className="font-serif">The quick brown fox</h1>
+            </div>
+            <div>
+              <p className="text-muted-foreground mb-2 text-xs tracking-wider uppercase">
+                Heading 2 (Lora)
+              </p>
+              <h2 className="font-serif">The quick brown fox</h2>
+            </div>
+            <div>
+              <p className="text-muted-foreground mb-2 text-xs tracking-wider uppercase">
+                Heading 3 (Inter)
+              </p>
+              <h3>The quick brown fox</h3>
+            </div>
+            <div>
+              <p className="text-muted-foreground mb-2 text-xs tracking-wider uppercase">
+                Body (Inter)
+              </p>
+              <p>
+                The quick brown fox jumps over the lazy dog. This is body text at 16px with
+                comfortable line height for reading.
+              </p>
+            </div>
+          </div>
+        </section>
 
-          <div className="space-y-6">
-            {/* Buttons */}
-            <Card className="rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">Buttons</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-wrap gap-3">
-                <Button className="rounded-xl">Primary</Button>
-                <Button variant="secondary" className="rounded-xl">
-                  Secondary
-                </Button>
-                <Button variant="outline" className="rounded-xl">
-                  Outline
-                </Button>
-                <Button variant="ghost" className="rounded-xl">
-                  Ghost
-                </Button>
-              </CardContent>
-            </Card>
+        <Separator />
 
-            {/* Badges */}
-            <Card className="rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">Badges</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-wrap gap-3">
-                <Badge className="rounded-full">Default</Badge>
-                <Badge variant="secondary" className="rounded-full">
-                  Secondary
-                </Badge>
-                <Badge variant="outline" className="rounded-full">
-                  Outline
-                </Badge>
-                <Badge variant="destructive" className="rounded-full">
-                  Error
-                </Badge>
-              </CardContent>
-            </Card>
+        {/* Buttons */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Buttons</h2>
+          <div className="flex flex-wrap gap-4">
+            <Button>Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="destructive">Destructive</Button>
+            <Button variant="link">Link</Button>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <Button size="sm">Small</Button>
+            <Button size="default">Default</Button>
+            <Button size="lg">Large</Button>
+            <Button size="icon">
+              <Plus className="size-4" />
+            </Button>
+          </div>
+        </section>
 
-            {/* Input */}
-            <Card className="rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">Input</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Input placeholder="Enter custom amount..." className="rounded-xl" />
-                <div className="flex gap-3">
-                  <Input placeholder="€" className="w-24 rounded-xl text-center tabular-nums" />
-                  <Button className="flex-1 rounded-xl">Split equally</Button>
-                </div>
-              </CardContent>
-            </Card>
+        <Separator />
 
-            {/* Skeleton */}
-            <Card className="rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">Loading</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Skeleton className="h-14 w-full rounded-2xl" />
-                <div className="flex gap-4">
-                  <Skeleton className="size-12 rounded-full" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-3/4 rounded-lg" />
-                    <Skeleton className="h-3 w-1/2 rounded-lg" />
+        {/* Badges */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Badges</h2>
+          <div className="flex flex-wrap gap-3">
+            <Badge>Default</Badge>
+            <Badge variant="secondary">Secondary</Badge>
+            <Badge variant="outline">Outline</Badge>
+            <Badge variant="destructive">Destructive</Badge>
+          </div>
+        </section>
+
+        <Separator />
+
+        {/* Inputs */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Inputs</h2>
+          <div className="max-w-sm space-y-4">
+            <Input placeholder="Default input..." />
+            <Input placeholder="Disabled" disabled />
+            <div className="flex gap-3">
+              <Input placeholder="€" className="w-24 text-center" />
+              <Button className="flex-1">Submit</Button>
+            </div>
+          </div>
+        </section>
+
+        <Separator />
+
+        {/* Cards */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Cards</h2>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <div className="bg-secondary rounded-xl p-2">
+                    <Utensils className="size-5" />
                   </div>
+                  Restaurant Card
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground text-sm">
+                  This is a card component with header and content sections.
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>Interactive Card</span>
+                  <div className="flex gap-1">
+                    <Button size="icon-sm" variant="ghost">
+                      <Pencil className="size-3" />
+                    </Button>
+                    <Button size="icon-sm" variant="ghost">
+                      <Trash2 className="size-3" />
+                    </Button>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">With action buttons</span>
+                  <ChevronRight className="text-muted-foreground size-4" />
                 </div>
               </CardContent>
             </Card>
           </div>
-        </motion.section>
+        </section>
+
+        <Separator />
+
+        {/* States */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">States</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="border-border space-y-2 rounded-2xl border-2 p-4">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-emerald-500" />
+                <span className="text-sm font-medium">Available</span>
+              </div>
+              <p className="text-muted-foreground text-xs">Table is free</p>
+            </div>
+            <div className="border-primary bg-primary text-primary-foreground space-y-2 rounded-2xl border-2 p-4">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-amber-400" />
+                <span className="text-sm font-medium">Occupied</span>
+              </div>
+              <p className="text-xs opacity-80">Table has active order</p>
+            </div>
+            <div className="border-border space-y-2 rounded-2xl border-2 p-4">
+              <div className="flex items-center gap-2">
+                <Users className="size-4" />
+                <span className="text-sm font-medium">4 guests</span>
+              </div>
+              <p className="text-muted-foreground text-xs">Capacity indicator</p>
+            </div>
+          </div>
+        </section>
+
+        <Separator />
+
+        {/* Loading States */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-xl">Loading</h2>
+          <div className="max-w-sm space-y-4">
+            <Skeleton className="h-12 w-full rounded-xl" />
+            <div className="flex gap-4">
+              <Skeleton className="size-12 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-3/4 rounded" />
+                <Skeleton className="h-3 w-1/2 rounded" />
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Footer */}
-        <footer className="py-12 text-center">
+        <footer className="border-border mt-12 border-t py-12 text-center">
           <p className="text-muted-foreground text-sm">tally. — Pay your bill, your way</p>
-          <p className="text-muted-foreground/60 mt-1 text-xs">© 2025 — Portfolio Project</p>
+          <p className="text-muted-foreground/60 mt-1 text-xs">Design System v1.0</p>
         </footer>
-      </motion.div>
+      </div>
     </main>
   );
 }
