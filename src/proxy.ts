@@ -3,11 +3,11 @@ import type { NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
 /**
- * Middleware for protecting admin routes
+ * Proxy for protecting admin routes
  *
  * Checks for valid Supabase session before allowing access to /admin/*
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next({
     request: {
       headers: request.headers,
