@@ -21,28 +21,28 @@ const STAT_CARDS = [
     label: 'Mesas totales',
     icon: Table2,
     href: '/admin/tables',
-    color: 'bg-blue-500/10 text-blue-500',
+    color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   {
     key: 'occupiedTables',
     label: 'Mesas ocupadas',
     icon: Users,
     href: '/admin/tables',
-    color: 'bg-orange-500/10 text-orange-500',
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   {
     key: 'categories',
     label: 'Categorías',
     icon: FolderOpen,
     href: '/admin/menu',
-    color: 'bg-purple-500/10 text-purple-500',
+    color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
   },
   {
     key: 'products',
     label: 'Productos',
     icon: UtensilsCrossed,
     href: '/admin/menu',
-    color: 'bg-green-500/10 text-green-500',
+    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
 ];
 

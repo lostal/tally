@@ -91,9 +91,9 @@
   --muted: oklch(0.9 0.008 70);
   --muted-foreground: oklch(0.45 0.015 50);
 
-  /* Accent - Sage green (organic) */
-  --accent: oklch(0.55 0.08 155);
-  --accent-foreground: oklch(0.98 0.005 70);
+  /* Accent - Warm neutral for hovers (NOT colored) */
+  --accent: oklch(0.94 0.01 70);
+  --accent-foreground: oklch(0.2 0.02 50);
 
   /* Semantic colors - muted, organic */
   --destructive: oklch(0.55 0.16 25);
@@ -134,9 +134,9 @@
   --muted: oklch(0.28 0.015 50);
   --muted-foreground: oklch(0.6 0.01 70);
 
-  /* Accent - Sage */
-  --accent: oklch(0.6 0.08 155);
-  --accent-foreground: oklch(0.15 0.015 50);
+  /* Accent - Warm neutral for hovers */
+  --accent: oklch(0.24 0.015 50);
+  --accent-foreground: oklch(0.92 0.008 70);
 
   /* Semantic */
   --destructive: oklch(0.6 0.16 25);

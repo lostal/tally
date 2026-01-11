@@ -15,11 +15,12 @@ interface TablesContentProps {
   tables: Table[];
 }
 
+// Warm organic status indicators
 const STATUS_COLORS: Record<string, string> = {
-  available: 'bg-green-500',
-  occupied: 'bg-orange-500',
-  paying: 'bg-blue-500',
-  reserved: 'bg-purple-500',
+  available: 'bg-emerald-500',
+  occupied: 'bg-amber-500',
+  paying: 'bg-sky-500',
+  reserved: 'bg-violet-500',
 };
 
 const STATUS_LABELS: Record<string, string> = {
