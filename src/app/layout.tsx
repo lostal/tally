@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Lora } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import './globals.css';
 
-const fontSans = Geist({
+/**
+ * Typography System - Warm Minimalism
+ *
+ * Inter: Clean sans-serif for body text, buttons, labels
+ * Lora: Elegant serif for headlines, prices, emphasis
+ */
+const fontSans = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-const fontMono = Geist_Mono({
+const fontSerif = Lora({
   subsets: ['latin'],
-  variable: '--font-mono',
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -34,18 +40,18 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: light)', color: '#FAF8F5' },
+    { media: '(prefers-color-scheme: dark)', color: '#1A1816' },
   ],
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false, // Prevents zoom on mobile inputs
+  userScalable: false,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fontSans.variable} ${fontMono.variable}`}>
+    <html lang="en" className={`${fontSans.variable} ${fontSerif.variable}`}>
       <body className="min-h-dvh font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
