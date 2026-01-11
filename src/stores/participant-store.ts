@@ -39,7 +39,7 @@ const initialState = {
   participantId: null,
   selectedItemIds: [],
   claimedQuantities: {},
-  splitMethod: 'BY_ITEMS' as SplitMethod,
+  splitMethod: 'EQUAL' as SplitMethod,
   fixedAmountCents: 0,
   tipPercentage: 0,
   isReady: false,

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { List, Calculator, Users } from 'lucide-react';
+import { List, Calculator, Wallet } from 'lucide-react';
 
 type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
 
@@ -25,6 +25,12 @@ const SPLIT_OPTIONS: {
   icon: typeof List;
 }[] = [
   {
+    value: 'EQUAL',
+    label: 'Pagar todo',
+    description: 'Pago completo de la cuenta',
+    icon: Wallet,
+  },
+  {
     value: 'BY_ITEMS',
     label: 'Por productos',
     description: 'Selecciona lo que pediste',
@@ -35,12 +41,6 @@ const SPLIT_OPTIONS: {
     label: 'Cantidad fija',
     description: 'Introduce un importe',
     icon: Calculator,
-  },
-  {
-    value: 'EQUAL',
-    label: 'A partes iguales',
-    description: 'Divide el total entre todos',
-    icon: Users,
   },
 ];
 
@@ -100,8 +100,8 @@ export function SplitMethodSelector({
                   )}
                 >
                   {option.description}
-                  {option.value === 'EQUAL' && participantCount && (
-                    <> ({participantCount} personas)</>
+                  {option.value === 'EQUAL' && participantCount && participantCount > 1 && (
+                    <> · {participantCount} personas</>
                   )}
                 </div>
               </div>

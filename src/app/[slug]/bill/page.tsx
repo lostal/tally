@@ -99,14 +99,13 @@ export default function BillPage() {
   }));
 
   // Calculate totals
-  const equalShareCents = Math.round(BILL_TOTAL_CENTS / 2); // 2 people
-
   const subtotalCents = React.useMemo(() => {
     if (splitMethod === 'BY_AMOUNT') {
       return fixedAmountCents;
     }
     if (splitMethod === 'EQUAL') {
-      return equalShareCents;
+      // Full bill total (in future: BILL_TOTAL_CENTS / participantCount)
+      return BILL_TOTAL_CENTS;
     }
     // BY_ITEMS
     return selectedItemIds.reduce((total, itemId) => {
@@ -115,7 +114,7 @@ export default function BillPage() {
       const qty = claimedQuantities[itemId] || item.quantity;
       return total + item.unitPriceCents * qty;
     }, 0);
-  }, [splitMethod, fixedAmountCents, selectedItemIds, claimedQuantities, equalShareCents]);
+  }, [splitMethod, fixedAmountCents, selectedItemIds, claimedQuantities]);
 
   const tipCents = Math.round((subtotalCents * tipPercentage) / 100);
   const totalCents = subtotalCents + tipCents;
@@ -169,11 +168,7 @@ export default function BillPage() {
         <div className="container-app space-y-8 py-6">
           {/* Split Method Selector */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <SplitMethodSelector
-              value={splitMethod}
-              onChange={setSplitMethod}
-              participantCount={2}
-            />
+            <SplitMethodSelector value={splitMethod} onChange={setSplitMethod} />
           </motion.section>
 
           {/* Content based on split method */}
@@ -213,8 +208,8 @@ export default function BillPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <p className="text-2xl font-bold">€28.75</p>
-              <p className="text-muted-foreground mt-1 text-sm">Tu parte (€57.50 ÷ 2 personas)</p>
+              <p className="text-2xl font-bold">€57.50</p>
+              <p className="text-muted-foreground mt-1 text-sm">Total de la cuenta</p>
             </motion.section>
           )}
 

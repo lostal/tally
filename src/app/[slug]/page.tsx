@@ -9,10 +9,10 @@ import { DEMO_RESTAURANTS } from '@/components/providers/theme-provider';
 
 // Demo data - in production this would come from API
 const DEMO_TABLES = {
-  'trattoria-mario': { number: '7', guestCount: 2 },
-  'sushi-zen': { number: '12', guestCount: 4 },
-  'swiss-bistro': { number: '3', guestCount: 3 },
-  forkit: { number: '1', guestCount: 2 },
+  'trattoria-mario': { number: '7' },
+  'sushi-zen': { number: '12' },
+  'swiss-bistro': { number: '3' },
+  forkit: { number: '1' },
 };
 
 /**

@@ -5,12 +5,8 @@ import { cn } from '@/lib/utils';
 import { MapPin } from 'lucide-react';
 
 interface LocationDisplayProps {
-  /** Restaurant name */
-  restaurantName: string;
   /** Table number/name */
   tableNumber: string;
-  /** Number of guests at the table */
-  guestCount?: number;
   /** City or location */
   location?: string;
   /** Additional CSS classes */

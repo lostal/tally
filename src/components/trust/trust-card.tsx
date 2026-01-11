@@ -20,7 +20,6 @@ interface TrustCardProps {
   /** Table information */
   table: {
     number: string;
-    guestCount?: number;
   };
   /** Callback when user confirms and continues */
   onContinue: () => void;
@@ -76,12 +75,7 @@ export function TrustCard({
         <CardContent className="space-y-6 pb-8">
           {/* Table info */}
           <div className="bg-secondary/50 rounded-2xl p-4">
-            <LocationDisplay
-              restaurantName={restaurant.name}
-              tableNumber={table.number}
-              guestCount={table.guestCount}
-              location={restaurant.location}
-            />
+            <LocationDisplay tableNumber={table.number} location={restaurant.location} />
           </div>
 
           {/* Continue CTA */}
