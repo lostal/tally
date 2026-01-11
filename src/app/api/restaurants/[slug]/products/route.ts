@@ -13,7 +13,7 @@ export async function POST(request: Request, { params }: RouteParams) {
   try {
     const { slug } = await params;
     const body = await request.json();
-    const { categoryId, name, priceCents, sortOrder } = body;
+    const { categoryId, name, description, priceCents, sortOrder } = body;
 
     if (!name || priceCents === undefined) {
       return NextResponse.json({ error: 'Name and price required' }, { status: 400 });
@@ -37,6 +37,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         restaurant_id: restaurant.id,
         category_id: categoryId,
         name,
+        description: description || null,
         price_cents: priceCents,
         sort_order: sortOrder || 0,
         is_available: true,

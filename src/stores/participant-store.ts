@@ -12,7 +12,7 @@ interface ParticipantState {
   /** Claimed quantities per item (for partial claims) */
   claimedQuantities: Record<string, number>;
   /** Split method chosen */
-  splitMethod: SplitMethod;
+  splitMethod: SplitMethod | null;
   /** Fixed amount in cents (for BY_AMOUNT) */
   fixedAmountCents: number;
   /** Tip percentage */
@@ -39,7 +39,7 @@ const initialState = {
   participantId: null,
   selectedItemIds: [],
   claimedQuantities: {},
-  splitMethod: 'EQUAL' as SplitMethod,
+  splitMethod: null,
   fixedAmountCents: 0,
   tipPercentage: 0,
   isReady: false,
