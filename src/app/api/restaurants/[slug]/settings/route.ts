@@ -1,5 +1,20 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase';
+import { validateBody, serverError, logApiError } from '@/lib/api/validation';
+
+const UpdateSettingsSchema = z.object({
+  name: z.string().min(1).optional(),
+  theme: z
+    .object({
+      family: z.string(),
+      accentFamily: z.string().optional(),
+      hueOffset: z.number().min(-15).max(15).optional(),
+      mode: z.enum(['auto', 'light', 'dark']).optional(),
+      radiusScale: z.enum(['sm', 'md', 'lg']).optional(),
+    })
+    .optional(),
+});
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -7,30 +22,49 @@ interface RouteParams {
 
 /**
  * PATCH /api/restaurants/[slug]/settings
- * Update restaurant settings
+ *
+ * Update restaurant settings (name, theme).
  */
 export async function PATCH(request: Request, { params }: RouteParams) {
   try {
     const { slug } = await params;
-    const body = await request.json();
-    const { name, theme, logoUrl } = body;
+
+    const { data, error: validationError } = await validateBody(request, UpdateSettingsSchema);
+    if (validationError) {
+      return validationError;
+    }
 
     const supabase = createAdminClient();
 
-    const updateData: Record<string, unknown> = {};
-    if (name) updateData.name = name;
-    if (theme) updateData.theme = theme;
-    if (logoUrl !== undefined) updateData.logo_url = logoUrl;
+    // Build update object
+    const updateData: Record<string, unknown> = {
+      updated_at: new Date().toISOString(),
+    };
 
-    const { error } = await supabase.from('restaurants').update(updateData).eq('slug', slug);
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    if (data.name) {
+      updateData.name = data.name;
     }
 
-    return NextResponse.json({ success: true });
+    if (data.theme) {
+      updateData.theme = data.theme;
+    }
+
+    // Update restaurant
+    const { data: restaurant, error: updateError } = await supabase
+      .from('restaurants')
+      .update(updateData)
+      .eq('slug', slug)
+      .select('id, name, slug, theme')
+      .single();
+
+    if (updateError) {
+      logApiError('PATCH /api/restaurants/[slug]/settings', updateError);
+      return serverError('Failed to update settings');
+    }
+
+    return NextResponse.json({ restaurant });
   } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    logApiError('PATCH /api/restaurants/[slug]/settings', error);
+    return serverError();
   }
 }

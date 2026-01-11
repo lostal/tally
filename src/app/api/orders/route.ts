@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase';
-import { validateBody, unauthorized, serverError, logApiError } from '@/lib/api/validation';
+import { validateBody, serverError, logApiError } from '@/lib/api/validation';
 
 /**
  * Zod schema for order creation

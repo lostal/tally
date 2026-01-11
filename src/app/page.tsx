@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { ThemeFamiliesShowcase } from '@/components/shared/theme-showcase';
 
 import { Users, Utensils, Trash2, QrCode, ChefHat } from 'lucide-react';
 
@@ -59,6 +60,11 @@ export default function ThemeShowcasePage() {
               </div>
             </CardContent>
           </Card>
+        </section>
+
+        {/* Section: Theme Families */}
+        <section className="space-y-6">
+          <ThemeFamiliesShowcase />
         </section>
 
         {/* Section: Interactive Atoms */}

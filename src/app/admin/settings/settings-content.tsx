@@ -3,36 +3,69 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { Save, Loader2, Palette } from 'lucide-react';
+import { Save, Loader2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { Restaurant, RestaurantTheme } from '@/types/database';
+import { THEME_FAMILIES, generateColorScale, oklchToHex } from '@/lib/theme';
+import type { ThemeFamily } from '@/lib/theme';
+import type { Restaurant } from '@/types/database';
+import type { RestaurantThemeConfig } from '@/types/theme';
+import { cn } from '@/lib/utils';
 
 interface SettingsContentProps {
   restaurant: Restaurant;
 }
 
+// Order families by color wheel for visual coherence
+const FAMILY_ORDER: ThemeFamily[] = [
+  'default',
+  'champagne',
+  'amber',
+  'terracotta',
+  'rose',
+  'coffee',
+  'sage',
+  'forest',
+  'ocean',
+  'slate',
+];
+
 export function SettingsContent({ restaurant }: SettingsContentProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
   const [name, setName] = React.useState(restaurant.name);
-  const [theme, setTheme] = React.useState<RestaurantTheme>(
-    (restaurant.theme as RestaurantTheme) || { primaryColor: '#16a34a', accentColor: '#22c55e' }
-  );
   const [saved, setSaved] = React.useState(false);
+
+  // Parse existing theme or use defaults
+  const existingTheme = (restaurant.theme as RestaurantThemeConfig) || {};
+  const [selectedFamily, setSelectedFamily] = React.useState<ThemeFamily>(
+    existingTheme.family || 'default'
+  );
+
+  // Get preview colors for selected family
+  const previewScale = React.useMemo(() => generateColorScale(selectedFamily), [selectedFamily]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
+    const themeConfig: RestaurantThemeConfig = {
+      family: selectedFamily,
+      mode: 'auto',
+      radiusScale: 'md',
+    };
+
     try {
-      await fetch(`/api/restaurants/${restaurant.slug}/settings`, {
+      const response = await fetch(`/api/restaurants/${restaurant.slug}/settings`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, theme }),
+        body: JSON.stringify({ name, theme: themeConfig }),
       });
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-      router.refresh();
+
+      if (response.ok) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+        router.refresh();
+      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -40,121 +73,151 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl space-y-8">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="font-serif">Ajustes del Restaurante</h1>
-        <p className="text-muted-foreground mt-2">Personaliza la apariencia y datos de tu local</p>
+        <h1 className="font-serif text-3xl">Ajustes</h1>
+        <p className="text-muted-foreground mt-1">Personaliza tu restaurante</p>
       </motion.div>
 
-      <form onSubmit={handleSave} className="space-y-6">
+      <form onSubmit={handleSave} className="space-y-8">
         {/* Basic Info */}
-        <motion.div
-          className="bg-card space-y-6 rounded-2xl border-2 p-6"
+        <motion.section
+          className="space-y-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h2 className="font-serif text-xl">Información básica</h2>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Nombre del restaurante</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border-input bg-background w-full rounded-xl border-2 px-4 py-3"
-            />
+          <h2 className="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+            Información
+          </h2>
+          <div className="bg-card rounded-2xl border-2 p-6">
+            <label className="block space-y-2">
+              <span className="text-sm font-medium">Nombre del restaurante</span>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="border-input bg-background focus:border-primary focus:ring-primary/20 w-full rounded-xl border-2 px-4 py-3 transition-colors focus:ring-2 focus:outline-none"
+              />
+            </label>
           </div>
+        </motion.section>
 
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm font-medium">Slug (URL)</label>
-            <input
-              type="text"
-              value={restaurant.slug}
-              disabled
-              className="border-input bg-muted w-full rounded-xl border-2 px-4 py-3 opacity-60"
-            />
-            <p className="text-muted-foreground text-xs">El slug no se puede cambiar</p>
-          </div>
-        </motion.div>
-
-        {/* Theme */}
-        <motion.div
-          className="bg-card space-y-6 rounded-2xl border-2 p-6"
+        {/* Theme Selection */}
+        <motion.section
+          className="space-y-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <div className="flex items-center gap-2">
-            <Palette className="text-primary size-5" />
-            <h2 className="font-serif text-xl">Personalización</h2>
-          </div>
+          <h2 className="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+            Paleta de colores
+          </h2>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Color primario</label>
-              <div className="flex gap-2">
-                <div className="border-border size-12 overflow-hidden rounded-xl border-2">
-                  <input
-                    type="color"
-                    value={theme.primaryColor}
-                    onChange={(e) => setTheme({ ...theme, primaryColor: e.target.value })}
-                    className="-m-1 size-14 cursor-pointer"
-                  />
-                </div>
-                <input
-                  type="text"
-                  value={theme.primaryColor}
-                  onChange={(e) => setTheme({ ...theme, primaryColor: e.target.value })}
-                  className="border-input bg-background flex-1 rounded-xl border-2 px-3 text-sm"
-                />
-              </div>
-            </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {FAMILY_ORDER.map((family) => {
+              const config = THEME_FAMILIES[family];
+              const scale = generateColorScale(family);
+              const isSelected = selectedFamily === family;
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Color secundario</label>
-              <div className="flex gap-2">
-                <div className="border-border size-12 overflow-hidden rounded-xl border-2">
-                  <input
-                    type="color"
-                    value={theme.accentColor}
-                    onChange={(e) => setTheme({ ...theme, accentColor: e.target.value })}
-                    className="-m-1 size-14 cursor-pointer"
-                  />
-                </div>
-                <input
-                  type="text"
-                  value={theme.accentColor}
-                  onChange={(e) => setTheme({ ...theme, accentColor: e.target.value })}
-                  className="border-input bg-background flex-1 rounded-xl border-2 px-3 text-sm"
-                />
-              </div>
-            </div>
+              return (
+                <button
+                  key={family}
+                  type="button"
+                  onClick={() => setSelectedFamily(family)}
+                  className={cn(
+                    'group relative overflow-hidden rounded-2xl border-2 text-left transition-all',
+                    isSelected
+                      ? 'border-foreground shadow-lg'
+                      : 'border-border hover:border-foreground/30'
+                  )}
+                >
+                  {/* Color bar at top */}
+                  <div className="flex h-10">
+                    {[3, 5, 7, 9, 11].map((step) => (
+                      <div
+                        key={step}
+                        className="flex-1"
+                        style={{ backgroundColor: oklchToHex(scale[step as 3]) }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex items-center justify-between p-4">
+                    <div>
+                      <p className="font-medium">{config.name}</p>
+                      <p className="text-muted-foreground text-sm">{config.description}</p>
+                    </div>
+                    {isSelected && (
+                      <div className="bg-foreground text-background flex size-6 items-center justify-center rounded-full">
+                        <Check className="size-4" />
+                      </div>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           {/* Preview */}
-          <div className="mt-4 rounded-xl border-2 p-4">
-            <p className="text-muted-foreground mb-2 text-sm">Vista previa</p>
-            <div className="flex gap-2">
-              <div className="size-10 rounded-lg" style={{ backgroundColor: theme.primaryColor }} />
-              <div className="size-10 rounded-lg" style={{ backgroundColor: theme.accentColor }} />
+          <div
+            className="mt-6 rounded-2xl border-2 p-5"
+            style={{ backgroundColor: oklchToHex(previewScale[2]) }}
+          >
+            <p className="mb-3 text-sm font-medium" style={{ color: oklchToHex(previewScale[11]) }}>
+              Vista previa
+            </p>
+            <div className="flex gap-3">
+              <div
+                className="rounded-xl px-5 py-3 text-sm font-semibold"
+                style={{
+                  backgroundColor: oklchToHex(previewScale[9]),
+                  color: oklchToHex(previewScale[1]),
+                }}
+              >
+                Botón primario
+              </div>
+              <div
+                className="rounded-xl border-2 px-5 py-3 text-sm font-medium"
+                style={{
+                  backgroundColor: oklchToHex(previewScale[3]),
+                  borderColor: oklchToHex(previewScale[7]),
+                  color: oklchToHex(previewScale[11]),
+                }}
+              >
+                Secundario
+              </div>
             </div>
           </div>
-        </motion.div>
+        </motion.section>
 
         {/* Save button */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-          <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="pt-4"
+        >
+          <Button
+            type="submit"
+            disabled={isLoading}
+            size="lg"
+            className="h-12 w-full rounded-xl text-base sm:w-auto"
+          >
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 size-4 animate-spin" />
+                <Loader2 className="mr-2 size-5 animate-spin" />
                 Guardando...
               </>
             ) : saved ? (
-              '✓ Guardado'
+              <>
+                <Check className="mr-2 size-5" />
+                Guardado
+              </>
             ) : (
               <>
-                <Save className="mr-2 size-4" />
+                <Save className="mr-2 size-5" />
                 Guardar cambios
               </>
             )}

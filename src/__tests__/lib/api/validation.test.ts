@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { validateBody, unauthorized, forbidden, notFound, serverError } from '@/lib/api/validation';
 import { z } from 'zod';
 
