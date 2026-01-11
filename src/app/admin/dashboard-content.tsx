@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Table2, UtensilsCrossed, FolderOpen, Users, ArrowRight } from 'lucide-react';
+import { Table2, UtensilsCrossed, FolderOpen, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import type { Restaurant } from '@/types/database';
 
@@ -15,108 +15,82 @@ interface DashboardContentProps {
   };
 }
 
-const STAT_CARDS = [
-  {
-    key: 'tables',
-    label: 'Mesas totales',
-    icon: Table2,
-    href: '/admin/tables',
-    color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
-  },
-  {
-    key: 'occupiedTables',
-    label: 'Mesas ocupadas',
-    icon: Users,
-    href: '/admin/tables',
-    color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-  },
-  {
-    key: 'categories',
-    label: 'Categorías',
-    icon: FolderOpen,
-    href: '/admin/menu',
-    color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
-  },
-  {
-    key: 'products',
-    label: 'Productos',
-    icon: UtensilsCrossed,
-    href: '/admin/menu',
-    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
-  },
-];
-
 export function DashboardContent({ restaurant, stats }: DashboardContentProps) {
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold">Bienvenido</h1>
-        <p className="text-muted-foreground mt-1">Panel de administración de {restaurant.name}</p>
+    <div className="space-y-12">
+      {/* Header - Large and editorial */}
+      <motion.div
+        className="space-y-2"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <p className="text-muted-foreground text-sm tracking-widest uppercase">
+          Panel de administración
+        </p>
+        <h1 className="font-serif">{restaurant.name}</h1>
       </motion.div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {STAT_CARDS.map((card, index) => {
-          const Icon = card.icon;
-          const value = stats[card.key as keyof typeof stats];
-
-          return (
-            <motion.div
-              key={card.key}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Link
-                href={card.href}
-                className="bg-card hover:bg-accent block rounded-2xl border p-6 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div className={`rounded-xl p-3 ${card.color}`}>
-                    <Icon className="size-5" />
-                  </div>
-                  <ArrowRight className="text-muted-foreground size-4" />
-                </div>
-                <div className="mt-4">
-                  <p className="text-3xl font-bold">{value}</p>
-                  <p className="text-muted-foreground text-sm">{card.label}</p>
-                </div>
-              </Link>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Quick Actions */}
+      {/* Stats - Simple text, no colors */}
       <motion.div
-        className="bg-card rounded-2xl border p-6"
-        initial={{ opacity: 0, y: 20 }}
+        className="grid gap-6 sm:grid-cols-2"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.1 }}
       >
-        <h2 className="mb-4 font-semibold">Acciones rápidas</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="border-border rounded-2xl border-2 p-8">
+          <p className="text-muted-foreground text-sm">Mesas ocupadas</p>
+          <p className="mt-2 font-serif text-5xl">
+            {stats.occupiedTables}/{stats.tables}
+          </p>
+        </div>
+        <div className="border-border rounded-2xl border-2 p-8">
+          <p className="text-muted-foreground text-sm">Productos en menú</p>
+          <p className="mt-2 font-serif text-5xl">{stats.products}</p>
+          <p className="text-muted-foreground mt-1 text-sm">en {stats.categories} categorías</p>
+        </div>
+      </motion.div>
+
+      {/* Quick links - Clean, minimal */}
+      <motion.div
+        className="space-y-4"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h2 className="font-serif text-xl">Acceso rápido</h2>
+
+        <div className="space-y-2">
           <Link
             href="/admin/menu"
-            className="bg-secondary hover:bg-accent flex items-center gap-3 rounded-xl p-4 transition-colors"
+            className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
-            <UtensilsCrossed className="text-primary size-5" />
-            <span className="font-medium">Gestionar menú</span>
+            <div className="flex items-center gap-4">
+              <UtensilsCrossed className="size-5" />
+              <span className="font-medium">Gestionar menú</span>
+            </div>
+            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </Link>
+
           <Link
             href="/admin/tables"
-            className="bg-secondary hover:bg-accent flex items-center gap-3 rounded-xl p-4 transition-colors"
+            className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
-            <Table2 className="text-primary size-5" />
-            <span className="font-medium">Ver mesas</span>
+            <div className="flex items-center gap-4">
+              <Table2 className="size-5" />
+              <span className="font-medium">Ver mesas</span>
+            </div>
+            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </Link>
+
           <Link
             href="/admin/settings"
-            className="bg-secondary hover:bg-accent flex items-center gap-3 rounded-xl p-4 transition-colors"
+            className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
-            <FolderOpen className="text-primary size-5" />
-            <span className="font-medium">Configuración</span>
+            <div className="flex items-center gap-4">
+              <FolderOpen className="size-5" />
+              <span className="font-medium">Configuración</span>
+            </div>
+            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </motion.div>

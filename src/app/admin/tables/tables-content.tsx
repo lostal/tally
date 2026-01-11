@@ -15,19 +15,12 @@ interface TablesContentProps {
   tables: Table[];
 }
 
-// Warm organic status indicators
-const STATUS_COLORS: Record<string, string> = {
-  available: 'bg-emerald-500',
-  occupied: 'bg-amber-500',
-  paying: 'bg-sky-500',
-  reserved: 'bg-violet-500',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  available: 'Disponible',
-  occupied: 'Ocupada',
-  paying: 'Pagando',
-  reserved: 'Reservada',
+// Minimal status config
+const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+  available: { label: 'Libre', className: 'bg-secondary' },
+  occupied: { label: 'Ocupada', className: 'bg-primary' },
+  paying: { label: 'Pagando', className: 'bg-muted' },
+  reserved: { label: 'Reservada', className: 'bg-secondary' },
 };
 
 export function TablesContent({ restaurantSlug, tables: initialTables }: TablesContentProps) {
@@ -36,7 +29,6 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
   const [isLoading, setIsLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState<string | null>(null);
 
-  // Modal state
   const [tableModal, setTableModal] = React.useState<{ open: boolean; table?: Table }>({
     open: false,
   });
@@ -55,7 +47,6 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
     setIsLoading(true);
 
     if (tableModal.table) {
-      // Edit
       await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -66,7 +57,6 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
         }),
       });
     } else {
-      // Create
       await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -84,18 +74,14 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
 
   const handleDeleteTable = async (tableId: string) => {
     if (!confirm('¿Eliminar esta mesa?')) return;
-    await fetch(`/api/restaurants/${restaurantSlug}/tables?id=${tableId}`, {
-      method: 'DELETE',
-    });
+    await fetch(`/api/restaurants/${restaurantSlug}/tables?id=${tableId}`, { method: 'DELETE' });
     router.refresh();
   };
 
   const handleStatusChange = async (tableId: string, newStatus: string) => {
-    // Optimistic update
     setTables(
       tables.map((t) => (t.id === tableId ? { ...t, status: newStatus as Table['status'] } : t))
     );
-
     await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -110,7 +96,7 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <motion.div
         className="flex items-center justify-between"
@@ -118,96 +104,97 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
         animate={{ opacity: 1, y: 0 }}
       >
         <div>
-          <h1 className="text-2xl font-bold">Gestión de Mesas</h1>
-          <p className="text-muted-foreground mt-1">{tables.length} mesas configuradas</p>
+          <h1 className="font-serif">Mesas</h1>
+          <p className="text-muted-foreground mt-2">{tables.length} mesas configuradas</p>
         </div>
-        <Button onClick={() => openTableModal()}>
+        <Button onClick={() => openTableModal()} size="lg">
           <Plus className="mr-2 size-4" />
           Nueva mesa
         </Button>
       </motion.div>
 
       {/* Tables grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {tables.map((table, index) => (
-          <motion.div
-            key={table.id}
-            className="bg-card space-y-4 rounded-2xl border p-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-xl font-bold">Mesa {table.number}</h3>
-                <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                  <Users className="size-4" />
-                  <span>{table.capacity} personas</span>
-                </div>
-              </div>
-              <div className={cn('size-3 rounded-full', STATUS_COLORS[table.status])} />
-            </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {tables.map((table, index) => {
+          const config = STATUS_CONFIG[table.status] || STATUS_CONFIG.available;
 
-            {/* Status selector */}
-            <select
-              value={table.status}
-              onChange={(e) => handleStatusChange(table.id, e.target.value)}
-              className="border-input bg-background w-full rounded-lg border px-3 py-2 text-sm"
+          return (
+            <motion.div
+              key={table.id}
+              className="border-border space-y-4 rounded-2xl border-2 p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.03 }}
             >
-              {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-
-            {/* Actions - Always visible */}
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                className="flex-1"
-                onClick={() => setShowQR(showQR === table.id ? null : table.id)}
-              >
-                <QrCode className="mr-1 size-4" />
-                QR
-              </Button>
-              <Button size="sm" variant="outline" asChild>
-                <a href={getQRUrl(table.number)} target="_blank" rel="noopener">
-                  <ExternalLink className="size-4" />
-                </a>
-              </Button>
-              <Button size="sm" variant="outline" onClick={() => openTableModal(table)}>
-                <Pencil className="size-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-destructive"
-                onClick={() => handleDeleteTable(table.id)}
-              >
-                <Trash2 className="size-4" />
-              </Button>
-            </div>
-
-            {/* QR Code display */}
-            {showQR === table.id && (
-              <div className="bg-secondary space-y-2 rounded-xl p-4 text-center">
-                <p className="text-muted-foreground text-xs break-all">{getQRUrl(table.number)}</p>
-                <p className="text-muted-foreground text-xs">Genera el QR con esta URL</p>
+              {/* Header */}
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="font-serif text-2xl">Mesa {table.number}</h3>
+                  <div className="text-muted-foreground mt-1 flex items-center gap-2 text-sm">
+                    <Users className="size-4" />
+                    <span>{table.capacity} personas</span>
+                  </div>
+                </div>
+                <div className={cn('size-3 rounded-full', config.className)} />
               </div>
-            )}
-          </motion.div>
-        ))}
+
+              {/* Status selector */}
+              <select
+                value={table.status}
+                onChange={(e) => handleStatusChange(table.id, e.target.value)}
+                className="border-border bg-background w-full rounded-xl border-2 px-4 py-3 text-sm"
+              >
+                {Object.entries(STATUS_CONFIG).map(([value, { label }]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+
+              {/* Actions */}
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowQR(showQR === table.id ? null : table.id)}
+                >
+                  <QrCode className="mr-1 size-4" />
+                  QR
+                </Button>
+                <Button size="sm" variant="outline" asChild>
+                  <a href={getQRUrl(table.number)} target="_blank" rel="noopener">
+                    <ExternalLink className="size-4" />
+                  </a>
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => openTableModal(table)}>
+                  <Pencil className="size-4" />
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => handleDeleteTable(table.id)}>
+                  <Trash2 className="size-4" />
+                </Button>
+              </div>
+
+              {/* QR display */}
+              {showQR === table.id && (
+                <div className="bg-secondary rounded-xl p-4 text-center">
+                  <p className="text-muted-foreground text-xs break-all">
+                    {getQRUrl(table.number)}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
 
         {tables.length === 0 && (
-          <div className="text-muted-foreground col-span-full py-12 text-center">
-            No hay mesas configuradas. Añade tu primera mesa.
+          <div className="text-muted-foreground col-span-full py-16 text-center">
+            No hay mesas. Añade tu primera mesa.
           </div>
         )}
       </div>
 
-      {/* Table Modal */}
+      {/* Modal */}
       <Modal
         open={tableModal.open}
         onClose={() => setTableModal({ open: false })}
@@ -222,7 +209,7 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
               onChange={(e) => setTableForm({ ...tableForm, number: e.target.value })}
               placeholder="Ej: 7, Terraza 1"
               autoFocus
-              className="border-input bg-background w-full rounded-xl border px-4 py-3"
+              className="border-border bg-background w-full rounded-xl border-2 px-4 py-3"
             />
           </div>
           <div className="space-y-2">
@@ -232,10 +219,10 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
               value={tableForm.capacity}
               onChange={(e) => setTableForm({ ...tableForm, capacity: e.target.value })}
               min="1"
-              className="border-input bg-background w-full rounded-xl border px-4 py-3"
+              className="border-border bg-background w-full rounded-xl border-2 px-4 py-3"
             />
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 pt-2">
             <Button variant="ghost" onClick={() => setTableModal({ open: false })}>
               Cancelar
             </Button>

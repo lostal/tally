@@ -19,23 +19,24 @@ interface POSTablesContentProps {
   }>;
 }
 
-// Warm organic status colors - muted, cohesive
-const STATUS_COLORS: Record<string, string> = {
-  available:
-    'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800/50 dark:text-emerald-300',
-  occupied:
-    'bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/30 dark:border-amber-800/50 dark:text-amber-300',
-  paying:
-    'bg-sky-50 border-sky-200 text-sky-800 dark:bg-sky-950/30 dark:border-sky-800/50 dark:text-sky-300',
-  reserved:
-    'bg-violet-50 border-violet-200 text-violet-800 dark:bg-violet-950/30 dark:border-violet-800/50 dark:text-violet-300',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  available: 'Libre',
-  occupied: 'Ocupada',
-  paying: 'Pagando',
-  reserved: 'Reservada',
+// Minimal status styles - text-focused, subtle backgrounds
+const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+  available: {
+    label: 'Libre',
+    className: 'bg-secondary text-foreground',
+  },
+  occupied: {
+    label: 'Ocupada',
+    className: 'bg-primary text-primary-foreground',
+  },
+  paying: {
+    label: 'Pagando',
+    className: 'bg-muted text-muted-foreground',
+  },
+  reserved: {
+    label: 'Reservada',
+    className: 'bg-secondary text-muted-foreground',
+  },
 };
 
 export function POSTablesContent({ restaurantId, tables, orders }: POSTablesContentProps) {
@@ -49,30 +50,18 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
     const existingOrder = getTableOrder(table.id);
 
     if (existingOrder) {
-      // Go to order detail
       router.push(`/pos/orders/${existingOrder.id}`);
-    } else if (table.status === 'available') {
-      // Create new order via API
-      try {
-        const response = await fetch('/api/orders', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            restaurantId,
-            tableId: table.id,
-          }),
-        });
+    } else {
+      // Create new order
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tableId: table.id, restaurantId }),
+      });
 
-        const data = await response.json();
-
-        if (data.order?.id) {
-          router.push(`/pos/orders/${data.order.id}`);
-        } else {
-          router.refresh();
-        }
-      } catch (error) {
-        console.error('Error creating order:', error);
-        router.refresh();
+      if (res.ok) {
+        const data = await res.json();
+        router.push(`/pos/orders/${data.order.id}`);
       }
     }
   };
@@ -83,62 +72,75 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Mesas</h1>
-        <div className="flex gap-2 text-sm">
-          {Object.entries(STATUS_LABELS).map(([status, label]) => (
-            <div key={status} className="flex items-center gap-1.5">
-              <div className={cn('size-3 rounded-full', STATUS_COLORS[status].split(' ')[0])} />
-              <span className="text-muted-foreground">{label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="font-serif">Mesas</h1>
+        <p className="text-muted-foreground mt-2">
+          {tables.filter((t) => t.status === 'available').length} de {tables.length} disponibles
+        </p>
+      </motion.div>
 
       {/* Tables Grid */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {tables.map((table, index) => {
           const order = getTableOrder(table.id);
-          const hasOrder = !!order;
+          const config = STATUS_CONFIG[table.status] || STATUS_CONFIG.available;
 
           return (
             <motion.button
               key={table.id}
-              className={cn(
-                'relative aspect-square rounded-2xl border-2 p-4 transition-all',
-                'flex flex-col items-center justify-center gap-2',
-                'hover:scale-105 active:scale-95',
-                STATUS_COLORS[table.status]
-              )}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.03 }}
               onClick={() => handleTableClick(table)}
+              className={cn(
+                'group relative rounded-2xl border-2 p-6 text-left transition-all',
+                'hover:border-primary hover:shadow-lg',
+                table.status === 'available' ? 'border-border' : 'border-primary/20'
+              )}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.03 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <span className="text-3xl font-bold">{table.number}</span>
-
-              <div className="flex items-center gap-1 text-xs opacity-60">
-                <Users className="size-3" />
-                <span>{table.capacity}</span>
+              {/* Table number - large and prominent */}
+              <div className="mb-4">
+                <span className="font-serif text-3xl">{table.number}</span>
               </div>
 
-              {hasOrder && (
-                <>
-                  <div className="absolute top-2 right-2 flex items-center gap-1 text-xs">
-                    <Clock className="size-3" />
+              {/* Status badge */}
+              <div
+                className={cn(
+                  'inline-flex items-center rounded-full px-3 py-1 text-sm font-medium',
+                  config.className
+                )}
+              >
+                {config.label}
+              </div>
+
+              {/* Order info if occupied */}
+              {order && (
+                <div className="mt-4 space-y-2 border-t pt-4">
+                  <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                    <Clock className="size-4" />
                     <span>{formatTime(order.created_at)}</span>
                   </div>
-                  <div className="absolute bottom-2 flex items-center gap-1 text-sm font-semibold">
-                    <Receipt className="size-3" />
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <Receipt className="size-4" />
                     <span>€{(order.subtotal_cents / 100).toFixed(2)}</span>
                   </div>
-                </>
+                </div>
               )}
 
-              {table.status === 'available' && !hasOrder && (
-                <Plus className="mt-1 size-6 opacity-40" />
+              {/* Capacity */}
+              <div className="text-muted-foreground absolute top-4 right-4 flex items-center gap-1">
+                <Users className="size-4" />
+                <span className="text-sm">{table.capacity}</span>
+              </div>
+
+              {/* Add icon for available tables */}
+              {table.status === 'available' && (
+                <div className="absolute right-4 bottom-4 opacity-0 transition-opacity group-hover:opacity-100">
+                  <Plus className="size-5" />
+                </div>
               )}
             </motion.button>
           );
@@ -146,7 +148,7 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
       </div>
 
       {tables.length === 0 && (
-        <div className="text-muted-foreground py-12 text-center">No hay mesas configuradas</div>
+        <div className="text-muted-foreground py-16 text-center">No hay mesas configuradas</div>
       )}
     </div>
   );

@@ -4,22 +4,20 @@
 
 /* ============================================
    TALLY DESIGN SYSTEM
-   Warm Minimalism / Organic Modern
-   Inspired by: realfood.gov, natural materials
+   Warm Minimalism - Single Default Theme
    ============================================ */
 
 @theme inline {
-  /* Typography - Serif + Sans pairing */
+  /* Typography */
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif), ui-serif, Georgia, serif;
 
-  /* Border radius scale - softer, friendlier */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 16px);
+  /* Border radius - generous, friendly */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
 
   /* Color mappings for Tailwind */
   --color-background: var(--background);
@@ -37,115 +35,86 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  --color-success: var(--success);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-
-  /* Generous spacing for breathing room */
-  --spacing-18: 4.5rem;
-  --spacing-22: 5.5rem;
-  --spacing-26: 6.5rem;
 }
 
 /* ============================================
-   LIGHT THEME - Warm Organic
-   Colors: linen, cream, terracotta, sage
+   LIGHT MODE - Warm Off-White + Charcoal
+   Minimal palette: 2 colors only
    ============================================ */
 
 :root {
-  /* Generous border radius */
   --radius: 1rem;
 
-  /*
-   * WARM ORGANIC PALETTE
-   * Inspired by natural materials: paper, linen, stone
-   * Not cold white - warm cream
-   */
+  /* Core palette - warm neutrals only */
+  --background: #fafaf8;
+  --foreground: #1a1815;
 
-  /* Background - warm linen */
-  --background: oklch(0.975 0.008 75);
-  --foreground: oklch(0.2 0.02 50);
+  --card: #ffffff;
+  --card-foreground: #1a1815;
 
-  /* Card - soft cream */
-  --card: oklch(0.985 0.006 70);
-  --card-foreground: oklch(0.2 0.02 50);
+  --popover: #ffffff;
+  --popover-foreground: #1a1815;
 
-  /* Popover */
-  --popover: oklch(0.99 0.004 70);
-  --popover-foreground: oklch(0.2 0.02 50);
+  /* Primary - dark charcoal (the single accent) */
+  --primary: #2d2a26;
+  --primary-foreground: #fafaf8;
 
-  /*
-   * PRIMARY - Terracotta
-   * Warm, earthy, inviting
-   * Hex reference: ~#C1684B
-   */
-  --primary: oklch(0.58 0.14 35);
-  --primary-foreground: oklch(0.98 0.005 70);
+  /* Secondary - subtle warm gray */
+  --secondary: #f0eeeb;
+  --secondary-foreground: #1a1815;
 
-  /* Secondary - Warm stone */
-  --secondary: oklch(0.92 0.01 70);
-  --secondary-foreground: oklch(0.25 0.02 50);
+  /* Muted - for disabled/subtle elements */
+  --muted: #e8e6e3;
+  --muted-foreground: #6b6660;
 
-  /* Muted - Soft warm gray */
-  --muted: oklch(0.9 0.008 70);
-  --muted-foreground: oklch(0.45 0.015 50);
+  /* Accent - same as secondary (no bright colors) */
+  --accent: #f0eeeb;
+  --accent-foreground: #1a1815;
 
-  /* Accent - Warm neutral for hovers (NOT colored) */
-  --accent: oklch(0.94 0.01 70);
-  --accent-foreground: oklch(0.2 0.02 50);
+  /* Semantic - muted, not bright */
+  --destructive: #8b4513;
 
-  /* Semantic colors - muted, organic */
-  --destructive: oklch(0.55 0.16 25);
-  --success: oklch(0.5 0.12 155);
-
-  /* Borders - very subtle, warm */
-  --border: oklch(0.88 0.01 70);
-  --input: oklch(0.92 0.01 70);
-  --ring: oklch(0.58 0.14 35);
+  /* Borders - very subtle */
+  --border: #e0ddd9;
+  --input: #e0ddd9;
+  --ring: #2d2a26;
 }
 
 /* ============================================
-   DARK THEME - Warm Charcoal
+   DARK MODE - Inverted warm palette
    ============================================ */
 
 .dark {
-  /* Deep charcoal with warmth */
-  --background: oklch(0.15 0.015 50);
-  --foreground: oklch(0.92 0.008 70);
+  --background: #1a1815;
+  --foreground: #f5f4f2;
 
-  /* Card */
-  --card: oklch(0.18 0.015 50);
-  --card-foreground: oklch(0.92 0.008 70);
+  --card: #242220;
+  --card-foreground: #f5f4f2;
 
-  /* Popover */
-  --popover: oklch(0.2 0.015 50);
-  --popover-foreground: oklch(0.92 0.008 70);
+  --popover: #2d2a26;
+  --popover-foreground: #f5f4f2;
 
-  /* Primary - Lighter terracotta */
-  --primary: oklch(0.7 0.14 35);
-  --primary-foreground: oklch(0.15 0.015 50);
+  /* Primary - light cream in dark mode */
+  --primary: #f5f4f2;
+  --primary-foreground: #1a1815;
 
-  /* Secondary */
-  --secondary: oklch(0.24 0.015 50);
-  --secondary-foreground: oklch(0.9 0.008 70);
+  --secondary: #2d2a26;
+  --secondary-foreground: #f5f4f2;
 
-  /* Muted */
-  --muted: oklch(0.28 0.015 50);
-  --muted-foreground: oklch(0.6 0.01 70);
+  --muted: #3d3a36;
+  --muted-foreground: #a09a94;
 
-  /* Accent - Warm neutral for hovers */
-  --accent: oklch(0.24 0.015 50);
-  --accent-foreground: oklch(0.92 0.008 70);
+  --accent: #2d2a26;
+  --accent-foreground: #f5f4f2;
 
-  /* Semantic */
-  --destructive: oklch(0.6 0.16 25);
-  --success: oklch(0.6 0.12 155);
+  --destructive: #d4a574;
 
-  /* Borders */
-  --border: oklch(0.3 0.015 50);
-  --input: oklch(0.3 0.015 50);
-  --ring: oklch(0.7 0.14 35);
+  --border: #3d3a36;
+  --input: #3d3a36;
+  --ring: #f5f4f2;
 }
 
 /* ============================================
@@ -169,61 +138,48 @@
       'calt' 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /* Generous line height for readability */
     line-height: 1.7;
     letter-spacing: -0.01em;
   }
 
-  /* Typography - Serif for headings (warm, editorial) */
+  /* Typography - Serif for headings */
   h1,
-  h2,
-  h3 {
+  h2 {
     font-family: var(--font-serif);
     font-weight: 500;
-    letter-spacing: -0.02em;
-  }
-
-  h1 {
-    @apply text-4xl;
+    letter-spacing: -0.025em;
     line-height: 1.15;
   }
 
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+
   h2 {
-    @apply text-2xl;
-    line-height: 1.25;
+    @apply text-2xl md:text-3xl;
   }
 
   h3 {
-    @apply text-xl;
-    line-height: 1.35;
+    @apply text-xl font-semibold;
+    letter-spacing: -0.015em;
   }
 
-  h4,
-  h5,
-  h6 {
-    @apply font-medium;
-    letter-spacing: -0.01em;
-  }
-
-  /* Tabular numbers for prices */
+  /* Tabular nums for prices */
   .tabular-nums {
     font-variant-numeric: tabular-nums;
-    font-feature-settings: 'tnum' 1;
   }
 
-  /* Focus states */
+  /* Focus */
   :focus-visible {
     @apply ring-ring ring-offset-background ring-2 ring-offset-2 outline-none;
-    transition: box-shadow 0.2s ease;
   }
 
   /* Selection */
   ::selection {
-    background-color: oklch(0.58 0.14 35 / 0.2);
+    background: rgba(45, 42, 38, 0.15);
   }
 
-  /* Scrollbar - minimal */
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -236,66 +192,37 @@
   ::-webkit-scrollbar-thumb {
     @apply bg-border rounded-full;
   }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/40;
-  }
 }
 
 /* ============================================
-   UTILITY CLASSES
+   UTILITIES
    ============================================ */
 
 @layer utilities {
-  /* Serif utility for emphasis */
   .font-serif {
     font-family: var(--font-serif);
   }
 
-  /* Text balance for headings */
   .text-balance {
     text-wrap: balance;
   }
 
-  /* Premium container with generous padding */
+  /* Container with generous padding */
   .container-app {
-    @apply mx-auto w-full max-w-lg px-6;
+    @apply mx-auto w-full max-w-lg px-6 md:px-8;
   }
 
-  /* Glassmorphism - subtle, warm */
-  .glass {
-    background: oklch(0.985 0.006 70 / 0.85);
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  /* Subtle hover */
+  .hover-subtle {
+    @apply hover:bg-secondary transition-colors;
   }
 
-  .dark .glass {
-    background: oklch(0.18 0.015 50 / 0.85);
-  }
-
-  /* Subtle warm gradient */
-  .bg-gradient-warm {
-    background: linear-gradient(180deg, oklch(0.975 0.008 75) 0%, oklch(0.965 0.012 70) 100%);
-  }
-
-  /* Interactive hover - subtle lift */
-  .hover-lift {
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px -12px oklch(0 0 0 / 0.12);
-  }
-
-  /* Pressed state */
+  /* Press feedback */
   .press-scale:active {
     transform: scale(0.98);
   }
 
-  /* Large touch targets */
+  /* Large touch target */
   .touch-target {
     min-height: 48px;
     min-width: 48px;
@@ -318,7 +245,7 @@
 
   @keyframes slide-up {
     from {
-      transform: translateY(16px);
+      transform: translateY(12px);
       opacity: 0;
     }
     to {
@@ -327,50 +254,11 @@
     }
   }
 
-  @keyframes scale-in {
-    from {
-      transform: scale(0.96);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
   .animate-fade-in {
-    animation: fade-in 0.4s ease-out both;
+    animation: fade-in 0.3s ease-out;
   }
 
   .animate-slide-up {
-    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.3s ease-out both;
-  }
-
-  /* Staggered children */
-  .stagger-children > * {
-    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .stagger-children > *:nth-child(1) {
-    animation-delay: 0.05s;
-  }
-  .stagger-children > *:nth-child(2) {
-    animation-delay: 0.1s;
-  }
-  .stagger-children > *:nth-child(3) {
-    animation-delay: 0.15s;
-  }
-  .stagger-children > *:nth-child(4) {
-    animation-delay: 0.2s;
-  }
-  .stagger-children > *:nth-child(5) {
-    animation-delay: 0.25s;
-  }
-  .stagger-children > *:nth-child(6) {
-    animation-delay: 0.3s;
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
