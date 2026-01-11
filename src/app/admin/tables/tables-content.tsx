@@ -138,18 +138,23 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
                 <div className={cn('size-3 rounded-full', config.className)} />
               </div>
 
-              {/* Status selector */}
-              <select
-                value={table.status}
-                onChange={(e) => handleStatusChange(table.id, e.target.value)}
-                className="border-border bg-background w-full rounded-xl border-2 px-4 py-3 text-sm"
-              >
+              {/* Status selector - styled buttons */}
+              <div className="flex gap-2">
                 {Object.entries(STATUS_CONFIG).map(([value, { label }]) => (
-                  <option key={value} value={value}>
+                  <button
+                    key={value}
+                    onClick={() => handleStatusChange(table.id, value)}
+                    className={cn(
+                      'flex-1 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
+                      table.status === value
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-secondary text-secondary-foreground hover:bg-accent'
+                    )}
+                  >
                     {label}
-                  </option>
+                  </button>
                 ))}
-              </select>
+              </div>
 
               {/* Actions */}
               <div className="flex gap-2">

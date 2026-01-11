@@ -94,17 +94,19 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
             <div className="space-y-2">
               <label className="text-sm font-medium">Color primario</label>
               <div className="flex gap-2">
-                <input
-                  type="color"
-                  value={theme.primaryColor}
-                  onChange={(e) => setTheme({ ...theme, primaryColor: e.target.value })}
-                  className="size-12 cursor-pointer rounded-lg border"
-                />
+                <div className="border-border size-12 overflow-hidden rounded-xl border-2">
+                  <input
+                    type="color"
+                    value={theme.primaryColor}
+                    onChange={(e) => setTheme({ ...theme, primaryColor: e.target.value })}
+                    className="-m-1 size-14 cursor-pointer"
+                  />
+                </div>
                 <input
                   type="text"
                   value={theme.primaryColor}
                   onChange={(e) => setTheme({ ...theme, primaryColor: e.target.value })}
-                  className="border-input bg-background flex-1 rounded-lg border px-3"
+                  className="border-input bg-background flex-1 rounded-xl border-2 px-3 text-sm"
                 />
               </div>
             </div>
@@ -112,17 +114,19 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
             <div className="space-y-2">
               <label className="text-sm font-medium">Color secundario</label>
               <div className="flex gap-2">
-                <input
-                  type="color"
-                  value={theme.accentColor}
-                  onChange={(e) => setTheme({ ...theme, accentColor: e.target.value })}
-                  className="size-12 cursor-pointer rounded-lg border"
-                />
+                <div className="border-border size-12 overflow-hidden rounded-xl border-2">
+                  <input
+                    type="color"
+                    value={theme.accentColor}
+                    onChange={(e) => setTheme({ ...theme, accentColor: e.target.value })}
+                    className="-m-1 size-14 cursor-pointer"
+                  />
+                </div>
                 <input
                   type="text"
                   value={theme.accentColor}
                   onChange={(e) => setTheme({ ...theme, accentColor: e.target.value })}
-                  className="border-input bg-background flex-1 rounded-lg border px-3"
+                  className="border-input bg-background flex-1 rounded-xl border-2 px-3 text-sm"
                 />
               </div>
             </div>

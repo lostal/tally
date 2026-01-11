@@ -74,7 +74,7 @@ export default function POSLayout({ children }: POSLayoutProps) {
 
       {/* Main content */}
       <main className="pt-16">
-        <div className="min-h-[calc(100dvh-4rem)] p-4">{children}</div>
+        <div className="min-h-[calc(100dvh-4rem)] p-6">{children}</div>
       </main>
     </div>
   );

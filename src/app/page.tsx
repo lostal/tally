@@ -76,9 +76,9 @@ export default function ThemeShowcasePage() {
             ].map((color) => (
               <div
                 key={color.name}
-                className={`${color.var} ${color.text} border-border rounded-2xl border-2 p-4`}
+                className={`${color.var} ${color.text} border-border flex min-h-[72px] items-center rounded-2xl border-2 px-4 py-3`}
               >
-                <span className="text-sm font-medium">{color.name}</span>
+                <span className="text-xs font-medium">{color.name}</span>
               </div>
             ))}
           </div>
@@ -197,10 +197,10 @@ export default function ThemeShowcasePage() {
                 <CardTitle className="flex items-center justify-between">
                   <span>Interactive Card</span>
                   <div className="flex gap-1">
-                    <Button size="icon-sm" variant="ghost">
+                    <Button size="icon-sm" variant="ghost" onClick={() => alert('Edit clicked')}>
                       <Pencil className="size-3" />
                     </Button>
-                    <Button size="icon-sm" variant="ghost">
+                    <Button size="icon-sm" variant="ghost" onClick={() => alert('Delete clicked')}>
                       <Trash2 className="size-3" />
                     </Button>
                   </div>

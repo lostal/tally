@@ -87,16 +87,16 @@ function SortableCategory({
         {category.name}
       </button>
 
-      {/* Product count */}
-      <span className="text-xs opacity-60">{productCount}</span>
-
-      {/* Actions */}
-      <Button size="icon" variant="ghost" className="size-8" onClick={onEdit}>
-        <Pencil className="size-3" />
-      </Button>
-      <Button size="icon" variant="ghost" className="size-8" onClick={onDelete}>
-        <Trash2 className="size-3" />
-      </Button>
+      {/* Product count and actions - grouped together */}
+      <div className="flex items-center gap-1">
+        <span className="pr-2 text-xs opacity-60">{productCount}</span>
+        <Button size="icon" variant="ghost" className="size-8" onClick={onEdit}>
+          <Pencil className="size-3" />
+        </Button>
+        <Button size="icon" variant="ghost" className="size-8" onClick={onDelete}>
+          <Trash2 className="size-3" />
+        </Button>
+      </div>
     </div>
   );
 }
