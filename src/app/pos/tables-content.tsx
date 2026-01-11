@@ -4,8 +4,6 @@ import * as React from 'react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Plus, Users, Clock, Receipt } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { getClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import type { Table } from '@/types/database';
 
@@ -49,27 +47,26 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
       // Go to order detail
       router.push(`/pos/orders/${existingOrder.id}`);
     } else if (table.status === 'available') {
-      // Create new order
-      const supabase = getClient();
+      // Create new order via API
+      try {
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            restaurantId,
+            tableId: table.id,
+          }),
+        });
 
-      // Update table status
-      await supabase.from('tables').update({ status: 'occupied' }).eq('id', table.id);
+        const data = await response.json();
 
-      // Create order
-      const { data: newOrder, error } = await supabase
-        .from('orders')
-        .insert({
-          restaurant_id: restaurantId,
-          table_id: table.id,
-          status: 'open',
-          subtotal_cents: 0,
-        })
-        .select('id')
-        .single();
-
-      if (!error && newOrder) {
-        router.push(`/pos/orders/${newOrder.id}`);
-      } else {
+        if (data.order?.id) {
+          router.push(`/pos/orders/${data.order.id}`);
+        } else {
+          router.refresh();
+        }
+      } catch (error) {
+        console.error('Error creating order:', error);
         router.refresh();
       }
     }
@@ -135,7 +132,9 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
                 </>
               )}
 
-              {table.status === 'available' && <Plus className="absolute size-8 opacity-30" />}
+              {table.status === 'available' && !hasOrder && (
+                <Plus className="mt-1 size-6 opacity-40" />
+              )}
             </motion.button>
           );
         })}
