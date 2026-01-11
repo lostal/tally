@@ -5,17 +5,22 @@ import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Plus, Pencil, Trash2, FolderOpen, ChevronRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import type { Category, Product } from '@/types/database';
 
 interface MenuContentProps {
   restaurantId: string;
+  restaurantSlug: string;
   categories: Category[];
   products: Product[];
 }
 
-export function MenuContent({ restaurantId, categories, products }: MenuContentProps) {
+export function MenuContent({
+  restaurantId,
+  restaurantSlug,
+  categories,
+  products,
+}: MenuContentProps) {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
     categories[0]?.id || null
@@ -33,19 +38,20 @@ export function MenuContent({ restaurantId, categories, products }: MenuContentP
     if (!newCategoryName.trim()) return;
 
     setIsLoading(true);
-    const supabase = getClient();
-
-    const { error } = await supabase.from('categories').insert({
-      restaurant_id: restaurantId,
-      name: newCategoryName.trim(),
-      sort_order: categories.length,
-      is_active: true,
-    });
-
-    if (!error) {
+    try {
+      await fetch(`/api/restaurants/${restaurantSlug}/categories`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newCategoryName.trim(),
+          sortOrder: categories.length,
+        }),
+      });
       setNewCategoryName('');
       setIsAddingCategory(false);
       router.refresh();
+    } catch (error) {
+      console.error('Error:', error);
     }
     setIsLoading(false);
   };
@@ -55,23 +61,24 @@ export function MenuContent({ restaurantId, categories, products }: MenuContentP
     if (!newProduct.name.trim() || !newProduct.price || !selectedCategory) return;
 
     setIsLoading(true);
-    const supabase = getClient();
-
     const priceCents = Math.round(parseFloat(newProduct.price) * 100);
 
-    const { error } = await supabase.from('products').insert({
-      restaurant_id: restaurantId,
-      category_id: selectedCategory,
-      name: newProduct.name.trim(),
-      price_cents: priceCents,
-      sort_order: categoryProducts.length,
-      is_available: true,
-    });
-
-    if (!error) {
+    try {
+      await fetch(`/api/restaurants/${restaurantSlug}/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          categoryId: selectedCategory,
+          name: newProduct.name.trim(),
+          priceCents,
+          sortOrder: categoryProducts.length,
+        }),
+      });
       setNewProduct({ name: '', price: '' });
       setIsAddingProduct(false);
       router.refresh();
+    } catch (error) {
+      console.error('Error:', error);
     }
     setIsLoading(false);
   };
@@ -79,25 +86,30 @@ export function MenuContent({ restaurantId, categories, products }: MenuContentP
   const handleDeleteCategory = async (categoryId: string) => {
     if (!confirm('¿Eliminar esta categoría y todos sus productos?')) return;
 
-    const supabase = getClient();
-    await supabase.from('categories').delete().eq('id', categoryId);
+    await fetch(`/api/restaurants/${restaurantSlug}/categories?id=${categoryId}`, {
+      method: 'DELETE',
+    });
     router.refresh();
   };
 
   const handleDeleteProduct = async (productId: string) => {
     if (!confirm('¿Eliminar este producto?')) return;
 
-    const supabase = getClient();
-    await supabase.from('products').delete().eq('id', productId);
+    await fetch(`/api/restaurants/${restaurantSlug}/products?id=${productId}`, {
+      method: 'DELETE',
+    });
     router.refresh();
   };
 
   const handleToggleAvailability = async (product: Product) => {
-    const supabase = getClient();
-    await supabase
-      .from('products')
-      .update({ is_available: !product.is_available })
-      .eq('id', product.id);
+    await fetch(`/api/restaurants/${restaurantSlug}/products`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productId: product.id,
+        isAvailable: !product.is_available,
+      }),
+    });
     router.refresh();
   };
 

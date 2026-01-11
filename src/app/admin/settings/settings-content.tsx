@@ -5,7 +5,6 @@ import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Save, Loader2, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getClient } from '@/lib/supabase';
 import type { Restaurant, RestaurantTheme } from '@/types/database';
 
 interface SettingsContentProps {
@@ -25,19 +24,17 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
     e.preventDefault();
     setIsLoading(true);
 
-    const supabase = getClient();
-    const { error } = await supabase
-      .from('restaurants')
-      .update({
-        name,
-        theme,
-      })
-      .eq('id', restaurant.id);
-
-    if (!error) {
+    try {
+      await fetch(`/api/restaurants/${restaurant.slug}/settings`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, theme }),
+      });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
       router.refresh();
+    } catch (error) {
+      console.error('Error:', error);
     }
     setIsLoading(false);
   };

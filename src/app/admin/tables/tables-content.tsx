@@ -5,7 +5,6 @@ import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Plus, Trash2, QrCode, Users, Loader2, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import type { Table } from '@/types/database';
 
@@ -41,20 +40,20 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
     if (!newTable.number.trim()) return;
 
     setIsLoading(true);
-    const supabase = getClient();
-
-    const { error } = await supabase.from('tables').insert({
-      restaurant_id: restaurantId,
-      number: newTable.number.trim(),
-      capacity: parseInt(newTable.capacity) || 4,
-      status: 'available',
-      is_active: true,
-    });
-
-    if (!error) {
+    try {
+      await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          number: newTable.number.trim(),
+          capacity: parseInt(newTable.capacity) || 4,
+        }),
+      });
       setNewTable({ number: '', capacity: '4' });
       setIsAdding(false);
       router.refresh();
+    } catch (error) {
+      console.error('Error:', error);
     }
     setIsLoading(false);
   };
@@ -62,14 +61,18 @@ export function TablesContent({ restaurantId, restaurantSlug, tables }: TablesCo
   const handleDeleteTable = async (tableId: string) => {
     if (!confirm('¿Eliminar esta mesa?')) return;
 
-    const supabase = getClient();
-    await supabase.from('tables').delete().eq('id', tableId);
+    await fetch(`/api/restaurants/${restaurantSlug}/tables?id=${tableId}`, {
+      method: 'DELETE',
+    });
     router.refresh();
   };
 
   const handleStatusChange = async (tableId: string, newStatus: string) => {
-    const supabase = getClient();
-    await supabase.from('tables').update({ status: newStatus }).eq('id', tableId);
+    await fetch(`/api/restaurants/${restaurantSlug}/tables`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tableId, status: newStatus }),
+    });
     router.refresh();
   };
 

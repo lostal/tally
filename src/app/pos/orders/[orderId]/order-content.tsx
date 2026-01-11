@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus, Minus, Trash2, Check, ChefHat, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 interface OrderContentProps {
@@ -51,33 +50,20 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
 
   const handleAddItem = async (product: { id: string; name: string; price_cents: number }) => {
     setIsLoading(true);
-    const supabase = getClient();
-
-    // Check if item already exists
-    const existingItem = orderItems.find((i) => i.product_id === product.id);
-
-    if (existingItem) {
-      await supabase
-        .from('order_items')
-        .update({ quantity: existingItem.quantity + 1 })
-        .eq('id', existingItem.id);
-    } else {
-      await supabase.from('order_items').insert({
-        order_id: order.id,
-        product_id: product.id,
-        quantity: 1,
-        unit_price_cents: product.price_cents,
-        status: 'pending',
+    try {
+      await fetch(`/api/orders/${order.id}/items`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id,
+          quantity: 1,
+          unitPriceCents: product.price_cents,
+        }),
       });
+      router.refresh();
+    } catch (error) {
+      console.error('Error:', error);
     }
-
-    // Update order subtotal
-    await supabase
-      .from('orders')
-      .update({ subtotal_cents: orderTotal + product.price_cents })
-      .eq('id', order.id);
-
-    router.refresh();
     setIsLoading(false);
   };
 
@@ -86,29 +72,31 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
     if (!item) return;
 
     const newQty = item.quantity + delta;
-    const supabase = getClient();
-
-    if (newQty <= 0) {
-      await supabase.from('order_items').delete().eq('id', itemId);
-    } else {
-      await supabase.from('order_items').update({ quantity: newQty }).eq('id', itemId);
-    }
-
+    await fetch(`/api/orders/${order.id}/items`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId, quantity: newQty }),
+    });
     router.refresh();
   };
 
   const handleMarkServed = async (itemId: string) => {
-    const supabase = getClient();
-    await supabase.from('order_items').update({ status: 'served' }).eq('id', itemId);
+    await fetch(`/api/orders/${order.id}/items`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId, status: 'served' }),
+    });
     router.refresh();
   };
 
   const handleCloseOrder = async () => {
     if (!confirm('¿Cerrar esta comanda?')) return;
 
-    const supabase = getClient();
-
-    await supabase.from('orders').update({ status: 'paying' }).eq('id', order.id);
+    await fetch(`/api/orders/${order.id}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'paying' }),
+    });
 
     router.push('/pos');
     router.refresh();

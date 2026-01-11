@@ -18,7 +18,11 @@ export default async function MenuPage() {
   }
 
   // Get restaurant (demo - first one)
-  const { data: restaurant } = await supabase.from('restaurants').select('id').limit(1).single();
+  const { data: restaurant } = await supabase
+    .from('restaurants')
+    .select('id, slug')
+    .limit(1)
+    .single();
 
   if (!restaurant) {
     return <div>No hay restaurante configurado</div>;
@@ -40,6 +44,7 @@ export default async function MenuPage() {
   return (
     <MenuContent
       restaurantId={restaurant.id}
+      restaurantSlug={restaurant.slug}
       categories={categories || []}
       products={products || []}
     />
