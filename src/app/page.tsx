@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
 
 import { Users, Utensils, Trash2, QrCode, ChefHat } from 'lucide-react';
 

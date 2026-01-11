@@ -23,14 +23,14 @@ const fontSerif = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: 'tally: Paga sin levantarte',
+    default: 'tally - paga sin levantarte',
     template: '%s | tally',
   },
   description: 'Paga sin levantarte. Escanea, divide y paga en segundos.',
   keywords: ['restaurante', 'pago', 'dividir cuenta', 'código QR', 'pago móvil'],
   authors: [{ name: 'tally' }],
   creator: 'tally',
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
