@@ -64,7 +64,8 @@ export function generateColorScale(
   } = {}
 ): ColorScale {
   const { hueOffset = 0, isDark = false } = options;
-  const config = THEME_FAMILIES[family];
+  // Fallback to default if family doesn't exist
+  const config = THEME_FAMILIES[family] || THEME_FAMILIES['default'];
 
   const hue = clampHue(config.baseHue + hueOffset, config.hueRange);
   const chroma = config.chroma;
@@ -97,8 +98,8 @@ export function generateTheme(
 
   return {
     primary: generateColorScale(primaryFamily, { hueOffset, isDark }),
-    accent: generateColorScale(accentFamily, { isDark }),
-    neutral: generateColorScale('stone', { isDark }),
+    accent: generateColorScale(accentFamily || primaryFamily, { isDark }),
+    neutral: generateColorScale('default', { isDark }),
   };
 }
 

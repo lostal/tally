@@ -9,8 +9,9 @@ interface LayoutProps {
 /**
  * Restaurant Layout with Dynamic Theming
  *
- * Fetches restaurant config and applies theme CSS variables.
- * Theme is applied via inline styles to avoid hydration issues.
+ * Uses inline styles on the wrapper div. This is the most reliable way
+ * to ensure CSS variables are inherited by all children, overriding
+ * any global defaults.
  */
 export default async function RestaurantLayout({ children, params }: LayoutProps) {
   const { slug } = await params;
@@ -21,18 +22,11 @@ export default async function RestaurantLayout({ children, params }: LayoutProps
   // Parse theme or use defaults
   const themeConfig = parseThemeConfig(restaurant?.theme);
 
-  // Generate CSS variables for light mode (dark mode handled by CSS)
+  // Generate CSS variables
   const themeStyles = generateCompleteThemeStyles(themeConfig, false);
 
-  // Convert to React style object (CSS custom properties)
-  const styleVars: React.CSSProperties = {};
-  for (const [key, value] of Object.entries(themeStyles)) {
-    // React accepts CSS vars as-is in style objects
-    (styleVars as Record<string, string>)[key] = value;
-  }
-
   return (
-    <div style={styleVars} className="contents">
+    <div id="theme-provider" className="contents" style={themeStyles as React.CSSProperties}>
       {children}
     </div>
   );

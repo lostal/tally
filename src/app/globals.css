@@ -19,29 +19,30 @@
   --radius-xl: 1.25rem;
   --radius-2xl: 1.5rem;
 
-  /* Colors - LIGHT MODE as default (direct values, not var()) */
-  --color-background: #fafaf8;
-  --color-foreground: #1a1815;
-  --color-card: #ffffff;
-  --color-card-foreground: #1a1815;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #1a1815;
-  --color-primary: #2d2a26;
-  --color-primary-foreground: #fafaf8;
-  --color-secondary: #f0eeeb;
-  --color-secondary-foreground: #1a1815;
-  --color-muted: #e8e6e3;
-  --color-muted-foreground: #6b6660;
-  --color-accent: #f0eeeb;
-  --color-accent-foreground: #1a1815;
-  --color-destructive: #8b4513;
-  --color-border: #e0ddd9;
-  --color-input: #e0ddd9;
-  --color-ring: #2d2a26;
+  /* Colors - Mapped to CSS variables for dynamic override */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 /* ============================================
    CSS Variables for runtime/dark mode
+   With default "Neutral" theme values
    ============================================ */
 
 :root {
@@ -101,56 +102,10 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    line-height: 1.7;
-    letter-spacing: -0.01em;
-  }
-
-  h1,
-  h2 {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-  }
-
-  h1 {
-    @apply text-4xl md:text-5xl;
-  }
-  h2 {
-    @apply text-2xl md:text-3xl;
-  }
-  h3 {
-    @apply text-xl font-semibold;
-    letter-spacing: -0.015em;
-  }
-
-  .tabular-nums {
-    font-variant-numeric: tabular-nums;
-  }
-
-  :focus-visible {
-    @apply ring-ring ring-offset-background ring-2 ring-offset-2 outline-none;
-  }
-
-  ::selection {
-    background: rgba(45, 42, 38, 0.15);
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
   }
 }
 
@@ -159,56 +114,7 @@
    ============================================ */
 
 @layer utilities {
-  .font-serif {
-    font-family: var(--font-serif);
-  }
-  .text-balance {
-    text-wrap: balance;
-  }
   .container-app {
-    @apply mx-auto w-full max-w-lg px-6 md:px-8;
-  }
-  .hover-subtle {
-    @apply hover:bg-secondary transition-colors;
-  }
-  .press-scale:active {
-    transform: scale(0.98);
-  }
-  .touch-target {
-    min-height: 48px;
-    min-width: 48px;
-  }
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-@layer utilities {
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-up {
-    from {
-      transform: translateY(12px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.3s ease-out;
-  }
-  .animate-slide-up {
-    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    @apply mx-auto w-full max-w-md px-4;
   }
 }

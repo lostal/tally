@@ -80,6 +80,45 @@ export async function getFirstTable(restaurantId: string): Promise<Table | null>
 }
 
 /**
+ * Get restaurant by owner/admin (users table linkage)
+ */
+export async function getRestaurantByOwner(): Promise<Restaurant | null> {
+  const supabase = await createClient();
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser();
+
+  if (!authUser) return null;
+
+  // 1. Find the admin user profile
+  const { data: userProfile, error: userError } = await supabase
+    .from('users')
+    .select('restaurant_id')
+    .eq('auth_id', authUser.id)
+    .single();
+
+  if (userError || !userProfile?.restaurant_id) {
+    // This is common in dev environments or for superadmins
+    console.warn('[getRestaurantByOwner] No linked restaurant for user. Using fallback.');
+    return null;
+  }
+
+  // 2. Fetch the restaurant
+  const { data: restaurant, error: restError } = await supabase
+    .from('restaurants')
+    .select('*')
+    .eq('id', userProfile.restaurant_id)
+    .single();
+
+  if (restError || !restaurant) {
+    console.error('[getRestaurantByOwner] Restaurant not found', restError);
+    return null;
+  }
+
+  return restaurant;
+}
+
+/**
  * Get restaurant with default table (for initial page load)
  */
 export async function getRestaurantWithTable(

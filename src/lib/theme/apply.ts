@@ -71,44 +71,86 @@ export function cssVarsToStyleString(vars: Record<string, string>): string {
 
 /**
  * Map OKLCH primary colors to semantic CSS variables
+ * Uses actual color values, not var() references
+ * Includes both --var and --color-var for Tailwind v4 compatibility
  */
-export function mapToSemanticVars(isDark: boolean): Record<string, string> {
-  // These map the 12-step OKLCH scale to existing Tailwind/semantic variables
-  return {
-    // Backgrounds
-    '--background': 'var(--primary-1)',
-    '--background-subtle': 'var(--primary-2)',
+export function mapToSemanticVars(
+  colorVars: Record<string, string>,
+  isDark: boolean
+): Record<string, string> {
+  // p = primary (brand), a = accent, n = neutral (backgrounds/text)
+  const p = (step: number) => colorVars[`--primary-${step}`] || '';
+  const a = (step: number) => colorVars[`--accent-${step}`] || colorVars[`--primary-${step}`] || '';
+  const n = (step: number) =>
+    colorVars[`--neutral-${step}`] || colorVars[`--primary-${step}`] || '';
 
-    // Cards and surfaces
-    '--card': isDark ? 'var(--primary-2)' : 'var(--primary-1)',
-    '--card-foreground': 'var(--primary-12)',
+  // Build both --var and --color-var for Tailwind v4 @theme compatibility
+  const vars: Record<string, string> = {};
 
-    // Borders
-    '--border': 'var(--primary-6)',
+  // Background - Always use Neutral scale (Warm White aesthetic)
+  vars['--background'] = n(1);
+  vars['--color-background'] = n(1);
 
-    // Primary (interactive elements)
-    '--primary': 'var(--primary-9)',
-    '--primary-foreground': isDark ? 'var(--primary-1)' : 'var(--primary-12)',
+  // Foreground - Always use Neutral scale (Warm Black aesthetic)
+  vars['--foreground'] = n(12);
+  vars['--color-foreground'] = n(12);
 
-    // Secondary
-    '--secondary': 'var(--primary-3)',
-    '--secondary-foreground': 'var(--primary-11)',
+  // Card - Neutral scale
+  vars['--card'] = isDark ? n(2) : n(1); // Or n(1) for cleaner look? n(1) is base bg. card usually n(1) in modern web if bg is slightly tinted.
+  // User wants "clean/white". Let's stick to n(1) or n(2). n(1) is safest for "Off White".
+  // If BG is n(1), Card should be n(1) + border? Or n(2) (slightly darker)?
+  // Realfood uses clean backgrounds. Often n(1).
+  vars['--color-card'] = isDark ? n(2) : n(1);
+  vars['--card-foreground'] = n(12);
+  vars['--color-card-foreground'] = n(12);
 
-    // Muted
-    '--muted': 'var(--primary-4)',
-    '--muted-foreground': 'var(--primary-11)',
+  // Popover - Neutral scale
+  vars['--popover'] = isDark ? n(2) : n(1);
+  vars['--color-popover'] = isDark ? n(2) : n(1);
+  vars['--popover-foreground'] = n(12);
+  vars['--color-popover-foreground'] = n(12);
 
-    // Accent
-    '--accent': 'var(--accent-9)',
-    '--accent-foreground': isDark ? 'var(--accent-1)' : 'var(--accent-12)',
+  // Primary - Brand scale (Deep Colors)
+  vars['--primary'] = p(9);
+  vars['--color-primary'] = p(9);
+  // Force Light/White text on Primary button (Step 1 neutral = Warm White)
+  vars['--primary-foreground'] = n(1);
+  vars['--color-primary-foreground'] = n(1);
 
-    // Text
-    '--foreground': 'var(--primary-12)',
+  // Secondary - Neutral scale (Subtle buttons)
+  vars['--secondary'] = n(3); // n(3) is subtle grey/beige
+  vars['--color-secondary'] = n(3);
+  vars['--secondary-foreground'] = n(12);
+  vars['--color-secondary-foreground'] = n(12);
 
-    // Input
-    '--input': 'var(--primary-6)',
-    '--ring': 'var(--accent-8)',
-  };
+  // Muted - Neutral scale
+  vars['--muted'] = n(2);
+  vars['--color-muted'] = n(2);
+  vars['--muted-foreground'] = n(11); // Soft text
+  vars['--color-muted-foreground'] = n(11);
+
+  // Accent - Brand scale (Highlights)
+  vars['--accent'] = a(3); // Soft background accent usually. Or a(9) text?
+  // Tailwind accent usually means hover state for ghost buttons or list items.
+  // Should be subtle.
+  vars['--accent'] = n(2); // Use neutral for hover states to keep it clean?
+  // User wants "Brand" feel? Maybe p(2)?
+  // Let's use p(2) for subtle brand tint on hovers.
+  vars['--color-accent'] = isDark ? p(2) : p(2);
+  vars['--accent-foreground'] = p(11); // Dark brand text
+  vars['--color-accent-foreground'] = p(11);
+
+  // Border and Input - Neutral scale (Clean borders)
+  vars['--border'] = n(6);
+  vars['--color-border'] = n(6);
+  vars['--input'] = n(6);
+  vars['--color-input'] = n(6);
+
+  // Ring - Brand scale
+  vars['--ring'] = p(8);
+  vars['--color-ring'] = p(8);
+
+  return vars;
 }
 
 /**
@@ -119,7 +161,7 @@ export function generateCompleteThemeStyles(
   isDark: boolean = false
 ): Record<string, string> {
   const baseVars = generateThemeStyles(config, isDark);
-  const semanticVars = mapToSemanticVars(isDark);
+  const semanticVars = mapToSemanticVars(baseVars, isDark);
 
   return {
     ...baseVars,
