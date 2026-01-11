@@ -9,7 +9,7 @@ type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
 
 interface SplitMethodSelectorProps {
   /** Currently selected method */
-  value: SplitMethod | null;
+  value: SplitMethod;
   /** Callback when method changes */
   onChange: (method: SplitMethod) => void;
   /** Number of participants (for equal split) */
