@@ -6,6 +6,13 @@ import { useRouter } from 'next/navigation';
 import { Plus, Trash2, QrCode, Users, Loader2, ExternalLink, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import type { Table } from '@/types/database';
 
@@ -138,23 +145,22 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
                 <div className={cn('size-3 rounded-full', config.className)} />
               </div>
 
-              {/* Status selector - styled buttons */}
-              <div className="flex gap-2">
-                {Object.entries(STATUS_CONFIG).map(([value, { label }]) => (
-                  <button
-                    key={value}
-                    onClick={() => handleStatusChange(table.id, value)}
-                    className={cn(
-                      'flex-1 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-                      table.status === value
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-secondary text-secondary-foreground hover:bg-accent'
-                    )}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
+              {/* Status selector - using accessible standard select */}
+              <Select
+                value={table.status}
+                onValueChange={(value) => handleStatusChange(table.id, value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Estado" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(STATUS_CONFIG).map(([value, { label }]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Actions */}
               <div className="flex gap-2">
