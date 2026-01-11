@@ -1,17 +1,42 @@
 'use client';
 
 import * as React from 'react';
-import { ThemeFamily, THEME_FAMILIES, generateColorScale, oklchToHex } from '@/lib/theme';
+import {
+  ThemeFamily,
+  THEME_FAMILIES,
+  generateTheme,
+  themeToCSS,
+  mapToSemanticVars,
+} from '@/lib/theme';
 import { cn } from '@/lib/utils';
-import { Moon, Sun, Check, Zap, ShoppingBag } from 'lucide-react';
+import { Moon, Sun, ChefHat, User, Search, Bell, Check, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 export function ThemeFamiliesShowcase() {
   const [activeFamily, setActiveFamily] = React.useState<ThemeFamily>('tomato');
-  const [hueOffset, setHueOffset] = React.useState(0);
   const [isDark, setIsDark] = React.useState(false);
 
-  // Use the same logical order as settings
+  // Generate complete CSS variables for the wrapper
+  // This simulates exactly how the theme is applied at the root level
+  const themeStyles = React.useMemo(() => {
+    const rawTheme = generateTheme(activeFamily, { isDark });
+    const rawVars = themeToCSS(rawTheme);
+    const semanticVars = mapToSemanticVars(rawVars, isDark);
+    return { ...rawVars, ...semanticVars } as React.CSSProperties;
+  }, [activeFamily, isDark]);
+
   const families: ThemeFamily[] = [
     'default',
     'tomato',
@@ -25,216 +50,306 @@ export function ThemeFamiliesShowcase() {
     'charcoal',
   ];
 
-  // Generate scale for active family
-  const scale = React.useMemo(
-    () => generateColorScale(activeFamily, { hueOffset }),
-    [activeFamily, hueOffset]
-  );
-
   return (
-    <div
-      className={cn(
-        'space-y-8 rounded-3xl border p-8 transition-colors duration-500',
-        isDark ? 'border-[#3d3a36] bg-[#1a1815]' : 'border-[#e0ddd9] bg-[#fafaf8]'
-      )}
-    >
-      {/* Header & Controls */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h3
-            className={cn(
-              'font-serif text-2xl font-medium',
-              isDark ? 'text-[#f5f4f2]' : 'text-[#1a1815]'
-            )}
-          >
-            Vibrant Organic Themes
-          </h3>
-          <p className={cn('mt-1 text-sm', isDark ? 'text-[#a09a94]' : 'text-[#6b6660]')}>
-            Inspirado en Realfood.gov - Colores saturados y alto contraste
-          </p>
-        </div>
-
-        <div className="flex items-center gap-4 rounded-full bg-black/5 p-1 pr-4">
-          <button
-            onClick={() => setIsDark(!isDark)}
-            className={cn(
-              'rounded-full p-2 transition-all',
-              isDark ? 'bg-[#3d3a36] text-[#f5f4f2]' : 'bg-white text-yellow-600 shadow-sm'
-            )}
-          >
-            {isDark ? <Moon className="size-4" /> : <Sun className="size-4" />}
-          </button>
-          <span
-            className={cn(
-              'text-xs font-medium tracking-wider uppercase',
-              isDark ? 'text-[#a09a94]' : 'text-[#6b6660]'
-            )}
-          >
-            {isDark ? 'Dark Mode' : 'Light Mode'}
-          </span>
-        </div>
-      </div>
-
-      {/* Family Selector */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
-        {families.map((family) => {
-          const config = THEME_FAMILIES[family];
-          const familyScale = generateColorScale(family);
-          const isSelected = activeFamily === family;
-
-          return (
-            <button
-              key={family}
-              onClick={() => {
-                setActiveFamily(family);
-                setHueOffset(0);
-              }}
-              className={cn(
-                'group relative flex items-center gap-3 rounded-xl border p-3 text-left transition-all',
-                isSelected
-                  ? isDark
-                    ? 'border-[#f5f4f2] bg-[#2d2a26]'
-                    : 'border-[#1a1815] bg-white'
-                  : isDark
-                    ? 'border-[#3d3a36] hover:bg-[#242220]'
-                    : 'border-transparent hover:bg-black/5'
-              )}
-            >
-              <div
-                className="size-8 rounded-full shadow-sm"
-                style={{ backgroundColor: oklchToHex(familyScale[9]) }}
-              />
-              <span
-                className={cn('text-sm font-medium', isDark ? 'text-[#f5f4f2]' : 'text-[#1a1815]')}
-              >
-                {config.name}
-              </span>
-              {isSelected && (
-                <Check
-                  className={cn('ml-auto size-4', isDark ? 'text-[#f5f4f2]' : 'text-[#1a1815]')}
-                />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Hue Slider */}
-      <div
-        className={cn(
-          'rounded-2xl border p-5',
-          isDark ? 'border-[#3d3a36] bg-[#242220]' : 'border-[#e0ddd9] bg-white'
-        )}
-      >
-        <div className="mb-4 flex justify-between">
-          <label
-            className={cn('text-sm font-medium', isDark ? 'text-[#f5f4f2]' : 'text-[#1a1815]')}
-          >
-            Hue Offset
-          </label>
-          <span className="font-mono text-xs opacity-50">
-            {hueOffset > 0 ? `+${hueOffset}` : hueOffset}°
-          </span>
-        </div>
-        <input
-          type="range"
-          min="-15"
-          max="15"
-          value={hueOffset}
-          onChange={(e) => setHueOffset(Number(e.target.value))}
-          className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gradient-to-r from-red-500 via-green-500 to-blue-500"
-        />
-      </div>
-
-      {/* Application Preview */}
-      <div
-        className="overflow-hidden rounded-2xl border shadow-xl"
-        style={{
-          backgroundColor: oklchToHex(isDark ? scale[1] : scale[1]), // Background is consistent step 1
-          borderColor: oklchToHex(scale[6]),
-        }}
-      >
-        {/* Navbar simulation */}
-        <div
-          className="flex items-center justify-between border-b px-6 py-4"
-          style={{ borderColor: oklchToHex(scale[6]) }}
-        >
-          <div className="font-serif text-lg font-bold" style={{ color: oklchToHex(scale[12]) }}>
-            Trattoria
-          </div>
-          <div className="flex gap-4 text-sm font-medium" style={{ color: oklchToHex(scale[11]) }}>
-            <span>Menu</span>
-            <span>Reservas</span>
-          </div>
-        </div>
-
-        {/* Hero Content */}
-        <div className="space-y-6 p-8 text-center md:p-12">
-          <h2
-            className="font-serif text-4xl font-medium tracking-tight md:text-5xl"
-            style={{ color: oklchToHex(scale[12]) }}
-          >
-            Taste the difference
-          </h2>
-          <p
-            className="mx-auto max-w-md text-lg leading-relaxed"
-            style={{ color: oklchToHex(scale[11]) }}
-          >
-            Auténtica cocina italiana con ingredientes frescos y locales. Experimenta el minimalismo
-            cálido.
-          </p>
-
-          <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
-            <Button
-              size="lg"
-              className="h-12 rounded-full px-8 text-base shadow-lg transition-transform hover:scale-105 active:scale-95"
-              style={{
-                backgroundColor: oklchToHex(scale[9]),
-                color: '#ffffff', // Force white
-              }}
-            >
-              <ShoppingBag className="mr-2 size-5" />
-              Pedir ahora
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 rounded-full border-2 px-8 text-base hover:bg-black/5"
-              style={{
-                borderColor: oklchToHex(scale[7]),
-                color: oklchToHex(scale[11]),
-              }}
-            >
-              Ver carta
-            </Button>
-          </div>
-        </div>
-
-        {/* Features Cards */}
-        <div
-          className="grid gap-1 border-t md:grid-cols-3"
-          style={{ borderColor: oklchToHex(scale[6]) }}
-        >
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center gap-3 p-6 text-center md:p-8"
-              style={{ backgroundColor: i === 2 ? oklchToHex(scale[2]) : 'transparent' }}
-            >
-              <div
-                className="mb-2 flex size-12 items-center justify-center rounded-2xl"
-                style={{ backgroundColor: oklchToHex(scale[3]), color: oklchToHex(scale[9]) }}
-              >
-                <Zap className="size-6" />
+    <div className="w-full transition-colors duration-500" style={themeStyles}>
+      {/* Wrapper acts as the theme provider scope */}
+      <div className="bg-background text-foreground min-h-screen transition-colors duration-500">
+        {/* Sticky Header */}
+        <div className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 border-b backdrop-blur transition-all duration-500">
+          <div className="container mx-auto flex max-w-4xl flex-col gap-6 px-4 py-6 md:flex-row md:items-center md:justify-between">
+            {/* Branding */}
+            <div className="flex items-center gap-3">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-sm">
+                <ChefHat className="size-6" />
               </div>
-              <h4 className="font-semibold" style={{ color: oklchToHex(scale[12]) }}>
-                Rápido
-              </h4>
-              <p className="text-sm" style={{ color: oklchToHex(scale[11]) }}>
-                Servicio veloz sin perder calidad.
-              </p>
+              <div className="hidden sm:block">
+                <h2 className="text-sm leading-none font-bold">Tally Design</h2>
+                <p className="text-muted-foreground mt-1 font-mono text-xs">
+                  {THEME_FAMILIES[activeFamily].name}
+                </p>
+              </div>
             </div>
-          ))}
+
+            <div className="flex flex-wrap items-center justify-end gap-4">
+              <div className="bg-muted/50 flex gap-1.5 rounded-full p-1">
+                {families.map((f) => {
+                  const isActive = activeFamily === f;
+                  const familyScale = generateTheme(f).primary;
+
+                  return (
+                    <button
+                      key={f}
+                      onClick={() => setActiveFamily(f)}
+                      className={cn(
+                        'relative flex size-8 shrink-0 items-center justify-center rounded-full transition-all duration-300',
+                        isActive
+                          ? 'bg-background ring-border scale-110 shadow-sm ring-1'
+                          : 'hover:bg-background/50 hover:scale-105'
+                      )}
+                      title={THEME_FAMILIES[f].name}
+                    >
+                      <div
+                        className={cn(
+                          'size-4 rounded-full transition-transform',
+                          isActive ? 'scale-110' : ''
+                        )}
+                        style={{
+                          backgroundColor: familyScale[9],
+                        }}
+                      />
+                      {isActive && (
+                        <div className="bg-foreground border-background absolute -right-1 -bottom-1 flex size-3 items-center justify-center rounded-full border-2">
+                          <Check className="text-background size-2 stroke-4" />
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-border mx-2 h-6 w-px shrink-0" />
+
+              <button
+                onClick={() => setIsDark(!isDark)}
+                className="bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground rounded-full p-2 transition-colors"
+              >
+                {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Scrollable Content Area */}
+        <div className="mx-auto max-w-4xl space-y-16 p-6 pb-32 md:p-12">
+          {/* Hero Section */}
+          <section className="animate-in fade-in slide-in-from-bottom-4 space-y-8 text-center duration-700">
+            <h1 className="text-foreground font-serif text-4xl leading-[1.1] font-medium tracking-tight md:text-6xl">
+              Comida honesta,
+              <br />
+              <span className="text-primary decoration-primary/20 underline decoration-wavy decoration-2 underline-offset-8">
+                experiencias memorables.
+              </span>
+            </h1>
+            <p className="text-muted-foreground mx-auto max-w-xl text-lg leading-relaxed">
+              Explora cómo nuestra paleta de colores orgánicos se adapta a cada componente,
+              manteniendo siempre la legibilidad y la calidez.
+            </p>
+            <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
+              <Button
+                size="lg"
+                className="shadow-primary/10 hover:shadow-primary/20 h-12 rounded-full px-8 text-base shadow-xl transition-all"
+              >
+                Empezar pedido
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-background/50 h-12 rounded-full px-8 text-base backdrop-blur-sm"
+              >
+                Ver el menú
+              </Button>
+            </div>
+          </section>
+
+          <div className="grid items-start gap-8 md:grid-cols-2">
+            {/* Left Column: Forms & Structure */}
+            <div className="space-y-8">
+              <section className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
+                    Estructura & Formularios
+                  </h3>
+                </div>
+
+                <Card className="shadow-sm transition-shadow duration-300 hover:shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <User className="text-primary size-5" />
+                      Configuración de cuenta
+                    </CardTitle>
+                    <CardDescription>Ejemplo de formulario denso</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-muted-foreground text-xs font-semibold uppercase">
+                        Información Personal
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Input placeholder="Nombre" defaultValue="Alvaro" />
+                        <Input placeholder="Apellido" defaultValue="Lostal" />
+                      </div>
+                      <Input placeholder="Email" defaultValue="alvaro@tally.com" />
+                    </div>
+
+                    <div className="space-y-3 pt-2">
+                      <label className="text-muted-foreground text-xs font-semibold uppercase">
+                        Preferencias
+                      </label>
+                      <div className="bg-muted/10 flex items-center justify-between rounded-lg border p-3">
+                        <div className="space-y-0.5">
+                          <label className="text-sm font-medium">Notificaciones</label>
+                          <p className="text-muted-foreground text-xs">
+                            Recibir updates por correo
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="bg-muted/30 flex justify-end gap-3 border-t p-4">
+                    <Button variant="ghost" size="sm">
+                      Cancelar
+                    </Button>
+                    <Button size="sm">Guardar cambios</Button>
+                  </CardFooter>
+                </Card>
+              </section>
+
+              <section className="space-y-4">
+                <Card className="bg-primary text-primary-foreground shadow-primary/20 relative overflow-hidden border-none shadow-xl">
+                  <div className="pointer-events-none absolute top-0 right-0 -mt-16 -mr-16 rounded-full bg-white/10 p-32 blur-3xl" />
+                  <CardHeader>
+                    <div className="mb-2 flex size-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur-md">
+                      <Bell className="size-5 text-white" />
+                    </div>
+                    <CardTitle className="text-xl">Estado del Pedido</CardTitle>
+                    <CardDescription className="text-primary-foreground/80">
+                      Tu pedido #382 está en cocina.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button
+                      variant="secondary"
+                      className="text-primary w-full border-none bg-white shadow-none hover:bg-white/90"
+                    >
+                      Ver detalles
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </section>
+            </div>
+
+            {/* Right Column: Interactive Elements */}
+            <div className="space-y-8">
+              <section className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
+                    Elementos Interactivos
+                  </h3>
+                </div>
+
+                <div className="bg-card/50 space-y-6 rounded-2xl border p-6 backdrop-blur-sm">
+                  {/* Search Bar Mock */}
+                  <div className="group relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <Search className="text-muted-foreground group-focus-within:text-primary size-4 transition-colors" />
+                    </div>
+                    <Input
+                      className="bg-background/50 border-muted-foreground/20 focus:bg-background pl-9 transition-all"
+                      placeholder="Buscar platos, ingredientes..."
+                    />
+                  </div>
+
+                  {/* Tabs Mock */}
+                  <Tabs defaultValue="all" className="w-full">
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="all">Todo</TabsTrigger>
+                      <TabsTrigger value="food">Comida</TabsTrigger>
+                      <TabsTrigger value="drinks">Bebidas</TabsTrigger>
+                    </TabsList>
+                    <TabsContent
+                      value="all"
+                      className="bg-muted/10 text-muted-foreground mt-2 rounded-lg p-2 text-center text-sm"
+                    >
+                      Mostrando 24 resultados...
+                    </TabsContent>
+                    <TabsContent
+                      value="food"
+                      className="bg-muted/10 text-muted-foreground mt-2 rounded-lg p-2 text-center text-sm"
+                    >
+                      Mostrando 12 platos...
+                    </TabsContent>
+                    <TabsContent
+                      value="drinks"
+                      className="bg-muted/10 text-muted-foreground mt-2 rounded-lg p-2 text-center text-sm"
+                    >
+                      Mostrando 8 bebidas...
+                    </TabsContent>
+                  </Tabs>
+
+                  {/* Badges */}
+                  <div className="flex flex-wrap gap-2">
+                    <Badge>Disponible</Badge>
+                    <Badge variant="secondary">Agotado</Badge>
+                    <Badge variant="outline">Vegetariano</Badge>
+                    <Badge
+                      className="animate-pulse border-none text-white shadow-sm"
+                      style={{ backgroundColor: generateTheme('basil').primary[9] }}
+                    >
+                      Oferta
+                    </Badge>
+                  </div>
+                </div>
+              </section>
+
+              {/* Button Variations */}
+              <section className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
+                    Botones
+                  </h3>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button className="w-full">Default</Button>
+                  <Button variant="secondary" className="w-full">
+                    Secondary
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    Outline
+                  </Button>
+                  <Button variant="ghost" className="w-full">
+                    Ghost
+                  </Button>
+                  <Button variant="destructive" className="col-span-2 w-full">
+                    Destructive Action
+                  </Button>
+                </div>
+              </section>
+
+              {/* List Mock */}
+              <section className="space-y-4">
+                <div className="bg-card overflow-hidden rounded-2xl border">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="hover:bg-muted/40 group flex cursor-pointer items-center gap-4 border-b p-4 transition-colors last:border-0"
+                    >
+                      <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110">
+                        <span className="text-muted-foreground text-xs font-bold">0{i}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium">Mesa {i} - Zona Principal</p>
+                        <p className="text-muted-foreground truncate text-xs">
+                          Hace {i * 12} minutos • 3 comensales
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span
+                          className={cn(
+                            'text-xs font-bold',
+                            i === 1 ? 'text-primary' : 'text-muted-foreground'
+                          )}
+                        >
+                          {i === 1 ? 'Activo' : 'Cerrado'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </div>
         </div>
       </div>
     </div>

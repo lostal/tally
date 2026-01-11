@@ -3,9 +3,10 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { Save, Loader2, Check } from 'lucide-react';
+import { Save, Loader2, Check, Monitor, Sun, Moon } from 'lucide-react';
+import { useTheme } from '@/components/providers/theme-provider';
 import { Button } from '@/components/ui/button';
-import { THEME_FAMILIES, generateColorScale, oklchToHex } from '@/lib/theme';
+import { THEME_FAMILIES, generateColorScale } from '@/lib/theme';
 import type { ThemeFamily } from '@/lib/theme';
 import type { Restaurant } from '@/types/database';
 import type { RestaurantThemeConfig } from '@/types/theme';
@@ -31,6 +32,7 @@ const FAMILY_ORDER: ThemeFamily[] = [
 
 export function SettingsContent({ restaurant }: SettingsContentProps) {
   const router = useRouter();
+  const { setMode: setGlobalMode, isDark, setPreviewConfig } = useTheme();
   const [isLoading, setIsLoading] = React.useState(false);
   const [name, setName] = React.useState(restaurant.name);
   const [saved, setSaved] = React.useState(false);
@@ -41,12 +43,30 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
     existingTheme.family || 'default'
   );
   const [hueOffset, setHueOffset] = React.useState(existingTheme.hueOffset || 0);
+  const [mode, setMode] = React.useState<'auto' | 'light' | 'dark'>(
+    (existingTheme.mode as 'auto' | 'light' | 'dark') || 'auto'
+  );
 
   // Preview with offset
   const previewScale = React.useMemo(
-    () => generateColorScale(selectedFamily, { hueOffset }),
-    [selectedFamily, hueOffset]
+    () => generateColorScale(selectedFamily, { hueOffset, isDark }),
+    [selectedFamily, hueOffset, isDark]
   );
+
+  // Sync with Global Preview
+  React.useEffect(() => {
+    setPreviewConfig({
+      family: selectedFamily,
+      hueOffset,
+      mode,
+      radiusScale: 'md', // Keep consistent with save logic
+    });
+  }, [selectedFamily, hueOffset, mode, setPreviewConfig]);
+
+  // Cleanup preview on unmount
+  React.useEffect(() => {
+    return () => setPreviewConfig({});
+  }, [setPreviewConfig]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +75,7 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
     const themeConfig: RestaurantThemeConfig = {
       family: selectedFamily,
       hueOffset: hueOffset !== 0 ? hueOffset : undefined,
-      mode: 'auto',
+      mode: mode,
       radiusScale: 'md',
     };
 
@@ -119,6 +139,39 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
             Paleta de colores
           </h2>
 
+          {/* Mode Selection */}
+          <div className="bg-card rounded-2xl border-2 p-1">
+            <div className="grid grid-cols-3 gap-1">
+              {[
+                { value: 'light', label: 'Claro', icon: Sun },
+                { value: 'dark', label: 'Oscuro', icon: Moon },
+                { value: 'auto', label: 'Sistema', icon: Monitor },
+              ].map((option) => {
+                const Icon = option.icon;
+                const isSelected = mode === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      setMode(option.value as 'auto' | 'light' | 'dark');
+                      setGlobalMode(option.value as 'auto' | 'light' | 'dark');
+                    }}
+                    className={cn(
+                      'flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-medium transition-all',
+                      isSelected
+                        ? 'bg-foreground text-background shadow-sm'
+                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    )}
+                  >
+                    <Icon className="size-4" />
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Family Grid */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
             {FAMILY_ORDER.map((family) => {
@@ -141,11 +194,11 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
                       : 'border-border hover:border-foreground/40'
                   )}
                 >
-                  {/* Color swatch */}
+                  {/* Color swatch - Using direct OKLCH for accuracy */}
                   <div className="flex h-12">
-                    <div className="flex-1" style={{ backgroundColor: oklchToHex(scale[5]) }} />
-                    <div className="flex-1" style={{ backgroundColor: oklchToHex(scale[7]) }} />
-                    <div className="flex-1" style={{ backgroundColor: oklchToHex(scale[9]) }} />
+                    <div className="flex-1" style={{ backgroundColor: scale[5] }} />
+                    <div className="flex-1" style={{ backgroundColor: scale[7] }} />
+                    <div className="flex-1" style={{ backgroundColor: scale[9] }} />
                   </div>
                   {/* Label */}
                   <div className="bg-card p-2 text-center">
@@ -181,9 +234,9 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: `linear-gradient(to right,
-                      ${oklchToHex(generateColorScale(selectedFamily, { hueOffset: -15 })[9])},
-                      ${oklchToHex(generateColorScale(selectedFamily, { hueOffset: 0 })[9])},
-                      ${oklchToHex(generateColorScale(selectedFamily, { hueOffset: 15 })[9])}
+                      ${generateColorScale(selectedFamily, { hueOffset: -15 })[9]},
+                      ${generateColorScale(selectedFamily, { hueOffset: 0 })[9]},
+                      ${generateColorScale(selectedFamily, { hueOffset: 15 })[9]}
                     )`,
                   }}
                 />
@@ -201,62 +254,69 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
           </div>
 
           {/* Live Preview */}
-          <div
-            className="rounded-2xl border-2 p-5 transition-colors"
-            style={{
-              backgroundColor: oklchToHex(previewScale[1]), // Using subtle bg (step 1)
-              borderColor: oklchToHex(previewScale[6]),
-            }}
-          >
-            <p className="mb-4 text-sm font-medium" style={{ color: oklchToHex(previewScale[12]) }}>
-              Vista previa en vivo
-            </p>
+          {/* Live Preview - Mini POS Context */}
+          {/* Live Preview - Simple Style Tile */}
+          <div className="bg-background/40 rounded-3xl border-2 p-8 backdrop-blur-sm">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+              {/* Left: Typography & Brand */}
+              <div className="flex-1 space-y-4">
+                <div>
+                  <h3 className="font-serif text-2xl" style={{ color: previewScale[11] }}>
+                    Tipografía
+                  </h3>
+                  <p className="text-muted-foreground text-sm">La identidad visual de tu marca.</p>
+                </div>
 
-            {/* 12-step scale */}
-            <div className="mb-4 flex overflow-hidden rounded-lg">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((step) => (
+                <div className="flex flex-wrap gap-2">
+                  <span
+                    className="rounded-md px-2.5 py-1 text-xs font-bold"
+                    style={{ backgroundColor: `${previewScale[9]}15`, color: previewScale[9] }}
+                  >
+                    Badge
+                  </span>
+                  <span
+                    className="rounded-md px-2.5 py-1 text-xs font-bold"
+                    style={{ backgroundColor: `${previewScale[3]}`, color: previewScale[11] }}
+                  >
+                    Neutro
+                  </span>
+                </div>
+              </div>
+
+              {/* Right: Interactive Elements */}
+              <div className="pointer-events-none flex-1 space-y-3 select-none">
+                {/* Static Primary Button */}
                 <div
-                  key={step}
-                  className="h-6 flex-1"
-                  style={{ backgroundColor: oklchToHex(previewScale[step as 1]) }}
-                />
-              ))}
-            </div>
+                  className="flex h-10 w-full items-center justify-center rounded-md text-sm font-medium text-white shadow-md"
+                  style={{ backgroundColor: previewScale[9] }}
+                >
+                  Botón Primario
+                </div>
 
-            {/* Sample buttons */}
-            <div className="flex flex-wrap gap-3">
-              <div
-                className="rounded-xl px-5 py-3 text-sm font-semibold shadow-sm"
-                style={{
-                  backgroundColor: oklchToHex(previewScale[9]),
-                  color: '#ffffff', // Force white for high contrast on new deep colors
-                }}
-              >
-                Botón primario
-              </div>
-              <div
-                className="rounded-xl border-2 px-5 py-3 text-sm font-medium"
-                style={{
-                  backgroundColor: oklchToHex(previewScale[2]),
-                  borderColor: oklchToHex(previewScale[7]),
-                  color: oklchToHex(previewScale[11]),
-                }}
-              >
-                Secundario
-              </div>
-            </div>
+                {/* Static Secondary Button */}
+                <div
+                  className="flex h-10 w-full items-center justify-center rounded-md border bg-transparent text-sm font-medium"
+                  style={{ borderColor: previewScale[6], color: previewScale[11] }}
+                >
+                  Secundario
+                </div>
 
-            <div
-              className="mt-4 rounded-xl p-4"
-              style={{ backgroundColor: oklchToHex(previewScale[3]) }}
-            >
-              <h4 className="text-lg font-bold" style={{ color: oklchToHex(previewScale[12]) }}>
-                Título de tarjeta
-              </h4>
-              <p style={{ color: oklchToHex(previewScale[11]) }}>
-                Este es un ejemplo de texto sobre una superficie coloreada. La legibilidad debe ser
-                perfecta.
-              </p>
+                {/* Toggle Switch */}
+                <div
+                  className="bg-background/50 flex items-center justify-between rounded-md border px-3 py-2"
+                  style={{ borderColor: previewScale[4] }}
+                >
+                  <span className="text-sm font-medium" style={{ color: previewScale[11] }}>
+                    Notificaciones
+                  </span>
+                  <div
+                    className="flex h-5 w-9 items-center rounded-full px-0.5 transition-colors"
+                    style={{ backgroundColor: previewScale[9] }}
+                  >
+                    <div className="size-4 translate-x-3.5 rounded-full bg-white shadow-sm" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </motion.section>

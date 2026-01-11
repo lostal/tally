@@ -52,7 +52,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fontSans.variable} ${fontSerif.variable}`}>
-      <body className="min-h-dvh font-sans antialiased">
+      <body className="bg-background text-foreground min-h-dvh font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

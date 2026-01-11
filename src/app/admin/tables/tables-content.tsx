@@ -242,7 +242,10 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
                 <Button
                   size="sm"
                   variant="ghost"
-                  className={cn(config.actionButtonGhostClass)}
+                  className={cn(
+                    'text-destructive/70 hover:bg-destructive/10 hover:text-destructive',
+                    config.actionButtonGhostClass
+                  )}
                   onClick={() => handleDeleteTable(table.id)}
                 >
                   <Trash2 className="size-4" />

@@ -1,29 +1,28 @@
 'use client';
 
-import NumberFlow, { type NumberFlowProps } from '@number-flow/react';
-import { cn } from '@/lib/utils';
+import { motion, useSpring, useTransform } from 'motion/react';
+import * as React from 'react';
 
-interface AnimatedNumberProps extends Omit<NumberFlowProps, 'value'> {
-  /** The number value to display */
+interface AnimatedNumberProps {
   value: number;
-  /** Additional CSS classes */
+  format?: Intl.NumberFormatOptions;
   className?: string;
 }
 
-/**
- * AnimatedNumber - Wrapper around NumberFlow for consistent animated number display
- *
- * Uses spring physics for smooth, satisfying number transitions.
- * Perfect for prices, totals, and any dynamic numerical values.
- */
-export function AnimatedNumber({ value, className, ...props }: AnimatedNumberProps) {
-  return (
-    <NumberFlow
-      value={value}
-      className={cn('tabular-nums', className)}
-      transformTiming={{ duration: 400, easing: 'ease-out' }}
-      spinTiming={{ duration: 400, easing: 'ease-out' }}
-      {...props}
-    />
+export function AnimatedNumber({ value, format, className }: AnimatedNumberProps) {
+  const spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 });
+
+  const display = useTransform(spring, (current) =>
+    current.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      ...format,
+    })
   );
+
+  React.useEffect(() => {
+    spring.set(value);
+  }, [spring, value]);
+
+  return <motion.span className={className}>{display}</motion.span>;
 }

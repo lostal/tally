@@ -1,6 +1,8 @@
 import { getRestaurantByOwner } from '@/lib/data';
-import { parseThemeConfig, generateCompleteThemeStyles } from '@/lib/theme';
+import { parseThemeConfig } from '@/lib/theme';
 import { PosShell } from '@/components/pos/pos-shell';
+
+import { ThemeInjector } from '@/components/providers/theme-injector';
 
 interface POSLayoutProps {
   children: React.ReactNode;
@@ -21,16 +23,12 @@ export default async function POSLayout({ children }: POSLayoutProps) {
     if (data) restaurant = data;
   }
 
-  // Generate theme styles
-  let themeStyles: Record<string, string> = {};
-  if (restaurant) {
-    const themeConfig = parseThemeConfig(restaurant.theme);
-    themeStyles = generateCompleteThemeStyles(themeConfig, false);
-  }
+  // Parse config (default to empty/default if no restaurant)
+  const themeConfig = restaurant ? parseThemeConfig(restaurant.theme) : parseThemeConfig({});
 
   return (
-    <div id="pos-theme-provider" className="contents" style={themeStyles as React.CSSProperties}>
+    <ThemeInjector config={themeConfig}>
       <PosShell>{children}</PosShell>
-    </div>
+    </ThemeInjector>
   );
 }

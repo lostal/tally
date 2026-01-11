@@ -17,8 +17,8 @@ export const THEME_FAMILIES = {
   tomato: {
     name: 'Tomate',
     description: 'Rojo profundo orgánico',
-    baseHue: 28, // Deep Warm Red
-    hueRange: [20, 35] as const,
+    baseHue: 24, // Deep Warm Red (Shifted)
+    hueRange: [15, 30] as const,
     chroma: 0.17,
     chromaRange: [0.14, 0.2] as const,
   },
@@ -27,8 +27,8 @@ export const THEME_FAMILIES = {
   carrot: {
     name: 'Zanahoria',
     description: 'Naranja intenso',
-    baseHue: 45, // Warm Intense Orange
-    hueRange: [35, 55] as const,
+    baseHue: 56, // Warm Intense Orange (Shifted)
+    hueRange: [45, 65] as const,
     chroma: 0.16,
     chromaRange: [0.13, 0.19] as const,
   },

@@ -1,5 +1,5 @@
 import { getRestaurantBySlug } from '@/lib/data';
-import { parseThemeConfig, generateCompleteThemeStyles } from '@/lib/theme';
+import { parseThemeConfig } from '@/lib/theme';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,6 +13,8 @@ interface LayoutProps {
  * to ensure CSS variables are inherited by all children, overriding
  * any global defaults.
  */
+import { ThemeInjector } from '@/components/providers/theme-injector';
+
 export default async function RestaurantLayout({ children, params }: LayoutProps) {
   const { slug } = await params;
 
@@ -22,12 +24,5 @@ export default async function RestaurantLayout({ children, params }: LayoutProps
   // Parse theme or use defaults
   const themeConfig = parseThemeConfig(restaurant?.theme);
 
-  // Generate CSS variables
-  const themeStyles = generateCompleteThemeStyles(themeConfig, false);
-
-  return (
-    <div id="theme-provider" className="contents" style={themeStyles as React.CSSProperties}>
-      {children}
-    </div>
-  );
+  return <ThemeInjector config={themeConfig}>{children}</ThemeInjector>;
 }

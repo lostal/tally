@@ -3,32 +3,27 @@
 import * as React from 'react';
 
 /**
- * Theme Provider (Simplified)
+ * Theme Provider (Mode Only)
  *
- * For now, we use a single default theme defined in globals.css.
- * In the future, this will support dynamic themes based on restaurant branding.
+ * Handles 'light' | 'dark' | 'auto' modes.
+ * Currently decoupling explicit theme object state as it's handled by server/CSS.
  */
 
-// Restaurant theme configuration (for future dynamic theming)
-export interface RestaurantTheme {
-  name: string;
-  slug: string;
-}
+import type { RestaurantThemeConfig } from '@/types/theme';
 
-// Default theme
-const DEFAULT_THEME: RestaurantTheme = {
-  name: 'tally',
-  slug: 'default',
-};
+export type ThemeMode = 'auto' | 'light' | 'dark';
 
 interface ThemeContextValue {
-  theme: RestaurantTheme;
-  setTheme: (theme: RestaurantTheme) => void;
+  mode: ThemeMode;
+  setMode: (mode: ThemeMode) => void;
   isDark: boolean;
   toggleDark: () => void;
+  // Live Preview Support
+  previewConfig: Partial<RestaurantThemeConfig>;
+  setPreviewConfig: (config: Partial<RestaurantThemeConfig>) => void;
 }
 
-const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
+export const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
 
 export function useTheme() {
   const context = React.useContext(ThemeContext);
@@ -43,31 +38,58 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState<RestaurantTheme>(DEFAULT_THEME);
+  const [mode, setMode] = React.useState<ThemeMode>('auto');
   const [isDark, setIsDark] = React.useState(false);
+  const [previewConfig, setPreviewConfig] = React.useState<Partial<RestaurantThemeConfig>>({});
 
-  // Initialize dark mode from system preference
+  // Unified logic for mode application
   React.useEffect(() => {
-    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDark(darkQuery.matches || document.documentElement.classList.contains('dark'));
-  }, []);
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyMode = () => {
+      let shouldBeDark = false;
+
+      if (mode === 'auto') {
+        shouldBeDark = mediaQuery.matches;
+      } else {
+        shouldBeDark = mode === 'dark';
+      }
+
+      setIsDark(shouldBeDark);
+      document.documentElement.classList.toggle('dark', shouldBeDark);
+    };
+
+    // Apply immediately
+    applyMode();
+
+    // Listen for system changes
+    const listener = () => applyMode();
+    mediaQuery.addEventListener('change', listener);
+
+    return () => mediaQuery.removeEventListener('change', listener);
+  }, [mode]);
 
   const toggleDark = React.useCallback(() => {
-    setIsDark((prev) => {
-      const next = !prev;
-      document.documentElement.classList.toggle('dark', next);
-      return next;
+    setMode((prev) => {
+      if (prev === 'auto') {
+        return isDark ? 'light' : 'dark';
+      }
+      return prev === 'dark' ? 'light' : 'dark';
     });
-  }, []);
+  }, [isDark]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, isDark, toggleDark }}>
+    <ThemeContext.Provider
+      value={{
+        mode,
+        setMode,
+        isDark,
+        toggleDark,
+        previewConfig,
+        setPreviewConfig,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
-}
-
-// Helper to get theme by slug (for future use)
-export function getThemeBySlug(slug: string): RestaurantTheme {
-  return { name: slug, slug };
 }

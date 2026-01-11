@@ -6,6 +6,7 @@ import { motion } from 'motion/react';
 import { getClient } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Loader2, ChefHat } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 /**
  * POS Login Page - PIN-based login for waiters
@@ -147,8 +148,4 @@ export default function POSLoginPage() {
       </motion.div>
     </div>
   );
-}
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

@@ -18,6 +18,5 @@ export {
   parseThemeConfig,
   generateThemeStyles,
   generateCompleteThemeStyles,
-  cssVarsToStyleString,
   mapToSemanticVars,
 } from './apply';

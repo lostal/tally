@@ -93,7 +93,17 @@ function SortableCategory({
         <Button size="icon" variant="ghost" className="size-8" onClick={onEdit}>
           <Pencil className="size-3" />
         </Button>
-        <Button size="icon" variant="ghost" className="size-8" onClick={onDelete}>
+        <Button
+          size="icon"
+          variant="ghost"
+          className={cn(
+            'size-8',
+            isSelected
+              ? 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground'
+              : 'text-destructive/70 hover:bg-destructive/10 hover:text-destructive'
+          )}
+          onClick={onDelete}
+        >
           <Trash2 className="size-3" />
         </Button>
       </div>

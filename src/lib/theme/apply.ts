@@ -4,7 +4,7 @@
  * Functions to apply restaurant theme to CSS custom properties
  */
 
-import { generateTheme, themeToCSS, type ThemeFamily } from '@/lib/theme';
+import { generateTheme, themeToCSS, generateColorScale, type ThemeFamily } from '@/lib/theme';
 import { RADIUS_VALUES, type RestaurantThemeConfig, DEFAULT_THEME_CONFIG } from '@/types/theme';
 
 /**
@@ -58,15 +58,6 @@ export function generateThemeStyles(
     '--radius-xl': radii.xl,
     '--radius-2xl': radii['2xl'],
   };
-}
-
-/**
- * Convert CSS vars object to inline style string
- */
-export function cssVarsToStyleString(vars: Record<string, string>): string {
-  return Object.entries(vars)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join('; ');
 }
 
 /**
@@ -149,6 +140,14 @@ export function mapToSemanticVars(
   // Ring - Brand scale
   vars['--ring'] = p(8);
   vars['--color-ring'] = p(8);
+
+  // Destructive - Always use Tomato (Red) scale for errors/destructive actions
+  // We generate this scale locally to ensure it's always consistent regardless of theme
+  const tomatoScale = generateColorScale('tomato', { isDark });
+  vars['--destructive'] = tomatoScale[9];
+  vars['--color-destructive'] = tomatoScale[9];
+  vars['--destructive-foreground'] = isDark ? tomatoScale[1] : '#ffffff';
+  vars['--color-destructive-foreground'] = isDark ? tomatoScale[1] : '#ffffff';
 
   return vars;
 }
