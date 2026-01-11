@@ -249,14 +249,23 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
                 </Button>
               </div>
 
-              {/* QR display */}
-              {showQR === table.id && (
-                <div className="bg-secondary rounded-xl p-4 text-center">
-                  <p className="text-muted-foreground text-xs break-all">
-                    {getQRUrl(table.number)}
-                  </p>
-                </div>
-              )}
+              <motion.div>
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: showQR === table.id ? 'auto' : 0,
+                    opacity: showQR === table.id ? 1 : 0,
+                  }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  className="overflow-hidden"
+                >
+                  <div className="bg-secondary mt-4 rounded-xl p-4 text-center">
+                    <p className="text-muted-foreground text-xs break-all">
+                      {getQRUrl(table.number)}
+                    </p>
+                  </div>
+                </motion.div>
+              </motion.div>
             </motion.div>
           );
         })}
