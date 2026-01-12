@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { logApiError } from '@/lib/api/validation';
 
 /**
  * POST /api/restaurants/[slug]/products/reorder
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error:', error);
+    logApiError('POST /api/restaurants/[slug]/products/reorder', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

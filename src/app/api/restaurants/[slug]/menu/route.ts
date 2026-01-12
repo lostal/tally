@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { logApiError } from '@/lib/api/validation';
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -37,7 +38,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
       .order('sort_order', { ascending: true });
 
     if (catError) {
-      console.error('Error fetching categories:', catError);
+      logApiError('GET /api/restaurants/[slug]/menu', catError);
       return NextResponse.json({ error: 'Error fetching menu' }, { status: 500 });
     }
 
@@ -52,7 +53,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
       .order('sort_order', { ascending: true });
 
     if (prodError) {
-      console.error('Error fetching products:', prodError);
+      logApiError('GET /api/restaurants/[slug]/menu', prodError);
       return NextResponse.json({ error: 'Error fetching menu' }, { status: 500 });
     }
 
@@ -64,7 +65,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ categories: menu });
   } catch (error) {
-    console.error('Error fetching menu:', error);
+    logApiError('GET /api/restaurants/[slug]/menu', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

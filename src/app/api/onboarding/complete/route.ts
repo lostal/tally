@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
+import { logApiError } from '@/lib/api/validation';
 
 const completeSchema = z.object({
   userId: z.string().uuid(),
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (restaurantError) {
-      console.error('[Onboarding] Restaurant creation failed:', restaurantError);
+      logApiError('POST /api/onboarding/complete', restaurantError);
       return NextResponse.json({ error: 'Failed to create restaurant' }, { status: 500 });
     }
 
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (subscriptionError) {
-      console.error('[Onboarding] Subscription creation failed:', subscriptionError);
+      logApiError('POST /api/onboarding/complete', subscriptionError);
     }
 
     // 3. Create user record
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (userError) {
-      console.error('[Onboarding] User creation failed:', userError);
+      logApiError('POST /api/onboarding/complete', userError);
     }
 
     // 4. Add fiscal info if provided
@@ -117,7 +118,7 @@ export async function POST(request: NextRequest) {
     const { error: tablesError } = await supabase.from('tables').insert(tables);
 
     if (tablesError) {
-      console.error('[Onboarding] Tables creation failed:', tablesError);
+      logApiError('POST /api/onboarding/complete', tablesError);
     }
 
     // 6. Create demo menu if selected
@@ -131,7 +132,7 @@ export async function POST(request: NextRequest) {
       slug: restaurant.slug,
     });
   } catch (error) {
-    console.error('[Onboarding] Error:', error);
+    logApiError('POST /api/onboarding/complete', error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

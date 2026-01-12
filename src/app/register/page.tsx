@@ -98,12 +98,12 @@ export default function RegisterPage() {
       {/* Subtle decorative element */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
-          className="bg-primary/[0.02] absolute -top-40 -right-40 size-[500px] rounded-full blur-3xl"
+          className="bg-primary/2 absolute -top-40 -right-40 size-[500px] rounded-full blur-3xl"
           animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.3, 0.5] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="bg-primary/[0.015] absolute -bottom-40 -left-40 size-[400px] rounded-full blur-3xl"
+          className="bg-primary/1.5 absolute -bottom-40 -left-40 size-[400px] rounded-full blur-3xl"
           animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />

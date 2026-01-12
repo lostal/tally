@@ -1,23 +1,63 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase';
+import { logApiError, serverError } from '@/lib/api/validation';
+
+const QuerySchema = z.object({
+  restaurantId: z.string().uuid('Restaurant ID must be a valid UUID'),
+});
 
 /**
  * GET /api/kds/orders
  *
- * Get active orders for KDS display
+ * Get active orders for KDS display.
+ * Requires authenticated user with access to the restaurant.
  */
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const restaurantId = searchParams.get('restaurantId');
+    // 1. Verify authentication
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!restaurantId) {
-      return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized', code: 'UNAUTHORIZED' }, { status: 401 });
     }
 
-    const supabase = createAdminClient();
+    // 2. Validate query params
+    const { searchParams } = new URL(request.url);
+    const validation = QuerySchema.safeParse({
+      restaurantId: searchParams.get('restaurantId'),
+    });
 
-    const { data: orders, error } = await supabase
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Invalid parameters', details: validation.error.flatten() },
+        { status: 400 }
+      );
+    }
+
+    const { restaurantId } = validation.data;
+
+    // 3. Verify user has access to this restaurant
+    const { data: userData } = await supabase
+      .from('users')
+      .select('restaurant_id, role')
+      .eq('auth_id', user.id)
+      .single();
+
+    if (!userData || userData.restaurant_id !== restaurantId) {
+      return NextResponse.json(
+        { error: 'Access denied to this restaurant', code: 'FORBIDDEN' },
+        { status: 403 }
+      );
+    }
+
+    // 4. Fetch orders using admin client for full access
+    const adminSupabase = createAdminClient();
+    const { data: orders, error } = await adminSupabase
       .from('orders')
       .select(
         `
@@ -38,17 +78,15 @@ export async function GET(request: Request) {
       .order('created_at', { ascending: true });
 
     if (error) {
-      console.error('KDS fetch error:', error);
-      return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
+      logApiError('GET /api/kds/orders', error);
+      return serverError('Failed to fetch orders');
     }
 
-    // Transform data with proper type handling
+    // 5. Transform data with proper type handling
     const transformedOrders = (orders || []).map((order) => {
-      // Handle table relation
       const tableData = order.table as { number: string } | { number: string }[] | null;
       const tableNumber = Array.isArray(tableData) ? tableData[0]?.number : tableData?.number;
 
-      // Handle items relation
       const items =
         (order.items as Array<{
           id: string;
@@ -78,7 +116,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ orders: transformedOrders });
   } catch (error) {
-    console.error('KDS API error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    logApiError('GET /api/kds/orders', error);
+    return serverError();
   }
 }

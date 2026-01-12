@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { getPlanById, type SubscriptionPlan } from '@/types';
+import { logApiError } from '@/lib/api/validation';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error('[Stripe Checkout] Error:', error);
+    logApiError('POST /api/stripe/checkout', error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

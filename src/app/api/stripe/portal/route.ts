@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
+import { logApiError } from '@/lib/api/validation';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -50,7 +51,7 @@ export async function POST() {
 
     return NextResponse.json({ url: portalSession.url });
   } catch (error) {
-    console.error('[Stripe Portal] Error:', error);
+    logApiError('POST /api/stripe/portal', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

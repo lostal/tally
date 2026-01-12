@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { logApiError } from '@/lib/api/validation';
 
 interface RouteParams {
   params: Promise<{ slug: string; tableNumber: string }>;
@@ -52,7 +53,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
       .limit(1);
 
     if (orderError) {
-      console.error('Error fetching order:', orderError);
+      logApiError('GET /api/restaurants/[slug]/tables/[tableNumber]', orderError);
     }
 
     const order = orders?.[0] || null;
@@ -139,7 +140,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
         : null,
     });
   } catch (error) {
-    console.error('Error fetching table:', error);
+    logApiError('GET /api/restaurants/[slug]/tables/[tableNumber]', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

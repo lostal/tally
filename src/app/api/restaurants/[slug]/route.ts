@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { logApiError } from '@/lib/api/validation';
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -30,7 +31,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
 
     return NextResponse.json(restaurant);
   } catch (error) {
-    console.error('Error fetching restaurant:', error);
+    logApiError('GET /api/restaurants/[slug]', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

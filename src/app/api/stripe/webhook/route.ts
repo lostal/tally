@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { logApiError } from '@/lib/api/validation';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    console.error('[Stripe Webhook] Handler error:', error);
+    logApiError('POST /api/stripe/webhook', error);
     return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
   }
 }
