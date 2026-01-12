@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Building2,
@@ -53,8 +53,7 @@ interface FormData {
   billingPeriod: 'monthly' | 'yearly';
 }
 
-export function OnboardingWizard({ userId, userEmail }: OnboardingWizardProps) {
-  const router = useRouter();
+export function OnboardingWizard({ userId, userEmail: _userEmail }: OnboardingWizardProps) {
   const [currentStep, setCurrentStep] = React.useState<Step>('business');
   const [isLoading, setIsLoading] = React.useState(false);
   const [formData, setFormData] = React.useState<FormData>({
