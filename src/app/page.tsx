@@ -14,7 +14,7 @@ export default function HomePage() {
       <div className="w-full max-w-md space-y-12">
         {/* Header */}
         <div className="space-y-4">
-          <h1 className="font-serif text-5xl tracking-tight">tally</h1>
+          <h1 className="font-serif text-5xl tracking-tight">tally.</h1>
           <p className="text-muted-foreground text-lg">
             Sistema operativo para restaurantes modernos.
           </p>

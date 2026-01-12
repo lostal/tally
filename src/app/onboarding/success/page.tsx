@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { Check, LayoutDashboard, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function OnboardingSuccessPage() {
