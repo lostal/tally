@@ -30,11 +30,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       {/* Helper SVG with explicit size prop if needed, or percent */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={s * 0.7} // Scale icon to be 70% of container
+        width={s * 0.7}
         height={s * 0.7}
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#588157"
+        stroke="#1a1815"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -42,8 +42,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         <path d="M5 5c-0.5 4 0.5 10 0 14" />
         <path d="M10 5.5c0.2 3 -0.2 9 0 13" />
         <path d="M15 5c-0.3 4 0.3 10 0 14" />
-        <path d="M20 5.5c0.1 3 -0.3 9 -0.2 13" />
-        <path d="M23 6c-4 3 -12 8 -21 12" />
       </svg>
     </div>,
     {
