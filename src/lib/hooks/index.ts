@@ -36,3 +36,6 @@ export {
 
 // Order items realtime hook
 export { useOrderRealtime } from './use-order-realtime';
+
+// Offline queue hook
+export { useOfflineQueue, useQueueOperation } from './use-offline-queue';
