@@ -6,7 +6,8 @@ import { Clock, ChefHat, Check, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { useRealtime, useConnectionIndicator } from '@/lib/hooks';
+import { useRealtime } from '@/lib/hooks';
+import { ConnectionStatusIndicator } from '@/components/shared';
 
 interface KDSContentProps {
   restaurantId: string;
@@ -43,8 +44,6 @@ export function KDSContent({ restaurantId, orders: initialOrders }: KDSContentPr
     onUpdate: () => refreshOrders(),
     onDelete: () => refreshOrders(),
   });
-
-  const connectionIndicator = useConnectionIndicator(connectionStatus);
 
   const refreshOrders = async () => {
     const res = await fetch(`/api/kds/orders?restaurantId=${restaurantId}`);
@@ -105,10 +104,7 @@ export function KDSContent({ restaurantId, orders: initialOrders }: KDSContentPr
           <h1 className="font-serif text-3xl">Cocina</h1>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-sm">
-            <span className={connectionIndicator.icon}></span>
-            <span className="text-muted-foreground">{connectionIndicator.label}</span>
-          </div>
+          <ConnectionStatusIndicator status={connectionStatus} />
           <Button variant="outline" onClick={refreshOrders}>
             Actualizar
           </Button>
