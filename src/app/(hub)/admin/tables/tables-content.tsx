@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import type { Table } from '@/types/database';
+import { getAppUrl } from '@/lib/url';
 
 interface TablesContentProps {
   restaurantId: string;
@@ -141,7 +142,7 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
   };
 
   const getQRUrl = (tableNumber: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = getAppUrl('go');
     return `${baseUrl}/${restaurantSlug}?table=${tableNumber}`;
   };
 

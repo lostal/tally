@@ -12,13 +12,23 @@ import { createServerClient } from '@supabase/ssr';
  * in your API routes and Server Components.
  */
 export async function proxy(request: NextRequest) {
+  const hostname = request.headers.get('host') || '';
+  const url = request.nextUrl;
+  const pathname = url.pathname;
+
+  // Define domains
+  const isGo = hostname.startsWith('go.');
+  const isMarketing = hostname === 'paytally.app' || hostname.startsWith('www.');
+  const isHub =
+    hostname.startsWith('hub.') || hostname.startsWith('admin.') || hostname.includes('localhost');
+
+  // Authentication Check (Existing Logic)
   const response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
 
-  // Create Supabase client with cookie handling
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -36,49 +46,49 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // Use getUser() instead of getSession() - more secure as it validates with Supabase
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
-
-  // Protected admin routes
+  // Protected Routes Logic
+  // Check original pathname for admin/pos protection
   if (pathname.startsWith('/admin')) {
-    // Allow access to login page
     if (pathname === '/admin/login') {
-      // If already logged in, redirect to dashboard
-      if (user) {
-        return NextResponse.redirect(new URL('/admin', request.url));
-      }
-      return response;
-    }
-
-    // Require auth for all other admin routes
-    if (!user) {
+      if (user) return NextResponse.redirect(new URL('/admin', request.url));
+    } else if (!user) {
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('redirectTo', pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  // Protected POS routes
   if (pathname.startsWith('/pos')) {
-    // Allow access to login page
     if (pathname === '/pos/login') {
-      // If already logged in, redirect to POS home
-      if (user) {
-        return NextResponse.redirect(new URL('/pos', request.url));
-      }
-      return response;
-    }
-
-    // Require auth for all other POS routes
-    if (!user) {
+      if (user) return NextResponse.redirect(new URL('/pos', request.url));
+    } else if (!user) {
       const loginUrl = new URL('/pos/login', request.url);
       loginUrl.searchParams.set('redirectTo', pathname);
       return NextResponse.redirect(loginUrl);
     }
+  }
+
+  // Rewrite Logic
+  if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.includes('.')) {
+    return response;
+  }
+
+  if (isGo) {
+    return NextResponse.rewrite(new URL(`/(go)${pathname}`, request.url), response);
+  }
+
+  if (isMarketing) {
+    return NextResponse.rewrite(new URL(`/(marketing)${pathname}`, request.url), response);
+  }
+
+  // Default to Hub (includes localhost)
+  // We rewrite to (hub) to ensure file access if they are physically there
+  if (isHub || hostname.includes('localhost')) {
+    return NextResponse.rewrite(new URL(`/(hub)${pathname}`, request.url), response);
   }
 
   return response;

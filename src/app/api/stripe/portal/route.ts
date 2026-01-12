@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 import { logApiError } from '@/lib/api/validation';
+import { getAppUrl } from '@/lib/url';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -46,7 +47,7 @@ export async function POST() {
     // Create portal session
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: subscription.stripe_customer_id,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/admin/settings`,
+      return_url: `${getAppUrl('hub')}/admin/settings`,
     });
 
     return NextResponse.json({ url: portalSession.url });
