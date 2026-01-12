@@ -26,3 +26,12 @@ export type {
   RestaurantFiscalInfo,
 } from './fiscal';
 export { VAT_RATES } from './fiscal';
+
+// Subscriptions
+export type {
+  SubscriptionPlan,
+  SubscriptionStatus,
+  Subscription,
+  PricingPlan,
+} from './subscription';
+export { PRICING_PLANS, getPlanById, isSubscriptionActive } from './subscription';
