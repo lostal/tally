@@ -15,3 +15,14 @@ export type { Session, SessionStatus, Participant, SessionEvent } from './sessio
 
 // Payments
 export type { PaymentMethod, PaymentStatus, PaymentIntent, Payment, Receipt } from './payment';
+
+// Fiscal
+export type {
+  VATRate,
+  TaxBreakdownItem,
+  InvoiceStatus,
+  Invoice,
+  InvoiceItem,
+  RestaurantFiscalInfo,
+} from './fiscal';
+export { VAT_RATES } from './fiscal';

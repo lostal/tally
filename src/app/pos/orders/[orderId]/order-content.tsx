@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Plus, Minus, Trash2, Receipt } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Trash2, Receipt, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -76,6 +76,15 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ itemId, quantity: newQty }),
+    });
+    router.refresh();
+  };
+
+  const handleMarkServed = async (itemId: string) => {
+    await fetch(`/api/orders/${order.id}/items`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId, status: 'served' }),
     });
     router.refresh();
   };
@@ -164,6 +173,20 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  {item.status !== 'served' && (
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="size-8 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleMarkServed(item.id);
+                      }}
+                      title="Marcar como servido"
+                    >
+                      <Check className="size-4" />
+                    </Button>
+                  )}
                   <span className="font-semibold">
                     €{((item.quantity * item.unit_price_cents) / 100).toFixed(2)}
                   </span>
