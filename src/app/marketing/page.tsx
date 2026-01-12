@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, LayoutDashboard, Terminal, CreditCard, Paintbrush } from 'lucide-react';
+import { getAppUrl } from '@/lib/url';
 
 /**
  * Navigation Hub
@@ -23,7 +24,7 @@ export default function HomePage() {
         {/* Access Nodes */}
         <div className="space-y-4">
           <div className="grid gap-4">
-            <Link href="/admin/login" className="group">
+            <a href={`${getAppUrl('hub')}/admin/login`} className="group">
               <div className="bg-card hover:border-primary/50 flex items-center justify-between rounded-2xl border-2 p-5 transition-all group-hover:shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground flex size-12 items-center justify-center rounded-xl transition-colors">
@@ -36,9 +37,9 @@ export default function HomePage() {
                 </div>
                 <ArrowRight className="text-muted-foreground group-hover:text-primary size-5 transition-colors" />
               </div>
-            </Link>
+            </a>
 
-            <Link href="/pos/login" className="group">
+            <a href={`${getAppUrl('hub')}/pos/login`} className="group">
               <div className="bg-card hover:border-primary/50 flex items-center justify-between rounded-2xl border-2 p-5 transition-all group-hover:shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground flex size-12 items-center justify-center rounded-xl transition-colors">
@@ -51,7 +52,7 @@ export default function HomePage() {
                 </div>
                 <ArrowRight className="text-muted-foreground group-hover:text-primary size-5 transition-colors" />
               </div>
-            </Link>
+            </a>
           </div>
 
           <div className="pt-2">
