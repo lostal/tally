@@ -6,7 +6,7 @@
  */
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParticipantStore, calculateUserSubtotal } from '@/stores/participant-store';
 import { useBillStore } from '@/stores/bill-store';
 import type { PaymentMethod } from '@/types';

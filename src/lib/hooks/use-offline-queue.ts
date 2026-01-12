@@ -6,7 +6,7 @@ import {
   usePendingOperations,
   useIsProcessingQueue,
 } from '@/stores/offline-queue-store';
-import { useRealtime, type ConnectionStatus } from './use-realtime';
+import type { ConnectionStatus } from './use-realtime';
 
 /**
  * Hook to manage offline queue processing

@@ -79,7 +79,7 @@ describe('TipSelector', () => {
   });
 
   it('highlights the selected option', () => {
-    const { container } = render(<TipSelector {...defaultProps} value={15} />);
+    render(<TipSelector {...defaultProps} value={15} />);
 
     // Find the 15% button
     const selectedButton = screen.getByText('15%').closest('button');
