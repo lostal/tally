@@ -117,7 +117,7 @@ export default function RegisterPage() {
           </span>
         </Link>
         <Link
-          href="/pos/login"
+          href="/admin/login"
           className="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
           ¿Ya tienes cuenta?
