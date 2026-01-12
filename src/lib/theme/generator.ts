@@ -71,13 +71,13 @@ export function generateColorScale(
   const chroma = config.chroma;
   const lightnessScale = isDark ? LIGHTNESS_SCALE_DARK : LIGHTNESS_SCALE_LIGHT;
 
-  const scale: Record<number, string> = {};
+  const scale: Partial<ColorScale> = {};
 
   for (let step = 1; step <= 12; step++) {
     const lightness = lightnessScale[step as ColorStep];
     // Reduce chroma slightly for very light/dark steps
     const adjustedChroma = step <= 2 || step >= 11 ? chroma * 0.7 : chroma;
-    scale[step] = oklch(lightness, adjustedChroma, hue);
+    (scale as Record<number, string>)[step] = oklch(lightness, adjustedChroma, hue);
   }
 
   return scale as ColorScale;

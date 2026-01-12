@@ -37,8 +37,8 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
   const [name, setName] = React.useState(restaurant.name);
   const [saved, setSaved] = React.useState(false);
 
-  // Parse existing theme
-  const existingTheme = (restaurant.theme as RestaurantThemeConfig) || {};
+  // Parse existing theme (may be legacy RestaurantTheme or new RestaurantThemeConfig)
+  const existingTheme = (restaurant.theme as unknown as RestaurantThemeConfig) || {};
   const [selectedFamily, setSelectedFamily] = React.useState<ThemeFamily>(
     existingTheme.family || 'default'
   );
