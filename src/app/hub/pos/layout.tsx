@@ -21,6 +21,7 @@ export default async function POSLayout({ children }: POSLayoutProps) {
   if (!restaurant) {
     const supabase = await import('@/lib/supabase/server').then((m) => m.createClient());
     const { data } = await supabase.from('restaurants').select('*').limit(1).single();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (data) restaurant = data as any; // Cast to avoid strict type issues if data is slightly different
   }
 
