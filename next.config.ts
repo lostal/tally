@@ -23,45 +23,8 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // ===== SUBDOMAIN ROUTING (ALTERNATIVA A MIDDLEWARE ROTO) =====
-  async rewrites() {
-    return {
-      beforeFiles: [
-        // Hub subdomain routing
-        {
-          source: '/:path*',
-          destination: '/hub/:path*',
-          has: [
-            {
-              type: 'host',
-              value: 'hub.localhost:3000',
-            },
-          ],
-        },
-        {
-          source: '/:path*',
-          destination: '/hub/:path*',
-          has: [
-            {
-              type: 'host',
-              value: 'admin.localhost:3000',
-            },
-          ],
-        },
-        // Go subdomain routing
-        {
-          source: '/:path*',
-          destination: '/go/:path*',
-          has: [
-            {
-              type: 'host',
-              value: 'go.localhost:3000',
-            },
-          ],
-        },
-      ],
-    };
-  },
+  // ===== USANDO PROXY.TS (ESTÁNDAR NEXT.JS 16) =====
+  // Subdomain routing ahora se maneja en proxy.ts siguiendo el estándar oficial
 
   // PWA headers y configuración de cacheo
   async headers() {
