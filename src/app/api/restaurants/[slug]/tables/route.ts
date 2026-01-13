@@ -75,6 +75,33 @@ export async function POST(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: 'Access denied', code: 'FORBIDDEN' }, { status: 403 });
     }
 
+    // [CHECK] Enforce Subscription Limits
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('max_tables')
+      .eq('restaurant_id', restaurantId)
+      .single();
+
+    if (subscription) {
+      const { count } = await createAdminClient()
+        .from('tables')
+        .select('*', { count: 'exact', head: true })
+        .eq('restaurant_id', restaurantId)
+        .eq('is_active', true);
+
+      // Essential plan has max_tables = 0
+      // Pro/Enterprise have specific limits
+      if (count !== null && count >= subscription.max_tables) {
+        return NextResponse.json(
+          {
+            error: `Plan limit reached. Upgrade to add more tables. (Max: ${subscription.max_tables})`,
+            code: 'LIMIT_REACHED',
+          },
+          { status: 403 }
+        );
+      }
+    }
+
     const body = await request.json();
     const validation = CreateTableSchema.safeParse(body);
 
