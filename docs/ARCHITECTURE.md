@@ -13,7 +13,7 @@ Tally is a SaaS application for restaurant bill splitting built with Next.js 16 
 | State      | Zustand + Immer          |
 | Database   | Supabase (PostgreSQL)    |
 | Auth       | Supabase Auth            |
-| Payments   | Stripe (planned)         |
+| Payments   | Stripe                   |
 | Forms      | React Hook Form + Zod    |
 | Components | Radix UI + custom        |
 

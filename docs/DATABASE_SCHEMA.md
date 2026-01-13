@@ -2,7 +2,7 @@
 
 This document outlines the Supabase database schema for the Tally application.
 
-> **Status**: Up to date with migrations `001` - `005`.
+> **Status**: Up to date with migrations `001` - `006`.
 
 ## 🗄️ Tables
 

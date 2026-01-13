@@ -16,19 +16,27 @@ Tally uses a "Warm Minimalism" aesthetic - clean, uncluttered interfaces with wa
 ### Light Mode (Default)
 
 ```css
---background: #fafaf8 /* Warm white */ --foreground: #1a1815 /* Near black */ --card: #ffffff
-  /* Pure white */ --primary: #2d2a26 /* Dark brown */ --secondary: #f0eeeb /* Light beige */
-  --muted: #e8e6e3 /* Muted gray */ --destructive: #8b4513 /* Sienna */ --border: #e0ddd9
-  /* Subtle border */;
+--background: #fafaf8; /* Warm white */
+--foreground: #1a1815; /* Near black */
+--card: #ffffff; /* Pure white */
+--primary: #2d2a26; /* Dark brown */
+--secondary: #f0eeeb; /* Light beige */
+--muted: #e8e6e3; /* Muted gray */
+--destructive: #8b4513; /* Sienna */
+--border: #e0ddd9; /* Subtle border */
 ```
 
 ### Dark Mode
 
 ```css
---background: #1a1815 /* Near black */ --foreground: #f5f4f2 /* Off white */ --card: #242220
-  /* Dark card */ --primary: #f5f4f2 /* Off white */ --secondary: #2d2a26 /* Dark brown */
-  --muted: #3d3a36 /* Muted dark */ --destructive: #d4a574 /* Warm tan */ --border: #3d3a36
-  /* Dark border */;
+--background: #1a1815; /* Near black */
+--foreground: #f5f4f2; /* Off white */
+--card: #242220; /* Dark card */
+--primary: #f5f4f2; /* Off white */
+--secondary: #2d2a26; /* Dark brown */
+--muted: #3d3a36; /* Muted dark */
+--destructive: #d4a574; /* Warm tan */
+--border: #3d3a36; /* Dark border */
 ```
 
 ## Border Radius

@@ -17,17 +17,12 @@ Tally is a multi-tenant B2B SaaS for the hospitality industry, providing a "Spli
 ### Installation & Run
 
 ```bash
-npm install
-npm run dev      # Starts Next.js dev server
-npm run build    # Production build
+pnpm install
+pnpm run dev      # Starts Next.js dev server
+pnpm run build    # Production build
 ```
 
-### Database (Supabase)
-
-```bash
-npx supabase start # Start local Supabase instance
-npx supabase status
-```
+### Database (Supabase Cloud)
 
 ## 3. Tech Stack
 
@@ -46,8 +41,8 @@ For a detailed file tree and explanation of directories, see:
 
 ## 5. Code Style & Conventions
 
-- **Format**: Prettier (run `npm run format`).
-- **Linting**: ESLint (run `npm run lint`).
+- **Format**: Prettier (run `pnpm run format`).
+- **Linting**: ESLint (run `pnpm run lint`).
 - **Imports**: Use absolute imports (`@/components/...`) over relative (`../../`).
 - **Naming**:
   - React Components: `PascalCase.tsx`
@@ -60,9 +55,9 @@ For a detailed file tree and explanation of directories, see:
 - **Unit/Integration**: Vitest
 - **Commands**:
   ```bash
-  npm run test         # Run all tests
-  npm run test:run     # Run once (CI)
-  npm run type-check   # TypeScript check
+  pnpm run test         # Run all tests
+  pnpm run test:run     # Run once (CI)
+  pnpm run type-check   # TypeScript check
   ```
 
 ## 7. Data & API
@@ -74,7 +69,7 @@ For a detailed file tree and explanation of directories, see:
 
 - **Branches**: `feature/description` or `fix/issue-description`.
 - **Commits**: Conventional Commits (e.g., `feat: add payment modal`, `fix: header alignment`).
-- **Review**: Ensure no console errors and pass `npm run type-check` before PR.
+- **Review**: Ensure no console errors and pass `pnpm run type-check` before PR.
 
 ## 9. Security
 

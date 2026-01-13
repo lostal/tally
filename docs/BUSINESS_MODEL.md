@@ -43,7 +43,7 @@ Tally **IS** the POS. The venue manages the entire operation (orders, kitchen, p
   - ✅ All Essential features.
   - ✅ **Itemized Bill Splitting (Killer Feature):** "I pay for my 2 beers, you pay for the burger."
   - ✅ Full Menu Management (Categories, Products, Modifiers).
-  - ✅ Syncronized KDS.
+  - ✅ Synchronized KDS.
   - ✅ Printer Management (Physical receipts).
   - ✅ Staff Sales & Shift Management.
 
