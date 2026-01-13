@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { DashboardContent } from './dashboard-content';
+import { DashboardContentPremium } from './dashboard-content-premium';
 
 /**
  * Admin Dashboard Page
@@ -54,7 +54,7 @@ export default async function AdminDashboardPage() {
     .eq('status', 'occupied');
 
   return (
-    <DashboardContent
+    <DashboardContentPremium
       restaurant={restaurant}
       stats={{
         tables: tableCount || 0,
