@@ -5,10 +5,10 @@ import { getAppUrl } from '@/lib/url';
 import { createClient } from '@/lib/supabase/server';
 
 /**
- * Navigation Hub
+ * Landing Page - Navigation Hub
  *
  * Central access point for the application.
- * Serves as a temporary landing page during development/beta.
+ * Serves as the main landing page.
  */
 export default async function HomePage({
   searchParams,
