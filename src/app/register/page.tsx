@@ -50,6 +50,8 @@ export default function RegisterPage() {
     setIsLoading(true);
     setError(null);
 
+    console.log('Starting registration process...');
+
     if (!formData.password || formData.password.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres');
       setIsLoading(false);
@@ -58,19 +60,24 @@ export default function RegisterPage() {
 
     try {
       const supabase = getClient();
-      const { error: authError } = await supabase.auth.signUp({
+      console.log('Calling Supabase signup...');
+
+      const { data, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
             full_name: formData.fullName,
           },
-          // Redirect to auth callback which will exchange the code and redirect to onboarding
+          // Redirect to auth callback - use same origin for development
           emailRedirectTo: `${window.location.origin}/hub/auth/callback`,
         },
       });
 
+      console.log('Supabase response:', { data, authError });
+
       if (authError) {
+        console.error('Supabase auth error:', authError);
         if (authError.message.includes('already registered')) {
           setError('Este email ya está registrado');
         } else {
@@ -80,9 +87,12 @@ export default function RegisterPage() {
         return;
       }
 
-      // Redirect to onboarding (same origin, no subdomain issues)
-      window.location.href = '/hub/onboarding';
-    } catch {
+      console.log('Registration successful, showing success step');
+
+      // Show success step instead of redirecting immediately
+      setStep('success');
+    } catch (error) {
+      console.error('Registration error:', error);
       setError('Error al crear la cuenta');
     } finally {
       setIsLoading(false);
@@ -397,12 +407,9 @@ function StepSuccess({ email }: { email: string }) {
           Hemos enviado un email a <span className="text-foreground font-medium">{email}</span> para
           verificar tu cuenta.
         </p>
-      </div>
-
-      {/* Loading indicator */}
-      <div className="flex items-center justify-center gap-2">
-        <Loader2 className="text-muted-foreground size-4 animate-spin" />
-        <span className="text-muted-foreground text-sm">Redirigiendo...</span>
+        <p className="text-muted-foreground mx-auto max-w-sm text-sm">
+          Haz clic en el enlace del email para continuar con la configuración de tu restaurante.
+        </p>
       </div>
     </div>
   );

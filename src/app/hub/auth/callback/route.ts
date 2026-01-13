@@ -16,6 +16,11 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  // Redirect to onboarding after successful auth
-  return NextResponse.redirect(new URL('/hub/onboarding', request.url));
+  // Redirect to onboarding on hub subdomain after successful auth
+  const hubUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://hub.localhost:3000/onboarding'
+      : new URL('/onboarding', request.url).toString();
+
+  return NextResponse.redirect(hubUrl);
 }
