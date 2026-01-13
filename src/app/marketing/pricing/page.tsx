@@ -88,11 +88,11 @@ export default function PricingPage() {
                     <span className="text-muted-foreground">/mes</span>
                   </div>
                   <p className="text-muted-foreground mt-4 text-sm leading-relaxed">
-                    {plan.id === 'starter' &&
+                    {plan.id === 'essential' &&
                       'Ideal para cafeterías y locales pequeños que están empezando.'}
                     {plan.id === 'pro' &&
                       'Perfecto para restaurantes establecidos con alto volumen.'}
-                    {plan.id === 'business' &&
+                    {plan.id === 'enterprise' &&
                       'Para cadenas y franquicias que necesitan control total.'}
                   </p>
                 </div>

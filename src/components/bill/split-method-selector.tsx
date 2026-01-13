@@ -16,6 +16,8 @@ interface SplitMethodSelectorProps {
   participantCount?: number;
   /** Additional CSS classes */
   className?: string;
+  /** Disable split by items (Essential Plan) */
+  disableSplitByItems?: boolean;
 }
 
 const SPLIT_OPTIONS: {
@@ -46,18 +48,19 @@ const SPLIT_OPTIONS: {
 
 /**
  * SplitMethodSelector - Choose how to split the bill
- *
- * Three options:
- * - BY_ITEMS: Select individual items you ordered
- * - BY_AMOUNT: Enter a fixed amount to pay
- * - EQUAL: Split the total equally among participants
  */
 export function SplitMethodSelector({
   value,
   onChange,
   participantCount,
   className,
+  disableSplitByItems = false,
 }: SplitMethodSelectorProps) {
+  // Filter options based on restrictions
+  const visibleOptions = SPLIT_OPTIONS.filter(
+    (opt) => !(opt.value === 'BY_ITEMS' && disableSplitByItems)
+  );
+
   return (
     <div className={cn('space-y-4', className)}>
       <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
@@ -65,7 +68,7 @@ export function SplitMethodSelector({
       </h2>
 
       <div className="grid gap-3">
-        {SPLIT_OPTIONS.map((option, index) => {
+        {visibleOptions.map((option, index) => {
           const isSelected = value === option.value;
           const Icon = option.icon;
 

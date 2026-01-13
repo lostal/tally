@@ -1,6 +1,7 @@
 # Business Model & Subscription Tiers
 
 ## 🎯 Vision
+
 Tally is a B2B SaaS platform for restaurants that evolves from a smart payment gateway into a full Operating System (POS + KDS). The core value proposition lies in the collaborative payment experience (Split the bill) and deployment flexibility.
 
 ---
@@ -10,6 +11,7 @@ Tally is a B2B SaaS platform for restaurants that evolves from a smart payment g
 The application architecture supports three distinct operational modes, controlled by the `subscription_tier` flag in the restaurant configuration.
 
 ### 🥉 Tier 1: ESSENTIAL (Smart Payment Gateway)
+
 **Concept:** "Digitize payments, not operations."
 Tally acts as an advanced payment terminal. It does not replace the restaurant's legacy POS.
 
@@ -28,6 +30,7 @@ Tally acts as an advanced payment terminal. It does not replace the restaurant's
   - ❌ **NO** KDS (Kitchen Display System) usage.
 
 ### 🥈 Tier 2: PRO (All-in-One POS)
+
 **Concept:** "The Restaurant Operating System."
 Tally **IS** the POS. The venue manages the entire operation (orders, kitchen, payments) within Tally.
 
@@ -45,6 +48,7 @@ Tally **IS** the POS. The venue manages the entire operation (orders, kitchen, p
   - ✅ Staff Sales & Shift Management.
 
 ### 🥇 Tier 3: ENTERPRISE (Integrated)
+
 **Concept:** "Total Connectivity."
 Tally connects bi-directionally with external ERP/POS systems (Oracle, Micros, ICG).
 
@@ -62,11 +66,11 @@ Tally connects bi-directionally with external ERP/POS systems (Oracle, Micros, I
 
 ## 🛠️ Feature Matrix (Technical Constraints)
 
-| Feature | Tier ESSENTIAL | Tier PRO | Tier ENTERPRISE |
-| :--- | :---: | :---: | :---: |
-| **Data Source** | Manual Input (Numeric Keypad) | Tally Database (`orders` table) | External API Sync |
-| **Menu** | Not required | Required (in Supabase) | Synchronized |
-| **Split Bill** | Equal / Fixed Amount | **By Items** / Equal / Fixed | **By Items** / Equal / Fixed |
-| **Kitchen Flow** | N/A | Tally KDS (Web) + Printers | External Integration |
-| **Receipts** | Generic Total | Detailed (Itemized) | Detailed (Itemized) |
-| **Staff Role** | Payment Processor | Order Taker + Payment | Integration Manager |
+| Feature          |        Tier ESSENTIAL         |            Tier PRO             |       Tier ENTERPRISE        |
+| :--------------- | :---------------------------: | :-----------------------------: | :--------------------------: |
+| **Data Source**  | Manual Input (Numeric Keypad) | Tally Database (`orders` table) |      External API Sync       |
+| **Menu**         |         Not required          |     Required (in Supabase)      |         Synchronized         |
+| **Split Bill**   |     Equal / Fixed Amount      |  **By Items** / Equal / Fixed   | **By Items** / Equal / Fixed |
+| **Kitchen Flow** |              N/A              |   Tally KDS (Web) + Printers    |     External Integration     |
+| **Receipts**     |         Generic Total         |       Detailed (Itemized)       |     Detailed (Itemized)      |
+| **Staff Role**   |       Payment Processor       |      Order Taker + Payment      |     Integration Manager      |

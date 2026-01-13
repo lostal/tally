@@ -7,6 +7,7 @@ import {
 } from '@/lib/data';
 import { getTableByNumber, getFirstTable } from '@/lib/data/restaurants';
 import { BillPageClient } from './bill-client';
+import { SubscriptionPlan } from '@/types/subscription';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -45,6 +46,10 @@ export default async function BillPage({ params, searchParams }: PageProps) {
   const items = transformToSelectableItems(order);
   const totalCents = calculateOrderTotal(items);
 
+  // Determine plan
+  const settings = restaurant.settings as { subscription_tier?: SubscriptionPlan } | null;
+  const plan = settings?.subscription_tier || 'essential';
+
   return (
     <BillPageClient
       slug={slug}
@@ -52,6 +57,7 @@ export default async function BillPage({ params, searchParams }: PageProps) {
       tableNumber={table.number}
       items={items}
       billTotalCents={totalCents}
+      plan={plan}
     />
   );
 }

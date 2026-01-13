@@ -4,7 +4,7 @@
  * Types for SaaS subscription management and Stripe integration.
  */
 
-export type SubscriptionPlan = 'starter' | 'pro' | 'business';
+export type SubscriptionPlan = 'essential' | 'pro' | 'enterprise';
 export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid';
 
 export interface Subscription {
@@ -52,15 +52,15 @@ export interface PricingPlan {
 
 export const PRICING_PLANS: PricingPlan[] = [
   {
-    id: 'starter',
-    name: 'Starter',
+    id: 'essential',
+    name: 'Essential',
     priceMonthly: 4900, // €49
     priceYearly: 47000, // €470 (2 months free)
-    features: ['3 mesas', '1 usuario', 'Pagos con QR', 'División de cuenta', 'Soporte por email'],
-    limits: { tables: 3, users: 1, hasKds: false },
+    features: ['Pagos con QR', 'Propinas Digitales', 'División equitativa', 'Soporte Básico'],
+    limits: { tables: 0, users: 1, hasKds: false }, // Essential is Keypad only
     commissionRate: 1.9,
-    stripePriceId: process.env.STRIPE_STARTER_MONTHLY_PRICE_ID || '',
-    stripeYearlyPriceId: process.env.STRIPE_STARTER_YEARLY_PRICE_ID || '',
+    stripePriceId: process.env.STRIPE_ESSENTIAL_MONTHLY_PRICE_ID || '',
+    stripeYearlyPriceId: process.env.STRIPE_ESSENTIAL_YEARLY_PRICE_ID || '',
   },
   {
     id: 'pro',
@@ -73,6 +73,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Pantalla de cocina (KDS)',
       'Tickets fiscales',
       'Soporte prioritario',
+      'División por ítems',
     ],
     limits: { tables: 15, users: 5, hasKds: true },
     commissionRate: 1.5,
@@ -80,21 +81,21 @@ export const PRICING_PLANS: PricingPlan[] = [
     stripeYearlyPriceId: process.env.STRIPE_PRO_YEARLY_PRICE_ID || '',
   },
   {
-    id: 'business',
-    name: 'Business',
+    id: 'enterprise',
+    name: 'Enterprise',
     priceMonthly: 14900, // €149
     priceYearly: 143000, // €1430 (2 months free)
     features: [
       'Mesas ilimitadas',
       'Usuarios ilimitados',
-      'Multi-local',
+      'Integración ERP',
       'API acceso',
       'Soporte dedicado 24/7',
     ],
     limits: { tables: 999, users: 999, hasKds: true },
     commissionRate: 1.2,
-    stripePriceId: process.env.STRIPE_BUSINESS_MONTHLY_PRICE_ID || '',
-    stripeYearlyPriceId: process.env.STRIPE_BUSINESS_YEARLY_PRICE_ID || '',
+    stripePriceId: process.env.STRIPE_ENTERPRISE_MONTHLY_PRICE_ID || '',
+    stripeYearlyPriceId: process.env.STRIPE_ENTERPRISE_YEARLY_PRICE_ID || '',
   },
 ];
 

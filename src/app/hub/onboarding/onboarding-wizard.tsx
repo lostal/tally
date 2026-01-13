@@ -67,7 +67,7 @@ export function OnboardingWizard({ userId, userEmail: _userEmail }: OnboardingWi
     menuOption: 'demo',
     tableCount: 5,
     tableCapacity: 4,
-    selectedPlan: 'starter',
+    selectedPlan: 'essential',
     billingPeriod: 'monthly',
   });
 

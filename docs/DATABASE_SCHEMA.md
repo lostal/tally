@@ -13,7 +13,7 @@ Stores restaurant configuration and branding.
 - **slug** (Text, Unique): URL slug for the restaurant (e.g., `hub.paytally.app/slug`).
 - **logo_url** (Text, Nullable): URL to the logo image.
 - **theme** (JSON): Stores `primaryColor` and `accentColor`.
-- **settings** (JSON): Flexible settings object.
+- **settings** (JSON): Flexible settings object. Contains `subscription_tier` ('essential', 'pro', 'enterprise').
 - **is_active** (Boolean): Soft delete flag.
 - **created_at**, **updated_at** (Timestamp).
 

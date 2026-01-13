@@ -7,6 +7,8 @@ import { BillItemList, SplitMethodSelector, AmountInput } from '@/components/bil
 import { TipSelector, PaymentSummary, PaymentButton } from '@/components/payment';
 import { Button } from '@/components/ui/button';
 import { useParticipantStore, useUIStore } from '@/stores';
+import { SubscriptionPlan } from '@/types/subscription';
+import { canSplitByItems } from '@/lib/plans';
 import type { SelectableOrderItem } from '@/types';
 import { ChevronLeft, Utensils } from 'lucide-react';
 
@@ -16,6 +18,7 @@ interface BillPageClientProps {
   tableNumber: string;
   items: SelectableOrderItem[];
   billTotalCents: number;
+  plan: SubscriptionPlan;
 }
 
 /**
@@ -29,6 +32,7 @@ export function BillPageClient({
   tableNumber,
   items: initialItems,
   billTotalCents,
+  plan,
 }: BillPageClientProps) {
   const router = useRouter();
 
@@ -46,6 +50,10 @@ export function BillPageClient({
   } = useParticipantStore();
 
   const setCurrentStep = useUIStore((s) => s.setCurrentStep);
+
+  const canSplitItems = canSplitByItems(plan);
+
+  // ... (rest of store logic)
 
   // Calculate items with selection state
   const itemsWithSelection = initialItems.map((item) => ({
@@ -88,6 +96,13 @@ export function BillPageClient({
     setCurrentStep('payment');
     router.push(`/${slug}/payment?table=${tableNumber}`);
   };
+
+  React.useEffect(() => {
+    // If not allowed to split by items but store has that selected, reset to EQUAL
+    if (!canSplitItems && splitMethod === 'BY_ITEMS') {
+      setSplitMethod('EQUAL');
+    }
+  }, [canSplitItems, splitMethod, setSplitMethod]); // Add dependencies
 
   React.useEffect(() => {
     setCurrentStep('bill');
@@ -149,7 +164,11 @@ export function BillPageClient({
             <>
               {/* Split Method Selector */}
               <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                <SplitMethodSelector value={splitMethod} onChange={setSplitMethod} />
+                <SplitMethodSelector
+                  value={splitMethod}
+                  onChange={setSplitMethod}
+                  disableSplitByItems={!canSplitItems}
+                />
               </motion.section>
 
               {/* Content based on split method */}

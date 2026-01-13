@@ -3,6 +3,7 @@ import { parseThemeConfig } from '@/lib/theme';
 import { PosShell } from '@/components/pos/pos-shell';
 
 import { ThemeInjector } from '@/components/providers/theme-injector';
+import { SubscriptionPlan } from '@/types/subscription';
 
 interface POSLayoutProps {
   children: React.ReactNode;
@@ -20,15 +21,19 @@ export default async function POSLayout({ children }: POSLayoutProps) {
   if (!restaurant) {
     const supabase = await import('@/lib/supabase/server').then((m) => m.createClient());
     const { data } = await supabase.from('restaurants').select('*').limit(1).single();
-    if (data) restaurant = data;
+    if (data) restaurant = data as any; // Cast to avoid strict type issues if data is slightly different
   }
 
   // Parse config (default to empty/default if no restaurant)
   const themeConfig = restaurant ? parseThemeConfig(restaurant.theme) : parseThemeConfig({});
 
+  // Determine plan
+  const settings = restaurant?.settings as { subscription_tier?: SubscriptionPlan } | null;
+  const plan = settings?.subscription_tier || 'essential';
+
   return (
     <ThemeInjector config={themeConfig}>
-      <PosShell>{children}</PosShell>
+      <PosShell plan={plan}>{children}</PosShell>
     </ThemeInjector>
   );
 }
