@@ -1,13 +1,13 @@
 -- ============================================
 -- MIGRATION: SaaS Subscriptions
--- Version: 006
+-- Version: 005
 -- Description: Add subscription management for SaaS model
 -- ============================================
 
 -- ============================================
 -- 1. SUBSCRIPTION PLANS ENUM
 -- ============================================
-CREATE TYPE subscription_plan AS ENUM ('starter', 'pro', 'business');
+CREATE TYPE subscription_plan AS ENUM ('essential', 'pro', 'enterprise');
 CREATE TYPE subscription_status AS ENUM ('trialing', 'active', 'past_due', 'canceled', 'unpaid');
 
 -- ============================================
@@ -18,7 +18,7 @@ CREATE TABLE subscriptions (
     restaurant_id UUID UNIQUE REFERENCES restaurants(id) ON DELETE CASCADE,
 
     -- Plan details
-    plan subscription_plan NOT NULL DEFAULT 'starter',
+    plan subscription_plan NOT NULL DEFAULT 'essential',
     status subscription_status NOT NULL DEFAULT 'trialing',
 
     -- Stripe integration
@@ -64,11 +64,14 @@ CREATE OR REPLACE FUNCTION get_plan_limits(p_plan subscription_plan)
 RETURNS TABLE(max_tables INTEGER, max_users INTEGER, has_kds BOOLEAN, commission_rate DECIMAL) AS $$
 BEGIN
     CASE p_plan
-        WHEN 'starter' THEN
-            RETURN QUERY SELECT 3, 1, false, 1.90::DECIMAL;
+        WHEN 'essential' THEN
+            -- Essential: 0 tables (Keypad only), 1 user, 1.9% commission
+            RETURN QUERY SELECT 0, 1, false, 1.90::DECIMAL;
         WHEN 'pro' THEN
+            -- Pro: 15 tables, 5 users, KDS, 1.5% commission
             RETURN QUERY SELECT 15, 5, true, 1.50::DECIMAL;
-        WHEN 'business' THEN
+        WHEN 'enterprise' THEN
+            -- Enterprise: Unlimited, Unlimited, KDS, 1.2% commission
             RETURN QUERY SELECT 999, 999, true, 1.20::DECIMAL;
     END CASE;
 END;

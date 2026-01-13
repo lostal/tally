@@ -9,7 +9,7 @@ import { getAppUrl } from '@/lib/url';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const createCheckoutSchema = z.object({
-  plan: z.enum(['starter', 'pro', 'business']),
+  plan: z.enum(['essential', 'pro', 'enterprise']),
   billingPeriod: z.enum(['monthly', 'yearly']).default('monthly'),
   restaurantId: z.string().uuid().optional(), // For upgrades
 });

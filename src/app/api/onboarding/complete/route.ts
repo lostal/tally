@@ -20,7 +20,7 @@ const completeSchema = z.object({
   tableCount: z.number().min(1).max(50).default(5),
   tableCapacity: z.number().min(1).max(20).default(4),
   // Plan
-  selectedPlan: z.enum(['starter', 'pro', 'business']).default('starter'),
+  selectedPlan: z.enum(['essential', 'pro', 'enterprise']).default('essential'),
 });
 
 /**

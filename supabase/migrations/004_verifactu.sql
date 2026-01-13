@@ -1,6 +1,6 @@
 -- ============================================
 -- MIGRATION: Verifactu Compliance
--- Version: 005
+-- Version: 004
 -- Description: Add hash chaining and soft delete for fiscal compliance
 -- ============================================
 

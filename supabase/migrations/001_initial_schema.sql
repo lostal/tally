@@ -232,6 +232,16 @@ CREATE TRIGGER tr_orders_updated_at BEFORE UPDATE ON orders FOR EACH ROW EXECUTE
 -- Enable RLS on all tables
 ALTER TABLE restaurants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+-- Allow users to view their own profile based on auth_id
+CREATE POLICY "Users can view own profile" ON users
+    FOR SELECT
+    USING (auth_id = auth.uid());
+
+-- Allow users to update their own profile
+CREATE POLICY "Users can update own profile" ON users
+    FOR UPDATE
+    USING (auth_id = auth.uid());
 ALTER TABLE tables ENABLE ROW LEVEL SECURITY;
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
