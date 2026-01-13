@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { WaitingRoom } from '@/components/waiting';
+import { WaitingRoomPremium } from '@/components/waiting';
 import { useParticipantStore, useUIStore } from '@/stores';
 
 // Demo participants
@@ -45,7 +45,7 @@ export default function WaitingPage() {
   return (
     <main className="bg-background min-h-dvh">
       <div className="container-app py-8">
-        <WaitingRoom
+        <WaitingRoomPremium
           participants={participants}
           currentUserId="me"
           isCurrentUserReady={isReady}

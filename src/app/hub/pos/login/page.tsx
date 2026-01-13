@@ -4,12 +4,17 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { getClient } from '@/lib/supabase';
-import { Button } from '@/components/ui/button';
-import { Loader2, ChefHat } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ChefHat } from 'lucide-react';
+import {
+  LoginCard,
+  AnimatedLogo,
+  AnimatedError,
+  PinDisplay,
+  PinKeypad,
+} from '@/components/shared/login-primitives';
 
 /**
- * POS Login Page - PIN-based login for waiters
+ * POS Login Page - Premium PIN-based login
  */
 export default function POSLoginPage() {
   const router = useRouter();
@@ -19,8 +24,14 @@ export default function POSLoginPage() {
 
   const handlePinInput = (digit: string) => {
     if (pin.length < 4) {
-      setPin((prev) => prev + digit);
+      const newPin = pin + digit;
+      setPin(newPin);
       setError(null);
+
+      // Auto-submit when complete
+      if (newPin.length === 4) {
+        handleSubmit(newPin);
+      }
     }
   };
 
@@ -33,30 +44,21 @@ export default function POSLoginPage() {
     setPin((prev) => prev.slice(0, -1));
   };
 
-  // Auto-submit when PIN is complete
-  React.useEffect(() => {
-    if (pin.length === 4) {
-      handleSubmit();
-    }
-  }, [pin]);
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (pinCode: string) => {
     setIsLoading(true);
     setError(null);
 
     try {
       const supabase = getClient();
 
-      // For demo, we'll use email/password with PIN as password
-      // In production, this would check against users.pin column
+      // Demo: use email/password with PIN as password
+      // In production, check against users.pin column
       const { error: authError } = await supabase.auth.signInWithPassword({
-        email: `waiter-${pin}@tally.local`,
-        password: pin,
+        email: `waiter-${pinCode}@tally.local`,
+        password: pinCode,
       });
 
       if (authError) {
-        // Demo fallback: just proceed for now
-        // TODO: Implement proper PIN auth
         setError('PIN incorrecto');
         setPin('');
         setIsLoading(false);
@@ -73,79 +75,33 @@ export default function POSLoginPage() {
     }
   };
 
-  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', '⌫'];
-
   return (
-    <div className="bg-background flex min-h-dvh items-center justify-center p-4">
-      <motion.div
-        className="bg-card w-full max-w-sm space-y-8 rounded-2xl border-2 p-8 shadow-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+    <LoginCard>
+      <AnimatedLogo icon={ChefHat} label="tally POS" sublabel="Introduce tu PIN" />
+
+      <PinDisplay length={4} current={pin.length} error={!!error} />
+
+      <AnimatedError message={error} />
+
+      <PinKeypad
+        onDigit={handlePinInput}
+        onClear={handleClear}
+        onDelete={handleDelete}
+        disabled={pin.length >= 4}
+        isLoading={isLoading}
+      />
+
+      {/* Demo mode button */}
+      <motion.button
+        type="button"
+        onClick={() => router.push('/pos')}
+        className="text-muted-foreground hover:text-foreground w-full py-3 text-sm transition-colors"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
       >
-        {/* Header */}
-        <div className="text-center">
-          <div className="bg-primary/10 mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl">
-            <ChefHat className="text-primary size-8" />
-          </div>
-          <h1 className="font-serif text-2xl font-bold">tally POS</h1>
-          <p className="text-muted-foreground mt-2">Introduce tu PIN</p>
-        </div>
-
-        {/* PIN Display */}
-        <div className="flex justify-center gap-3">
-          {[0, 1, 2, 3].map((i) => (
-            <motion.div
-              key={i}
-              className={cn(
-                'size-4 rounded-full transition-colors',
-                pin.length > i ? 'bg-primary' : 'bg-muted'
-              )}
-              animate={pin.length > i ? { scale: [1, 1.2, 1] } : {}}
-            />
-          ))}
-        </div>
-
-        {/* Error */}
-        {error && (
-          <motion.p
-            className="text-destructive text-center text-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            {error}
-          </motion.p>
-        )}
-
-        {/* Keypad */}
-        <div className="grid grid-cols-3 gap-3">
-          {digits.map((digit) => (
-            <Button
-              key={digit}
-              variant={digit === 'C' || digit === '⌫' ? 'outline' : 'secondary'}
-              className="h-16 rounded-xl text-xl font-semibold"
-              onClick={() => {
-                if (digit === 'C') handleClear();
-                else if (digit === '⌫') handleDelete();
-                else handlePinInput(digit);
-              }}
-              disabled={isLoading}
-            >
-              {isLoading && digit === '⌫' ? <Loader2 className="size-5 animate-spin" /> : digit}
-            </Button>
-          ))}
-        </div>
-
-        {/* Skip for demo */}
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={() => {
-            router.push('/pos');
-          }}
-        >
-          Modo demo (sin login)
-        </Button>
-      </motion.div>
-    </div>
+        Modo demo (sin login)
+      </motion.button>
+    </LoginCard>
   );
 }

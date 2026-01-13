@@ -119,4 +119,337 @@
   .container-app {
     @apply mx-auto w-full max-w-md px-4;
   }
+
+  .container-hub {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Touch targets - minimum 48px for accessibility */
+  .touch-target {
+    @apply min-h-12 min-w-12;
+  }
+
+  /* Text balance for headlines */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Tabular numbers for prices */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply from-foreground to-foreground/70 bg-linear-to-r bg-clip-text text-transparent;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-xl backdrop-saturate-150;
+  }
+
+  .glass-subtle {
+    @apply bg-background/60 backdrop-blur-md;
+  }
+
+  /* Subtle noise texture overlay */
+  .noise {
+    position: relative;
+  }
+
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  /* Glow effects */
+  .glow {
+    box-shadow: 0 0 40px -10px var(--primary);
+  }
+
+  .glow-sm {
+    box-shadow: 0 0 20px -5px var(--primary);
+  }
+
+  /* Inset shadow for depth */
+  .shadow-inset {
+    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  }
+
+  /* Ring pulse animation */
+  .ring-pulse {
+    animation: ring-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes ring-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--primary);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes number-tick {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  51% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes check-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Animation utility classes */
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-fade-in-down {
+    animation: fade-in-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-pop-in {
+    animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 1.5s linear infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .animate-number-tick {
+    animation: number-tick 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-wiggle {
+    animation: wiggle 0.5s ease-in-out;
+  }
+
+  /* Stagger delays */
+  .delay-75 {
+    animation-delay: 75ms;
+  }
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  .delay-150 {
+    animation-delay: 150ms;
+  }
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  /* Fill mode for animations */
+  .fill-forwards {
+    animation-fill-mode: forwards;
+  }
+
+  .fill-backwards {
+    animation-fill-mode: backwards;
+  }
+
+  .fill-both {
+    animation-fill-mode: both;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

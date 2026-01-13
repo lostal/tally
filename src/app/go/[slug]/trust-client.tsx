@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
-import { TrustCard } from '@/components/trust';
+import { TrustCardPremium, PoweredByBadge } from '@/components/trust/trust-card-premium';
 import { useUIStore } from '@/stores';
 
 interface TrustPageClientProps {
@@ -17,7 +17,8 @@ interface TrustPageClientProps {
 /**
  * Trust Screen Client Component
  *
- * Handles user interaction after data is fetched from server.
+ * The first touchpoint with customers. Every detail matters here.
+ * Premium animations create trust and delight from the first second.
  */
 export function TrustPageClient({
   slug,
@@ -34,7 +35,7 @@ export function TrustPageClient({
   const handleContinue = async () => {
     setIsLoading(true);
 
-    // Create session via API (in future: real session creation)
+    // Create session via API
     try {
       const response = await fetch('/api/session/create', {
         method: 'POST',
@@ -61,30 +62,31 @@ export function TrustPageClient({
   }, [setCurrentStep]);
 
   return (
-    <main className="bg-background min-h-dvh">
-      <div className="container-app flex min-h-dvh flex-col justify-center py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-8"
-        >
-          {/* Logo/Brand */}
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <span className="text-muted-foreground text-sm font-medium">powered by</span>
-            <h2 className="text-xl font-bold tracking-tight">tally.</h2>
-          </motion.div>
+    <main className="bg-background relative min-h-dvh overflow-hidden">
+      {/* Subtle gradient background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="from-primary/2 absolute inset-0 bg-linear-to-b via-transparent to-transparent" />
+        <div className="bg-primary/3 absolute top-0 left-1/2 size-150 -translate-x-1/2 rounded-full blur-3xl" />
+      </div>
 
-          {/* Trust Card */}
-          <TrustCard
+      <div className="container-app relative flex min-h-dvh flex-col justify-between py-12">
+        {/* Top: Powered by */}
+        <motion.div
+          className="flex justify-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <PoweredByBadge />
+        </motion.div>
+
+        {/* Center: Trust Card */}
+        <div className="flex flex-1 items-center justify-center py-8">
+          <TrustCardPremium
             restaurant={{
               name: restaurantName,
-              isVerified: isVerified,
               logoUrl: logoUrl || undefined,
+              isVerified: isVerified,
             }}
             table={{
               number: tableNumber,
@@ -92,16 +94,26 @@ export function TrustPageClient({
             onContinue={handleContinue}
             isLoading={isLoading}
           />
+        </div>
 
-          {/* Footer */}
-          <motion.p
-            className="text-muted-foreground text-center text-xs"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            Al continuar, aceptas nuestros Términos de Servicio
-          </motion.p>
+        {/* Bottom: Decorative element */}
+        <motion.div
+          className="flex justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          <div className="flex gap-1">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                className="bg-muted-foreground/30 size-1.5 rounded-full"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1 + i * 0.1 }}
+              />
+            ))}
+          </div>
         </motion.div>
       </div>
     </main>

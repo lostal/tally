@@ -2,15 +2,20 @@
 
 import * as React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { motion } from 'motion/react';
 import { getClient } from '@/lib/supabase';
-import { Button } from '@/components/ui/button';
-import { Loader2, ChefHat } from 'lucide-react';
+import { ChefHat } from 'lucide-react';
+import {
+  LoginCard,
+  AnimatedLogo,
+  AnimatedInput,
+  AnimatedSubmitButton,
+  AnimatedError,
+} from '@/components/shared/login-primitives';
 
 /**
- * Admin Login Page
+ * Admin Login Page - Premium
  *
- * Simple email/password login for restaurant staff
+ * Email/password login with premium animations
  */
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -49,80 +54,45 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="bg-background flex min-h-dvh items-center justify-center p-4">
-      <motion.div
-        className="bg-card w-full max-w-sm space-y-8 rounded-2xl border-2 p-8 shadow-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        {/* Header */}
-        <div className="text-center">
-          <div className="bg-primary/10 mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl">
-            <ChefHat className="text-primary size-8" />
-          </div>
-          <h1 className="font-serif text-2xl font-bold">Panel de Administración</h1>
-          <p className="text-muted-foreground mt-2">Inicia sesión para gestionar tu restaurante</p>
-        </div>
+    <LoginCard>
+      <AnimatedLogo
+        icon={ChefHat}
+        label="Panel de Administración"
+        sublabel="Gestiona tu restaurante"
+      />
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@email.com"
-              required
-              className="border-input bg-background placeholder:text-muted-foreground focus:ring-primary w-full rounded-xl border-2 px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <AnimatedInput
+          id="email"
+          type="email"
+          label="Email"
+          placeholder="tu@email.com"
+          value={email}
+          onChange={setEmail}
+          required
+          autoFocus
+        />
 
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium">
-              Contraseña
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              className="border-input bg-background placeholder:text-muted-foreground focus:ring-primary w-full rounded-xl border-2 px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-            />
-          </div>
+        <AnimatedInput
+          id="password"
+          type="password"
+          label="Contraseña"
+          placeholder="••••••••"
+          value={password}
+          onChange={setPassword}
+          required
+        />
 
-          {error && (
-            <motion.p
-              className="text-destructive text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {error}
-            </motion.p>
-          )}
+        <AnimatedError message={error} />
 
-          <Button type="submit" disabled={isLoading} className="w-full rounded-xl py-6" size="lg">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 size-4 animate-spin" />
-                Iniciando sesión...
-              </>
-            ) : (
-              'Iniciar sesión'
-            )}
-          </Button>
-        </form>
+        <AnimatedSubmitButton isLoading={isLoading} loadingText="Iniciando sesión...">
+          Iniciar sesión
+        </AnimatedSubmitButton>
+      </form>
 
-        {/* Demo hint */}
-        <p className="text-muted-foreground text-center text-xs">
-          Contacta con soporte si no tienes acceso
-        </p>
-      </motion.div>
-    </div>
+      <p className="text-muted-foreground text-center text-xs">
+        Contacta con soporte si no tienes acceso
+      </p>
+    </LoginCard>
   );
 }

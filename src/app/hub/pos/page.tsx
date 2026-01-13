@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { POSTablesContent } from './tables-content';
-import { Keypad } from '@/components/pos/keypad';
+import { KeypadPremium } from '@/components/pos/keypad-premium';
 import { canAccessFullPOS } from '@/lib/plans';
 import { SubscriptionPlan } from '@/types/subscription';
 
@@ -31,7 +31,7 @@ export default async function POSTablesPage() {
   if (!canAccessFullPOS(plan)) {
     return (
       <div className="flex items-center justify-center py-10">
-        <Keypad restaurantId={restaurant.id} slug={restaurant.slug!} />
+        <KeypadPremium restaurantId={restaurant.id} slug={restaurant.slug!} />
       </div>
     );
   }

@@ -6,7 +6,7 @@ import {
   calculateOrderTotal,
 } from '@/lib/data';
 import { getTableByNumber, getFirstTable } from '@/lib/data/restaurants';
-import { BillPageClient } from './bill-client';
+import { BillPageClient } from './bill-client-premium';
 import { SubscriptionPlan } from '@/types/subscription';
 
 interface PageProps {
