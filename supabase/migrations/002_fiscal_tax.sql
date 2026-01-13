@@ -28,7 +28,7 @@ COMMENT ON COLUMN restaurants.fiscal_name IS 'Legal business name for invoices';
 -- INVOICES: Fiscal invoice table
 -- ============================================
 CREATE TABLE IF NOT EXISTS invoices (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     order_id UUID REFERENCES orders(id) ON DELETE SET NULL,
 
@@ -73,7 +73,7 @@ CREATE INDEX IF NOT EXISTS idx_invoices_issued ON invoices(restaurant_id, issued
 -- INVOICE ITEMS: Line items for invoices
 -- ============================================
 CREATE TABLE IF NOT EXISTS invoice_items (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     invoice_id UUID NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
 
     -- Product reference (denormalized for fiscal immutability)

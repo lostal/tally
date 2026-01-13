@@ -14,7 +14,7 @@ CREATE TYPE subscription_status AS ENUM ('trialing', 'active', 'past_due', 'canc
 -- 2. SUBSCRIPTIONS TABLE
 -- ============================================
 CREATE TABLE subscriptions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID UNIQUE REFERENCES restaurants(id) ON DELETE CASCADE,
 
     -- Plan details

@@ -9,14 +9,13 @@
 -- - Payment processing
 -- ============================================
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Note: gen_random_uuid() is built-in to PostgreSQL 13+ (no extension needed)
 
 -- ============================================
 -- RESTAURANTS
 -- ============================================
 CREATE TABLE restaurants (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     slug TEXT UNIQUE NOT NULL,
     logo_url TEXT,
@@ -34,7 +33,7 @@ CREATE INDEX idx_restaurants_slug ON restaurants(slug);
 -- USERS (Restaurant Staff)
 -- ============================================
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID REFERENCES restaurants(id) ON DELETE CASCADE,
     auth_id UUID UNIQUE, -- Links to Supabase Auth
     email TEXT UNIQUE,
@@ -54,7 +53,7 @@ CREATE INDEX idx_users_auth ON users(auth_id);
 -- TABLES
 -- ============================================
 CREATE TABLE tables (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     number TEXT NOT NULL,
     capacity INTEGER DEFAULT 4,
@@ -74,7 +73,7 @@ CREATE INDEX idx_tables_status ON tables(restaurant_id, status);
 -- CATEGORIES
 -- ============================================
 CREATE TABLE categories (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     description TEXT,
@@ -92,7 +91,7 @@ CREATE INDEX idx_categories_sort ON categories(restaurant_id, sort_order);
 -- PRODUCTS
 -- ============================================
 CREATE TABLE products (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
     name TEXT NOT NULL,
@@ -114,7 +113,7 @@ CREATE INDEX idx_products_available ON products(restaurant_id, is_available);
 -- PRODUCT MODIFIERS (extras, sizes, etc.)
 -- ============================================
 CREATE TABLE product_modifiers (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     price_cents INTEGER DEFAULT 0,
@@ -129,7 +128,7 @@ CREATE INDEX idx_modifiers_product ON product_modifiers(product_id);
 -- ORDERS (Comandas)
 -- ============================================
 CREATE TABLE orders (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     table_id UUID NOT NULL REFERENCES tables(id) ON DELETE CASCADE,
     waiter_id UUID REFERENCES users(id) ON DELETE SET NULL,
@@ -152,7 +151,7 @@ CREATE INDEX idx_orders_waiter ON orders(waiter_id);
 -- ORDER ITEMS
 -- ============================================
 CREATE TABLE order_items (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
     product_id UUID NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
     quantity INTEGER NOT NULL DEFAULT 1 CHECK (quantity > 0),
@@ -171,7 +170,7 @@ CREATE INDEX idx_order_items_product ON order_items(product_id);
 -- PAYMENT SESSIONS
 -- ============================================
 CREATE TABLE payment_sessions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
     status TEXT DEFAULT 'active' CHECK (status IN ('active', 'completed', 'cancelled')),
     total_cents INTEGER NOT NULL,
@@ -187,7 +186,7 @@ CREATE INDEX idx_payment_sessions_status ON payment_sessions(status);
 -- PAYMENTS (Individual payments within a session)
 -- ============================================
 CREATE TABLE payments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     session_id UUID NOT NULL REFERENCES payment_sessions(id) ON DELETE CASCADE,
     participant_id TEXT NOT NULL, -- Anonymous identifier for the payer
     amount_cents INTEGER NOT NULL CHECK (amount_cents > 0),
@@ -310,93 +309,6 @@ CREATE POLICY "Public can view payments" ON payments
 -- Note: Service role key bypasses RLS automatically
 
 -- ============================================
--- SEED DATA (Demo Restaurant)
+-- NO SEED DATA - Clean schema only
+-- All data is created through the application onboarding flow
 -- ============================================
-INSERT INTO restaurants (name, slug, logo_url, theme, is_active)
-VALUES (
-    'Trattoria Mario',
-    'trattoria-mario',
-    NULL,
-    '{"primaryColor": "#16a34a", "accentColor": "#22c55e"}'::jsonb,
-    true
-);
-
--- Get the restaurant ID for foreign keys
-DO $$
-DECLARE
-    rest_id UUID;
-    cat_starters UUID;
-    cat_mains UUID;
-    cat_desserts UUID;
-    cat_drinks UUID;
-    demo_table_id UUID;
-BEGIN
-    SELECT id INTO rest_id FROM restaurants WHERE slug = 'trattoria-mario';
-
-    -- Create categories
-    INSERT INTO categories (restaurant_id, name, sort_order, is_active) VALUES
-        (rest_id, 'Entrantes', 1, true) RETURNING id INTO cat_starters;
-    INSERT INTO categories (restaurant_id, name, sort_order, is_active) VALUES
-        (rest_id, 'Principales', 2, true) RETURNING id INTO cat_mains;
-    INSERT INTO categories (restaurant_id, name, sort_order, is_active) VALUES
-        (rest_id, 'Postres', 3, true) RETURNING id INTO cat_desserts;
-    INSERT INTO categories (restaurant_id, name, sort_order, is_active) VALUES
-        (rest_id, 'Bebidas', 4, true) RETURNING id INTO cat_drinks;
-
-    -- Create products
-    INSERT INTO products (restaurant_id, category_id, name, description, price_cents, is_available, sort_order) VALUES
-        (rest_id, cat_starters, 'Bruschetta', 'Pan tostado con tomate y albahaca', 650, true, 1),
-        (rest_id, cat_starters, 'Carpaccio', 'Finas láminas de ternera con parmesano', 1200, true, 2),
-        (rest_id, cat_mains, 'Pizza Margherita', 'Tomate, mozzarella y albahaca fresca', 1450, true, 1),
-        (rest_id, cat_mains, 'Pasta Carbonara', 'Spaghetti con huevo, guanciale y pecorino', 1600, true, 2),
-        (rest_id, cat_mains, 'Risotto ai Funghi', 'Arroz cremoso con setas variadas', 1550, true, 3),
-        (rest_id, cat_desserts, 'Tiramisú', 'Postre clásico italiano con café y mascarpone', 850, true, 1),
-        (rest_id, cat_desserts, 'Panna Cotta', 'Crema italiana con frutos rojos', 750, true, 2),
-        (rest_id, cat_drinks, 'Agua con gas', 'Botella 500ml', 400, true, 1),
-        (rest_id, cat_drinks, 'Café expreso', 'Café italiano tradicional', 300, true, 2),
-        (rest_id, cat_drinks, 'Vino tinto (copa)', 'Chianti Classico', 550, true, 3);
-
-    -- Create tables
-    INSERT INTO tables (restaurant_id, number, capacity, status, is_active) VALUES
-        (rest_id, '1', 2, 'available', true),
-        (rest_id, '2', 4, 'available', true),
-        (rest_id, '3', 4, 'available', true),
-        (rest_id, '4', 6, 'available', true),
-        (rest_id, '5', 6, 'available', true),
-        (rest_id, '6', 2, 'available', true),
-        (rest_id, '7', 4, 'available', true);
-
-    -- Create a demo order for table 7
-    SELECT id INTO demo_table_id FROM tables WHERE restaurant_id = rest_id AND number = '7';
-
-    UPDATE tables SET status = 'occupied' WHERE id = demo_table_id;
-
-    INSERT INTO orders (restaurant_id, table_id, status, subtotal_cents, notes)
-    SELECT
-        rest_id,
-        demo_table_id,
-        'open',
-        5750,
-        'Demo order'
-    WHERE demo_table_id IS NOT NULL;
-
-    -- Add items to the demo order
-    INSERT INTO order_items (order_id, product_id, quantity, unit_price_cents, status)
-    SELECT
-        o.id,
-        p.id,
-        CASE
-            WHEN p.name = 'Pizza Margherita' THEN 1
-            WHEN p.name = 'Pasta Carbonara' THEN 1
-            WHEN p.name = 'Tiramisú' THEN 2
-            WHEN p.name = 'Agua con gas' THEN 2
-            WHEN p.name = 'Café expreso' THEN 2
-        END,
-        p.price_cents,
-        'served'
-    FROM orders o
-    CROSS JOIN products p
-    WHERE o.table_id = demo_table_id
-    AND p.name IN ('Pizza Margherita', 'Pasta Carbonara', 'Tiramisú', 'Agua con gas', 'Café expreso');
-
-END $$;

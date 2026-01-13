@@ -110,13 +110,16 @@ export function OnboardingWizard({ userId, userEmail: _userEmail }: OnboardingWi
       const response = await fetch('/api/onboarding/complete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Ensure cookies are sent
         body: JSON.stringify({
           ...formData,
           userId,
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to create restaurant');
+      if (!response.ok) {
+        throw new Error('Failed to create restaurant');
+      }
 
       const { restaurantId } = await response.json();
 
@@ -124,6 +127,7 @@ export function OnboardingWizard({ userId, userEmail: _userEmail }: OnboardingWi
       const checkoutResponse = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Ensure cookies are sent
         body: JSON.stringify({
           plan: formData.selectedPlan,
           billingPeriod: formData.billingPeriod,
@@ -131,7 +135,9 @@ export function OnboardingWizard({ userId, userEmail: _userEmail }: OnboardingWi
         }),
       });
 
-      if (!checkoutResponse.ok) throw new Error('Failed to create checkout');
+      if (!checkoutResponse.ok) {
+        throw new Error('Failed to create checkout');
+      }
 
       const { url } = await checkoutResponse.json();
       window.location.href = url;

@@ -1,1 +1,6 @@
--- Seed data (3 restaurants) - to be implemented
+-- ============================================
+-- SEED DATA - Production Ready
+-- ============================================
+-- No demo data - all restaurants are created through onboarding
+-- This file intentionally left empty for production use
+-- ============================================

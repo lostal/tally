@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Loader2, Check, Eye, EyeOff } from 'lucide-react';
@@ -17,7 +16,6 @@ import { cn } from '@/lib/utils';
  * Large negative space, smooth animations, warm typography.
  */
 export default function RegisterPage() {
-  const router = useRouter();
   const [step, setStep] = React.useState<'email' | 'details' | 'success'>('email');
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -67,6 +65,8 @@ export default function RegisterPage() {
           data: {
             full_name: formData.fullName,
           },
+          // Redirect to auth callback which will exchange the code and redirect to onboarding
+          emailRedirectTo: `${window.location.origin}/hub/auth/callback`,
         },
       });
 
@@ -80,12 +80,8 @@ export default function RegisterPage() {
         return;
       }
 
-      setStep('success');
-
-      // Redirect to onboarding after short delay
-      setTimeout(() => {
-        router.push('/onboarding');
-      }, 2000);
+      // Redirect to onboarding (same origin, no subdomain issues)
+      window.location.href = '/hub/onboarding';
     } catch {
       setError('Error al crear la cuenta');
     } finally {
@@ -98,12 +94,12 @@ export default function RegisterPage() {
       {/* Subtle decorative element */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
-          className="bg-primary/2 absolute -top-40 -right-40 size-[500px] rounded-full blur-3xl"
+          className="bg-primary/2 absolute -top-40 -right-40 size-125 rounded-full blur-3xl"
           animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.3, 0.5] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="bg-primary/1.5 absolute -bottom-40 -left-40 size-[400px] rounded-full blur-3xl"
+          className="bg-primary/1.5 absolute -bottom-40 -left-40 size-100 rounded-full blur-3xl"
           animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />

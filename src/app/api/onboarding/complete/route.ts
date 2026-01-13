@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { logApiError } from '@/lib/api/validation';
 
 const completeSchema = z.object({
@@ -27,9 +27,11 @@ const completeSchema = z.object({
  * POST /api/onboarding/complete
  *
  * Creates a new restaurant with all associated data.
+ * Uses admin client to bypass RLS for initial setup.
  */
 export async function POST(request: NextRequest) {
   try {
+    // Use regular client for auth check
     const supabase = await createClient();
     const {
       data: { user },
@@ -47,8 +49,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    // Use admin client for database operations (bypasses RLS)
+    const adminClient = createAdminClient();
+
     // 1. Create restaurant
-    const { data: restaurant, error: restaurantError } = await supabase
+    const { data: restaurant, error: restaurantError } = await adminClient
       .from('restaurants')
       .insert({
         name: data.restaurantName,
@@ -70,7 +75,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Create subscription (trial)
-    const { error: subscriptionError } = await supabase.from('subscriptions').insert({
+    const { error: subscriptionError } = await adminClient.from('subscriptions').insert({
       restaurant_id: restaurant.id,
       plan: data.selectedPlan,
       status: 'trialing',
@@ -82,7 +87,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 3. Create user record
-    const { error: userError } = await supabase.from('users').insert({
+    const { error: userError } = await adminClient.from('users').insert({
       restaurant_id: restaurant.id,
       auth_id: user.id,
       email: user.email,
@@ -97,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     // 4. Add fiscal info if provided
     if (data.taxId || data.address) {
-      await supabase
+      await adminClient
         .from('restaurants')
         .update({
           tax_id: data.taxId,
@@ -115,7 +120,7 @@ export async function POST(request: NextRequest) {
       is_active: true,
     }));
 
-    const { error: tablesError } = await supabase.from('tables').insert(tables);
+    const { error: tablesError } = await adminClient.from('tables').insert(tables);
 
     if (tablesError) {
       logApiError('POST /api/onboarding/complete', tablesError);
@@ -123,7 +128,7 @@ export async function POST(request: NextRequest) {
 
     // 6. Create demo menu if selected
     if (data.menuOption === 'demo') {
-      await createDemoMenu(supabase, restaurant.id);
+      await createDemoMenu(adminClient, restaurant.id);
     }
 
     return NextResponse.json({
@@ -145,10 +150,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function createDemoMenu(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  restaurantId: string
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function createDemoMenu(supabase: any, restaurantId: string) {
   // Create demo categories
   const categories = [
     { name: 'Entrantes', sort_order: 1 },
@@ -159,12 +162,19 @@ async function createDemoMenu(
 
   const { data: createdCategories } = await supabase
     .from('categories')
-    .insert(categories.map((c) => ({ ...c, restaurant_id: restaurantId })))
+    .insert(
+      categories.map((c: { name: string; sort_order: number }) => ({
+        ...c,
+        restaurant_id: restaurantId,
+      }))
+    )
     .select();
 
   if (!createdCategories) return;
 
-  const categoryMap = Object.fromEntries(createdCategories.map((c) => [c.name, c.id]));
+  const categoryMap = Object.fromEntries(
+    createdCategories.map((c: { name: string; id: string }) => [c.name, c.id])
+  );
 
   // Create demo products
   const products = [

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, CreditCard, Smartphone, Lock, Shield, Check } from 'lucide-react';
+import { ChevronLeft, CreditCard, Smartphone, Lock, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { springSmooth, springBouncy } from '@/lib/motion';
 

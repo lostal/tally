@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, LayoutDashboard, Terminal, CreditCard, Paintbrush } from 'lucide-react';
 import { getAppUrl } from '@/lib/url';
+import { createClient } from '@/lib/supabase/server';
 
 /**
  * Navigation Hub
@@ -9,7 +10,34 @@ import { getAppUrl } from '@/lib/url';
  * Central access point for the application.
  * Serves as a temporary landing page during development/beta.
  */
-export default function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string }>;
+}) {
+  const params = await searchParams;
+
+  // Handle auth callback code (email confirmation)
+  if (params.code) {
+    const supabase = await createClient();
+    await supabase.auth.exchangeCodeForSession(params.code);
+
+    // Redirect to Hub onboarding after successful auth
+    // Using script because redirect() doesn't support absolute URLs
+    const hubUrl =
+      process.env.NODE_ENV === 'development'
+        ? 'http://hub.localhost:3000/onboarding'
+        : '/onboarding';
+
+    return (
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.location.href = '${hubUrl}';`,
+        }}
+      />
+    );
+  }
+
   return (
     <div className="bg-background flex min-h-dvh flex-col items-center justify-center p-6 text-center">
       <div className="w-full max-w-md space-y-12">

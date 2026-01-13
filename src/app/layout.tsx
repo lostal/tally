@@ -50,8 +50,31 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Script to prevent flash - runs before React hydration
+  // Only applies 'dark' class if explicitly set in localStorage
+  const themeScript = `
+    (function() {
+      try {
+        var mode = localStorage.getItem('tally-theme-mode');
+        if (mode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else if (mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.classList.add('dark');
+        }
+        // If 'light' or no preference, do nothing (default is light)
+      } catch (e) {}
+    })();
+  `;
+
   return (
-    <html lang="en" className={`${fontSans.variable} ${fontSerif.variable}`}>
+    <html
+      lang="en"
+      className={`${fontSans.variable} ${fontSerif.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="bg-background text-foreground min-h-dvh font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>

@@ -2,72 +2,61 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 /**
- * Multi-Tenant Middleware (Standard Pattern)
+ * Multi-Tenant Proxy (Next.js 16)
  *
- * Rewrites requests based on the hostname to specific app directories:
- * - hub.paytally.app -> /hub (Admin, POS)
- * - go.paytally.app  -> /go (Customer App)
- * - paytally.app     -> /marketing (Landing)
+ * Routes requests based on hostname to app directories:
+ * - hub.* / admin.* -> /hub (Admin, POS)
+ * - go.*            -> /go (Customer App)
+ * - everything else -> /marketing (Landing)
  *
- * This architecture ensures strict separation and prevents route collisions.
+ * In development (localhost:3000), we use path prefixes instead of subdomains:
+ * - /hub/*   -> /hub/*
+ * - /go/*    -> /go/*
+ * - /*       -> /marketing/*
  */
 export async function proxy(request: NextRequest) {
   const hostname = request.headers.get('host') || '';
-  const url = request.nextUrl;
-  const pathname = url.pathname;
+  const { pathname, search } = request.nextUrl;
 
-  // 1. Skip Static/API/Internal Paths
+  // Skip static files, API routes, and internal Next.js paths
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
-    pathname.startsWith('/static') ||
     pathname.includes('.') ||
-    pathname.startsWith('/favicon.ico')
+    pathname === '/favicon.ico'
   ) {
     return NextResponse.next();
   }
 
-  // 2. Identify Domain
-  const isGo = hostname.startsWith('go.');
-  const isHub =
-    hostname.startsWith('hub.') || hostname.startsWith('admin.') || hostname.includes('localhost');
-  // ^ Treating localhost as Hub for ease of dev (access other apps via localhost/go/...)
-  // OR we can rely on subdomains locally too: go.localhost:3000
+  // Development mode: Use path-based routing (no subdomains needed)
+  const isDev = hostname.includes('localhost');
 
-  // 3. Rewrite Logic
-  // We explicitly rewrite the URL path to point to the namespaced folder in /app
-
-  if (isGo) {
-    // go.paytally.app/slug -> /go/slug
-    return NextResponse.rewrite(new URL(`/go${pathname}`, request.url));
+  if (isDev) {
+    // In dev, /hub/* and /go/* are accessed directly
+    // Only rewrite root paths to /marketing
+    if (pathname.startsWith('/hub') || pathname.startsWith('/go')) {
+      return NextResponse.next();
+    }
+    // Root paths go to marketing
+    return NextResponse.rewrite(new URL(`/marketing${pathname}${search}`, request.url));
   }
 
-  if (isHub || hostname.includes('localhost')) {
-    // hub.paytally.app/admin -> /hub/admin
-    // Special Case: Localhost might want to access landing?
-    // For now, let's treat localhost ROOT as Hub dashboard trigger OR marketing?
-    // User wants "cleanest solution".
-    // Usually:
-    // localhost:3000 -> Marketing
-    // hub.localhost:3000 -> Hub
-    // go.localhost:3000 -> Go
+  // Production: Use subdomain-based routing
+  const isGo = hostname.startsWith('go.');
+  const isHub = hostname.startsWith('hub.') || hostname.startsWith('admin.');
 
-    // Let's refine localhost logic to be strict if possible, but fallback to marketing if plain localhost?
-    if (hostname === 'localhost:3000') {
-      // Root localhost = Marketing
-      return NextResponse.rewrite(new URL(`/marketing${pathname}`, request.url));
-    }
+  if (isGo) {
+    return NextResponse.rewrite(new URL(`/go${pathname}${search}`, request.url));
+  }
 
-    // Otherwise fallback to Hub (hub.localhost or hub.paytally.app)
-    // Fix: If I rewrite to /hub/admin, Next.js finds src/app/hub/admin
-    return NextResponse.rewrite(new URL(`/hub${pathname}`, request.url));
+  if (isHub) {
+    return NextResponse.rewrite(new URL(`/hub${pathname}${search}`, request.url));
   }
 
   // Default: Marketing
-  // paytally.app -> /marketing
-  return NextResponse.rewrite(new URL(`/marketing${pathname}`, request.url));
+  return NextResponse.rewrite(new URL(`/marketing${pathname}${search}`, request.url));
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
 };

@@ -10,11 +10,13 @@ import { OnboardingWizard } from './onboarding-wizard';
  */
 export default async function OnboardingPage() {
   const supabase = await createClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
+    // Redirect to register page (same origin)
     redirect('/register');
   }
 
@@ -27,7 +29,7 @@ export default async function OnboardingPage() {
 
   if (userData?.restaurant_id) {
     // Already has restaurant, go to dashboard
-    redirect('/admin');
+    redirect('/hub/admin');
   }
 
   return <OnboardingWizard userId={user.id} userEmail={user.email || ''} />;

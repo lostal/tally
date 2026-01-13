@@ -35,12 +35,35 @@ export function useTheme() {
 
 interface ThemeProviderProps {
   children: React.ReactNode;
+  /** Default mode - defaults to 'light' for a clean first impression */
+  defaultMode?: ThemeMode;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [mode, setMode] = React.useState<ThemeMode>('auto');
+const STORAGE_KEY = 'tally-theme-mode';
+
+export function ThemeProvider({ children, defaultMode = 'light' }: ThemeProviderProps) {
+  // Initialize from localStorage if available, otherwise use default
+  const [mode, setModeState] = React.useState<ThemeMode>(() => {
+    if (typeof window === 'undefined') return defaultMode;
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
+      return stored && ['light', 'dark', 'auto'].includes(stored) ? stored : defaultMode;
+    } catch {
+      return defaultMode;
+    }
+  });
   const [isDark, setIsDark] = React.useState(false);
   const [previewConfig, setPreviewConfig] = React.useState<Partial<RestaurantThemeConfig>>({});
+
+  // Persist mode to localStorage
+  const setMode = React.useCallback((newMode: ThemeMode) => {
+    setModeState(newMode);
+    try {
+      localStorage.setItem(STORAGE_KEY, newMode);
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
 
   // Unified logic for mode application
   React.useEffect(() => {
@@ -56,13 +79,19 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       }
 
       setIsDark(shouldBeDark);
-      document.documentElement.classList.toggle('dark', shouldBeDark);
+
+      // Always explicitly set/remove the dark class
+      if (shouldBeDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     };
 
     // Apply immediately
     applyMode();
 
-    // Listen for system changes
+    // Listen for system changes (only matters if mode is 'auto')
     const listener = () => applyMode();
     mediaQuery.addEventListener('change', listener);
 
@@ -70,13 +99,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, [mode]);
 
   const toggleDark = React.useCallback(() => {
-    setMode((prev) => {
-      if (prev === 'auto') {
-        return isDark ? 'light' : 'dark';
-      }
-      return prev === 'dark' ? 'light' : 'dark';
-    });
-  }, [isDark]);
+    setMode(isDark ? 'light' : 'dark');
+  }, [isDark, setMode]);
 
   return (
     <ThemeContext.Provider

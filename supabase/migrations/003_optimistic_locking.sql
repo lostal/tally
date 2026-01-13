@@ -8,7 +8,7 @@
 -- 1. CREATE SESSIONS (Missing from Audit)
 -- ============================================
 CREATE TABLE IF NOT EXISTS sessions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     table_id UUID REFERENCES tables(id) ON DELETE SET NULL,
     status TEXT DEFAULT 'active' CHECK (status IN ('active', 'closed')),
@@ -35,7 +35,7 @@ CREATE POLICY "Public can insert sessions" ON sessions
 -- 2. CREATE PARTICIPANTS (Missing from Audit)
 -- ============================================
 CREATE TABLE IF NOT EXISTS participants (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     session_id UUID NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
     user_id UUID, -- Optional link to auth users
     name TEXT NOT NULL,

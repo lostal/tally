@@ -16,7 +16,7 @@ export async function createCheckoutSession(priceId: string, restaurantId: strin
   }
 
   // Get restaurant owner email for pre-filling
-  const { data: restaurant } = await supabase
+  const { data: _restaurant } = await supabase
     .from('restaurants')
     .select('email, name') // Assuming email might be on restaurant or we use user email
     .eq('id', restaurantId)
