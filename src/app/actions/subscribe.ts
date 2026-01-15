@@ -16,11 +16,16 @@ export async function createCheckoutSession(priceId: string, restaurantId: strin
   }
 
   // Get restaurant owner email for pre-filling
-  const { data: _restaurant } = await supabase
+  // Validate restaurant exists
+  const { error: restaurantError } = await supabase
     .from('restaurants')
-    .select('email, name') // Assuming email might be on restaurant or we use user email
+    .select('id')
     .eq('id', restaurantId)
     .single();
+
+  if (restaurantError) {
+    throw new Error('Restaurant not found');
+  }
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],

@@ -69,8 +69,11 @@ export default function RegisterPage() {
           data: {
             full_name: formData.fullName,
           },
-          // Redirect to auth callback - use same origin for development
-          emailRedirectTo: `${window.location.origin}/hub/auth/callback`,
+          // Redirect to auth callback - use proper subdomain for development
+          emailRedirectTo:
+            process.env.NODE_ENV === 'development'
+              ? 'http://localhost:3000/auth/callback'
+              : `${window.location.origin}/auth/callback`,
         },
       });
 

@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   const hubUrl =
     process.env.NODE_ENV === 'development'
       ? 'http://hub.localhost:3000/onboarding'
-      : new URL('/onboarding', request.url).toString();
+      : 'https://hub.paytally.com/onboarding';
 
   return NextResponse.redirect(hubUrl);
 }

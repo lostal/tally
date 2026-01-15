@@ -10,54 +10,42 @@ import type { NextRequest } from 'next/server';
  * - localhost:3000     → Marketing site (root)
  */
 
-function extractSubdomain(request: NextRequest): string | null {
-  const host = request.headers.get('host') || '';
-
-  // Extract subdomain from host
-  if (host.includes('hub.localhost')) return 'hub';
-  if (host.includes('go.localhost')) return 'go';
-
-  return null;
-}
-
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
-  const subdomain = extractSubdomain(request);
+  const host = request.headers.get('host') || '';
 
-  // Hub subdomain: Admin Dashboard
-  if (subdomain === 'hub') {
-    // Already on /hub path, continue
+  console.log(`🔍 MIDDLEWARE EJECUTADO: ${host}${pathname}${search}`);
+
+  // Hub subdomain detection
+  if (host.includes('hub.localhost')) {
     if (pathname.startsWith('/hub')) {
+      console.log('✅ Ya está en /hub, continuando...');
       return NextResponse.next();
     }
-    // Rewrite to /hub routes
+
     const url = request.nextUrl.clone();
     url.pathname = `/hub${pathname === '/' ? '' : pathname}`;
-    console.log(`🔄 Hub middleware: ${pathname}${search} → ${url.pathname}`);
+    console.log(`🔄 REWRITE: ${host}${pathname} → ${url.pathname}`);
     return NextResponse.rewrite(url);
   }
 
-  // Go subdomain: Customer App
-  if (subdomain === 'go') {
-    // Already on /go path, continue
+  // Go subdomain detection
+  if (host.includes('go.localhost')) {
     if (pathname.startsWith('/go')) {
       return NextResponse.next();
     }
-    // Rewrite to /go routes
+
     const url = request.nextUrl.clone();
     url.pathname = `/go${pathname === '/' ? '' : pathname}`;
-    console.log(`🔄 Go middleware: ${pathname}${search} → ${url.pathname}`);
+    console.log(`🔄 REWRITE: ${host}${pathname} → ${url.pathname}`);
     return NextResponse.rewrite(url);
   }
 
-  // Default: Marketing site (no subdomain)
+  console.log('⏭️ Sin subdomain, continuando...');
   return NextResponse.next();
 }
 
 // Matcher configuration for performance
 export const config = {
-  matcher: [
-    // Match all request paths except static files and API routes
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

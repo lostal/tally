@@ -27,7 +27,7 @@ export default async function HomePage({
     const hubUrl =
       process.env.NODE_ENV === 'development'
         ? 'http://hub.localhost:3000/onboarding'
-        : '/onboarding';
+        : 'https://hub.paytally.com/onboarding';
 
     return (
       <script
