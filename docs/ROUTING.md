@@ -16,7 +16,7 @@ Tally uses a **path-based routing strategy** (not subdomain-based) to avoid comp
 | Environment | Main Domain        | Landing Page             |
 | ----------- | ------------------ | ------------------------ |
 | Development | `localhost:3000`   | `localhost:4321` (Astro) |
-| Production  | `app.paytally.com` | `paytally.com` (Astro)   |
+| Production  | `app.paytally.app` | `paytally.app` (Astro)   |
 
 ### URL Mapping
 
@@ -66,8 +66,8 @@ In Supabase Dashboard → Authentication → URL Configuration:
 
 | Setting       | Development                           | Production                               |
 | ------------- | ------------------------------------- | ---------------------------------------- |
-| Site URL      | `http://localhost:3000`               | `https://app.paytally.com`               |
-| Redirect URLs | `http://localhost:3000/auth/callback` | `https://app.paytally.com/auth/callback` |
+| Site URL      | `http://localhost:3000`               | `https://app.paytally.app`               |
+| Redirect URLs | `http://localhost:3000/auth/callback` | `https://app.paytally.app/auth/callback` |
 
 **CRITICAL**: The `emailRedirectTo` in signup MUST match allowed redirect URLs exactly.
 
@@ -106,9 +106,9 @@ The middleware handles:
 
 ### Production
 
-- Landing at `paytally.com` (static, deployed separately)
-- App at `app.paytally.com`
-- Links from landing point to `app.paytally.com/*`
+- Landing at `paytally.app` (static, deployed separately)
+- App at `app.paytally.app`
+- Links from landing point to `app.paytally.app/*`
 
 ### Cross-linking
 
@@ -116,12 +116,12 @@ Use environment variables for cross-app URLs:
 
 ```typescript
 // In Astro landing
-const appUrl = import.meta.env.PUBLIC_APP_URL || 'https://app.paytally.com';
+const appUrl = import.meta.env.PUBLIC_APP_URL || 'https://app.paytally.app';
 ```
 
 ```typescript
 // In Next.js app
-const landingUrl = process.env.NEXT_PUBLIC_LANDING_URL || 'https://paytally.com';
+const landingUrl = process.env.NEXT_PUBLIC_LANDING_URL || 'https://paytally.app';
 ```
 
 ## 5. Environment Variables
@@ -132,8 +132,8 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000        # Self URL
 NEXT_PUBLIC_LANDING_URL=http://localhost:4321    # Landing URL
 
 # Production
-NEXT_PUBLIC_APP_URL=https://app.paytally.com
-NEXT_PUBLIC_LANDING_URL=https://paytally.com
+NEXT_PUBLIC_APP_URL=https://app.paytally.app
+NEXT_PUBLIC_LANDING_URL=https://paytally.app
 
 # Supabase (MUST match Site URL config in dashboard)
 NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
@@ -147,7 +147,7 @@ Customer QR codes point to the `/go/` route:
 | Environment | QR URL Pattern                       |
 | ----------- | ------------------------------------ |
 | Development | `http://localhost:3000/go/{slug}`    |
-| Production  | `https://app.paytally.com/go/{slug}` |
+| Production  | `https://app.paytally.app/go/{slug}` |
 
 The slug is the `unique_slug` from the `tables` table.
 

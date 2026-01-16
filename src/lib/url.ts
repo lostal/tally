@@ -9,7 +9,7 @@
  * Get the base app URL
  *
  * In development: http://localhost:3000
- * In production: https://app.paytally.com (or NEXT_PUBLIC_APP_URL)
+ * In production: https://app.paytally.app (or NEXT_PUBLIC_APP_URL)
  */
 export function getAppUrl(): string {
   if (typeof window !== 'undefined') {
@@ -22,7 +22,7 @@ export function getAppUrl(): string {
  * Get the landing/marketing site URL
  *
  * In development: http://localhost:4321 (Astro)
- * In production: https://paytally.com
+ * In production: https://paytally.app
  */
 export function getLandingUrl(): string {
   return process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:4321';

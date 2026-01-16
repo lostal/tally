@@ -42,7 +42,7 @@ The app uses path-based routing (not subdomains) for simplicity:
 | Environment | App                | Landing          |
 | ----------- | ------------------ | ---------------- |
 | Development | `localhost:3000`   | `localhost:4321` |
-| Production  | `app.paytally.com` | `paytally.com`   |
+| Production  | `app.paytally.app` | `paytally.app`   |
 
 ## Directory Structure
 
