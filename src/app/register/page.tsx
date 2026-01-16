@@ -69,11 +69,9 @@ export default function RegisterPage() {
           data: {
             full_name: formData.fullName,
           },
-          // Redirect to auth callback - use proper subdomain for development
-          emailRedirectTo:
-            process.env.NODE_ENV === 'development'
-              ? 'http://localhost:3000/auth/callback'
-              : `${window.location.origin}/auth/callback`,
+          // Redirect to auth callback - always use current origin
+          // This URL MUST be whitelisted in Supabase Dashboard → Auth → URL Configuration
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
       });
 

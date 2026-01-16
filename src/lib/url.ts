@@ -1,14 +1,45 @@
-export const getAppUrl = (subdomain: 'hub' | 'go' = 'hub') => {
-  // In development, we use localhost subdomains
-  if (process.env.NODE_ENV === 'development') {
-    return `http://${subdomain}.localhost:3000`;
-  }
+/**
+ * URL Utilities for Tally
+ *
+ * Uses path-based routing (not subdomains) for simplicity.
+ * See docs/ROUTING.md for the complete URL architecture.
+ */
 
-  // In production, we use the specific environment variables
-  // If not set, fallback to the main app URL (though this shouldn't happen in correct setup)
-  if (subdomain === 'go') {
-    return process.env.NEXT_PUBLIC_GO_URL || process.env.NEXT_PUBLIC_APP_URL || '';
+/**
+ * Get the base app URL
+ *
+ * In development: http://localhost:3000
+ * In production: https://app.paytally.com (or NEXT_PUBLIC_APP_URL)
+ */
+export function getAppUrl(): string {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
   }
+  return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+}
 
-  return process.env.NEXT_PUBLIC_HUB_URL || process.env.NEXT_PUBLIC_APP_URL || '';
-};
+/**
+ * Get the landing/marketing site URL
+ *
+ * In development: http://localhost:4321 (Astro)
+ * In production: https://paytally.com
+ */
+export function getLandingUrl(): string {
+  return process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:4321';
+}
+
+/**
+ * Build a URL for a specific route
+ */
+export function buildUrl(path: string): string {
+  const base = getAppUrl();
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${cleanPath}`;
+}
+
+/**
+ * Build a customer QR URL for a table
+ */
+export function buildQrUrl(tableSlug: string): string {
+  return buildUrl(`/go/${tableSlug}`);
+}

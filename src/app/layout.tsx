@@ -23,25 +23,40 @@ const fontSerif = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: 'tally - paga sin levantarte',
+    default: 'tally - sistema de pagos para restaurantes',
     template: '%s | tally',
   },
-  description: 'Paga sin levantarte. Escanea, divide y paga en segundos.',
-  keywords: ['restaurante', 'pago', 'dividir cuenta', 'código QR', 'pago móvil'],
+  description: 'Sistema de pagos para restaurantes. Cobra más rápido, rota más mesas, gana más.',
+  keywords: [
+    'restaurante',
+    'pago',
+    'dividir cuenta',
+    'código QR',
+    'pago móvil',
+    'pos',
+    'hostelería',
+  ],
   authors: [{ name: 'tally' }],
   creator: 'tally',
   manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/manifest-icon/32', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }],
+  },
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
-    title: 'tally.',
+    statusBarStyle: 'black-translucent',
+    title: 'tally',
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FAF8F5' },
-    { media: '(prefers-color-scheme: dark)', color: '#1A1816' },
+    { media: '(prefers-color-scheme: light)', color: '#2d2a26' },
+    { media: '(prefers-color-scheme: dark)', color: '#2d2a26' },
   ],
   width: 'device-width',
   initialScale: 1,

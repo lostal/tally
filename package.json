@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
+    "dev:landing": "pnpm --filter @tally/landing dev",
     "build": "next build",
+    "build:landing": "pnpm --filter @tally/landing build",
+    "preview:landing": "pnpm --filter @tally/landing preview",
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",

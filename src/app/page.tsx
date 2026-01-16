@@ -1,43 +1,17 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, LayoutDashboard, Terminal, CreditCard, Paintbrush } from 'lucide-react';
-import { getAppUrl } from '@/lib/url';
-import { createClient } from '@/lib/supabase/server';
+import { ArrowRight, LayoutDashboard, Terminal } from 'lucide-react';
 
 /**
- * Landing Page - Navigation Hub
+ * App Home - Navigation Hub
  *
  * Central access point for the application.
- * Serves as the main landing page.
+ * Links to admin panel, POS, and registration.
+ *
+ * Note: The marketing landing page is at apps/landing (Astro)
+ * This is the app's internal navigation hub.
  */
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ code?: string }>;
-}) {
-  const params = await searchParams;
-
-  // Handle auth callback code (email confirmation)
-  if (params.code) {
-    const supabase = await createClient();
-    await supabase.auth.exchangeCodeForSession(params.code);
-
-    // Redirect to Hub onboarding after successful auth
-    // Using script because redirect() doesn't support absolute URLs
-    const hubUrl =
-      process.env.NODE_ENV === 'development'
-        ? 'http://hub.localhost:3000/onboarding'
-        : 'https://hub.paytally.com/onboarding';
-
-    return (
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.location.href = '${hubUrl}';`,
-        }}
-      />
-    );
-  }
-
+export default function HomePage() {
   return (
     <div className="bg-background flex min-h-dvh flex-col items-center justify-center p-6 text-center">
       <div className="w-full max-w-md space-y-12">
@@ -52,7 +26,7 @@ export default async function HomePage({
         {/* Access Nodes */}
         <div className="space-y-4">
           <div className="grid gap-4">
-            <a href={`${getAppUrl('hub')}/admin/login`} className="group">
+            <Link href="/hub/admin/login" className="group">
               <div className="bg-card hover:border-primary/50 flex items-center justify-between rounded-2xl border-2 p-5 transition-all group-hover:shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground flex size-12 items-center justify-center rounded-xl transition-colors">
@@ -65,9 +39,9 @@ export default async function HomePage({
                 </div>
                 <ArrowRight className="text-muted-foreground group-hover:text-primary size-5 transition-colors" />
               </div>
-            </a>
+            </Link>
 
-            <a href={`${getAppUrl('hub')}/pos/login`} className="group">
+            <Link href="/hub/pos/login" className="group">
               <div className="bg-card hover:border-primary/50 flex items-center justify-between rounded-2xl border-2 p-5 transition-all group-hover:shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground flex size-12 items-center justify-center rounded-xl transition-colors">
@@ -80,7 +54,7 @@ export default async function HomePage({
                 </div>
                 <ArrowRight className="text-muted-foreground group-hover:text-primary size-5 transition-colors" />
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="pt-2">
@@ -88,29 +62,6 @@ export default async function HomePage({
               <Button size="lg" className="h-14 w-full rounded-xl text-base" variant="outline">
                 Registrar nuevo restaurante
               </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Dev Tools (Hidden in prod ideally, helpful for now) */}
-        <div className="border-t pt-8">
-          <p className="text-muted-foreground mb-4 text-xs font-medium tracking-wider uppercase">
-            Herramientas de Desarrollo
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <Link
-              href="/design-system"
-              className="hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 text-sm transition-colors"
-            >
-              <Paintbrush className="size-4" />
-              <span>Design System</span>
-            </Link>
-            <Link
-              href="/pricing"
-              className="hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 text-sm transition-colors"
-            >
-              <CreditCard className="size-4" />
-              <span>Pricing Page</span>
             </Link>
           </div>
         </div>

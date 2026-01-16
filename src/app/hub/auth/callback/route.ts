@@ -1,26 +1,21 @@
-import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 /**
- * Auth Callback Handler for Hub
+ * Hub Auth Callback - Redirect to main callback
  *
- * Handles the OAuth/email confirmation callback from Supabase.
- * Exchanges the code for a session and redirects to onboarding.
+ * This route exists for backwards compatibility.
+ * All auth callbacks should go through /auth/callback
  */
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
 
+  // Redirect to the canonical auth callback
+  const callbackUrl = new URL('/auth/callback', requestUrl.origin);
   if (code) {
-    const supabase = await createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+    callbackUrl.searchParams.set('code', code);
   }
+  callbackUrl.searchParams.set('next', '/hub/onboarding');
 
-  // Redirect to onboarding on hub subdomain after successful auth
-  const hubUrl =
-    process.env.NODE_ENV === 'development'
-      ? 'http://hub.localhost:3000/onboarding'
-      : 'https://hub.paytally.com/onboarding';
-
-  return NextResponse.redirect(hubUrl);
+  return NextResponse.redirect(callbackUrl);
 }

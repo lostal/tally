@@ -1,0 +1,385 @@
+---
+import '@/styles/globals.css';
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- OG -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <ViewTransitions />
+  </head>
+  <body>
+    <slot />
+
+    <!-- GSAP + ScrollTrigger + Lenis + SplitType -->
+    <script>
+      import gsap from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      import Lenis from 'lenis';
+      import SplitType from 'split-type';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Smooth scroll
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+      });
+
+      lenis.on('scroll', ScrollTrigger.update);
+
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+
+      gsap.ticker.lagSmoothing(0);
+
+      // Rotating word en hero
+      const rotatingWord = document.getElementById('rotating-word');
+      if (rotatingWord) {
+        const words = ['rotación', 'propinas', 'ingresos'];
+        let currentIndex = 0;
+
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % words.length;
+
+          gsap.to(rotatingWord, {
+            opacity: 0,
+            y: -10,
+            duration: 0.3,
+            ease: 'power2.in',
+            onComplete: () => {
+              rotatingWord.textContent = words[currentIndex];
+              gsap.fromTo(
+                rotatingWord,
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+              );
+            },
+          });
+        }, 3000);
+      }
+
+      // Animate elements on scroll
+      document.querySelectorAll('[data-animate]').forEach((el) => {
+        const animation = el.getAttribute('data-animate');
+        const delay = parseFloat(el.getAttribute('data-delay') || '0');
+
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          scale: 1,
+          duration: 1,
+          delay: delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      });
+
+      // Parallax elements
+      document.querySelectorAll('[data-speed]').forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-speed') || '0.5');
+
+        gsap.to(el, {
+          yPercent: -100 * speed,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      });
+
+      // Marquee - manejado en su propio componente
+
+      // Rotate elements on scroll
+      document.querySelectorAll('[data-rotate]').forEach((el) => {
+        gsap.to(el, {
+          rotation: 360,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+      });
+
+      // Stagger animations for children
+      document.querySelectorAll('[data-stagger]').forEach((container) => {
+        const children = container.children;
+
+        gsap.from(children, {
+          opacity: 0,
+          y: 40,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      });
+
+      // Split text reveal para títulos grandes
+      document.querySelectorAll('[data-split-text]').forEach((el) => {
+        const split = new SplitType(el, { types: 'chars' });
+
+        gsap.from(split.chars, {
+          opacity: 0,
+          y: 20,
+          rotateX: -90,
+          stagger: 0.02,
+          duration: 0.8,
+          ease: 'back.out(1.4)',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      });
+
+      // Magnetic buttons
+      document.querySelectorAll('[data-magnetic]').forEach((btn) => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+
+          gsap.to(btn, {
+            x: x * 0.3,
+            y: y * 0.3,
+            duration: 0.3,
+            ease: 'power2.out',
+          });
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          gsap.to(btn, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: 'elastic.out(1, 0.5)',
+          });
+        });
+      });
+
+      // Custom cursor - punto grande con color adaptativo real
+      document.body.style.cursor = 'none';
+
+      const cursor = document.createElement('div');
+      cursor.className = 'custom-cursor';
+      document.body.appendChild(cursor);
+
+      let mouseX = 0, mouseY = 0;
+      let cursorX = 0, cursorY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        // Detectar color de fondo en la posición del mouse
+        const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+        if (elementUnderCursor) {
+          const section = elementUnderCursor.closest('section');
+
+          let newColor = '#1a1815'; // warm-black por defecto (para fondos claros)
+
+          if (section) {
+            if (section.classList.contains('bg-warm-black')) {
+              newColor = '#fdfbef'; // cream en fondo oscuro
+            } else if (section.classList.contains('bg-basil')) {
+              newColor = '#c9a227'; // yolk en verde
+            } else if (section.classList.contains('bg-tomato')) {
+              newColor = '#fdfbef'; // cream en rojo
+            } else if (section.classList.contains('bg-kale')) {
+              newColor = '#c9a227'; // yolk en kale
+            } else if (section.classList.contains('bg-carrot') || section.classList.contains('bg-yolk')) {
+              newColor = '#1a1815'; // warm-black en naranjas/amarillos
+            }
+          }
+
+          cursor.style.backgroundColor = newColor;
+        }
+      });
+
+      function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.15;
+        cursorY += (mouseY - cursorY) * 0.15;
+
+        cursor.style.left = `${cursorX}px`;
+        cursor.style.top = `${cursorY}px`;
+
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      // Cursor hover states - expandir en interactuables
+      const hoverElements = document.querySelectorAll('a, button, [data-magnetic]');
+      hoverElements.forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('cursor-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('cursor-hover');
+        });
+      });
+
+      // Number counters
+      document.querySelectorAll('[data-counter]').forEach((el) => {
+        const target = parseInt(el.getAttribute('data-counter') || '0');
+        const suffix = el.getAttribute('data-suffix') || '';
+
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.to(
+              { val: 0 },
+              {
+                val: target,
+                duration: 2,
+                ease: 'power2.out',
+                onUpdate: function () {
+                  el.textContent = Math.round(this.targets()[0].val) + suffix;
+                },
+              }
+            );
+          },
+          once: true,
+        });
+      });
+
+      // Scroll progress indicator
+      const progressBar = document.createElement('div');
+      progressBar.className = 'scroll-progress';
+      document.body.appendChild(progressBar);
+
+      ScrollTrigger.create({
+        start: 'top top',
+        end: 'bottom bottom',
+        onUpdate: (self) => {
+          gsap.to(progressBar, {
+            scaleX: self.progress,
+            duration: 0.1,
+            ease: 'none',
+          });
+        },
+      });
+
+      // Elements que se mueven con el mouse (parallax mouse)
+      document.querySelectorAll('[data-mouse-parallax]').forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-mouse-parallax') || '0.05');
+
+        document.addEventListener('mousemove', (e) => {
+          const x = (e.clientX - window.innerWidth / 2) * speed;
+          const y = (e.clientY - window.innerHeight / 2) * speed;
+
+          gsap.to(el, {
+            x: x,
+            y: y,
+            duration: 0.8,
+            ease: 'power2.out',
+          });
+        });
+      });
+
+      // Reveal con clip-path
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        gsap.from(el, {
+          clipPath: 'inset(0% 100% 0% 0%)',
+          duration: 1.2,
+          ease: 'power3.inOut',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 75%',
+            toggleActions: 'play none none none',
+          },
+        });
+      });
+    </script>
+
+    <style is:global>
+      .custom-cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background: #1a1815;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.25s ease, height 0.25s ease, background-color 0.2s ease;
+        will-change: transform;
+      }
+
+      .custom-cursor.cursor-hover {
+        width: 50px;
+        height: 50px;
+        opacity: 0.6;
+      }
+
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--color-tomato);
+        transform-origin: left;
+        transform: scaleX(0);
+        z-index: 9998;
+      }
+
+      @media (hover: none) {
+        .custom-cursor,
+        .custom-cursor-dot {
+          display: none;
+        }
+      }
+    </style>
+  </body>
+</html>

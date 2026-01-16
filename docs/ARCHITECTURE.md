@@ -9,6 +9,7 @@ Tally is a SaaS application for restaurant bill splitting built with Next.js 16 
 | Layer      | Technology               |
 | ---------- | ------------------------ |
 | Framework  | Next.js 16 (App Router)  |
+| Landing    | Astro (Static)           |
 | UI         | React 19 + TailwindCSS 4 |
 | State      | Zustand + Immer          |
 | Database   | Supabase (PostgreSQL)    |
@@ -17,16 +18,44 @@ Tally is a SaaS application for restaurant bill splitting built with Next.js 16 
 | Forms      | React Hook Form + Zod    |
 | Components | Radix UI + custom        |
 
+## URL Architecture
+
+See [ROUTING.md](./ROUTING.md) for the complete URL structure.
+
+### Path-Based Routing
+
+The app uses path-based routing (not subdomains) for simplicity:
+
+| Path                | Purpose                       |
+| ------------------- | ----------------------------- |
+| `/`                 | App navigation hub            |
+| `/register`         | New restaurant signup         |
+| `/auth/callback`    | Supabase auth callback        |
+| `/hub/admin/*`      | Admin dashboard (protected)   |
+| `/hub/pos/*`        | Point of Sale (protected)     |
+| `/hub/kds/*`        | Kitchen Display (protected)   |
+| `/hub/onboarding/*` | Onboarding wizard (protected) |
+| `/go/[slug]`        | Customer bill view (public)   |
+
+### Domains
+
+| Environment | App                | Landing          |
+| ----------- | ------------------ | ---------------- |
+| Development | `localhost:3000`   | `localhost:4321` |
+| Production  | `app.paytally.com` | `paytally.com`   |
+
 ## Directory Structure
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── (marketing)/       # Public landing pages
-│   ├── [slug]/            # Customer flow (trust → bill → payment)
-│   ├── admin/             # Restaurant admin panel
-│   ├── pos/               # Point of Sale for staff
-│   └── api/               # API Routes
+│   ├── go/[slug]/          # Customer flow (trust → bill → payment)
+│   ├── hub/admin/          # Restaurant admin dashboard
+│   ├── hub/pos/            # Point of Sale for staff
+│   ├── hub/kds/            # Kitchen Display System
+│   ├── hub/onboarding/     # Onboarding wizard
+│   ├── auth/               # Auth callbacks
+│   └── api/                # API Routes
 ├── components/            # React components by domain
 │   ├── bill/              # Bill display & item selection
 │   ├── layout/            # App layout components
@@ -43,6 +72,8 @@ src/
 │   └── utils/             # General utilities
 ├── stores/                # Zustand state stores
 └── types/                 # TypeScript type definitions
+apps/
+└── landing/               # Astro marketing site (separate build)
 ```
 
 ## Data Flow
@@ -53,7 +84,7 @@ src/
 QR Scan → Trust Screen → Bill View → Select Items → Payment → Success
    |           |             |           |            |
    ↓           ↓             ↓           ↓            ↓
-/[slug]    /[slug]      /[slug]/bill  /[slug]/waiting  /[slug]/payment
+/go/[slug]  /go/[slug]   /go/[slug]/bill  /go/[slug]/waiting  /go/[slug]/payment
 ```
 
 ### State Management
@@ -94,10 +125,17 @@ See `supabase/migrations/001_initial_schema.sql` for full schema.
 
 ### Authentication Layers
 
-1. **Proxy (src/proxy.ts)** - Protects `/admin/*` and `/pos/*` routes
+1. **Middleware** (`middleware.ts`) - Session refresh & route protection for `/hub/*`
 2. **API Validation** - Zod schemas validate all inputs
 3. **RLS Policies** - Database-level access control
 4. **Service Role** - Used only in server-side API routes
+
+### Auth Flow
+
+1. User registers at `/register` → Supabase sends confirmation email
+2. User clicks link → `/auth/callback?code=xxx`
+3. Callback exchanges code for session → redirects to `/hub/onboarding`
+4. Middleware refreshes session on every request
 
 ### Best Practices
 
@@ -105,3 +143,4 @@ See `supabase/migrations/001_initial_schema.sql` for full schema.
 - Validate all inputs with Zod
 - Don't trust client-side auth alone
 - Log errors without exposing internals
+- All auth redirects go through `/auth/callback`

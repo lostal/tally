@@ -9,6 +9,7 @@
 Tally is a multi-tenant B2B SaaS for the hospitality industry, providing a "Split the Bill" experience (Customer App), a Point of Sale (POS), and an Admin Dashboard.
 
 - **Architecture Context**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- **URL Routing**: [docs/ROUTING.md](docs/ROUTING.md)
 - **Business Logic**: [docs/BUSINESS_MODEL.md](docs/BUSINESS_MODEL.md)
 - **User Flows**: [docs/USER_FLOWS.md](docs/USER_FLOWS.md)
 
@@ -18,8 +19,9 @@ Tally is a multi-tenant B2B SaaS for the hospitality industry, providing a "Spli
 
 ```bash
 pnpm install
-pnpm run dev      # Starts Next.js dev server
-pnpm run build    # Production build
+pnpm dev              # Starts Next.js app (localhost:3000)
+pnpm dev:landing      # Starts Astro landing (localhost:4321)
+pnpm build            # Production build
 ```
 
 ### Database (Supabase Cloud)

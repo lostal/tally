@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { stripe } from '@/lib/stripe';
-import { getAppUrl } from '@/lib/url';
+import { buildUrl } from '@/lib/url';
 import { createClient } from '@/lib/supabase/server';
 
 export async function createCheckoutSession(priceId: string, restaurantId: string) {
@@ -42,8 +42,8 @@ export async function createCheckoutSession(priceId: string, restaurantId: strin
     },
     mode: 'subscription',
     allow_promotion_codes: true,
-    success_url: `${getAppUrl('hub')}/${restaurantId}?checkout=success`,
-    cancel_url: `${getAppUrl('hub')}/${restaurantId}?checkout=canceled`,
+    success_url: buildUrl(`/hub/admin?checkout=success`),
+    cancel_url: buildUrl(`/hub/admin?checkout=canceled`),
   });
 
   if (session.url) {
@@ -67,7 +67,7 @@ export async function createPortalSession(restaurantId: string) {
 
   const session = await stripe.billingPortal.sessions.create({
     customer: subscription.stripe_customer_id,
-    return_url: `${getAppUrl('hub')}/${restaurantId}`,
+    return_url: buildUrl('/hub/admin'),
   });
 
   if (session.url) {

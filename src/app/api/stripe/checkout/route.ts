@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { getPlanById, type SubscriptionPlan } from '@/types';
 import { logApiError } from '@/lib/api/validation';
-import { getAppUrl } from '@/lib/url';
+import { buildUrl } from '@/lib/url';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
           restaurant_id: restaurantId || 'new',
         },
       },
-      success_url: `${getAppUrl('hub')}/onboarding/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getAppUrl('hub')}/pricing`,
+      success_url: buildUrl('/hub/onboarding/success?session_id={CHECKOUT_SESSION_ID}'),
+      cancel_url: buildUrl('/register'),
       metadata: {
         plan,
         auth_id: user.id,

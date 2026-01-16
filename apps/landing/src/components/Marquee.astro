@@ -1,0 +1,100 @@
+---
+const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
+---
+
+<section class="py-12 border-y border-stone-300 overflow-hidden bg-cream">
+  <div class="marquee-container" id="marquee-section">
+    <div class="marquee-content" id="marquee-track">
+      {
+        [...Array(6)].map(() =>
+          items.map((item) => (
+            <>
+              <span class="text-title text-muted whitespace-nowrap">{item}</span>
+              <span class="text-title text-stone-300">•</span>
+            </>
+          ))
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee-container {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: 0;
+  }
+
+  .marquee-content {
+    display: flex;
+    gap: clamp(2rem, 5vw, 5rem);
+    flex-shrink: 0;
+    min-width: 100%;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-content {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Esperar a que el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('marquee-track');
+    const section = document.getElementById('marquee-section');
+
+    if (track && section) {
+      // Animación base - siempre moviéndose
+      const baseAnimation = gsap.to(track, {
+        xPercent: -16.66, // -100/6 (6 repeticiones)
+        duration: 25,
+        ease: 'none',
+        repeat: -1,
+      });
+
+      // Velocidad adaptativa basada en scroll
+      let lastScrollY = 0;
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          const currentScrollY = self.scroll();
+          const scrollDirection = currentScrollY > lastScrollY ? 1 : -1;
+          lastScrollY = currentScrollY;
+
+          // Acelerar/desacelerar según dirección de scroll (menos agresivo)
+          const speedMultiplier = Math.max(0.5, Math.min(2, 1 + self.velocity * 0.0002 * scrollDirection));
+          gsap.to(baseAnimation, {
+            timeScale: speedMultiplier,
+            duration: 0.4,
+            ease: 'power2.out',
+          });
+        },
+        onLeave: () => {
+          gsap.to(baseAnimation, {
+            timeScale: 1,
+            duration: 0.6,
+          });
+        },
+        onEnterBack: () => {
+          gsap.to(baseAnimation, {
+            timeScale: 1,
+            duration: 0.6,
+          });
+        },
+      });
+    }
+  });
+</script>

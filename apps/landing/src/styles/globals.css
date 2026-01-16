@@ -1,0 +1,384 @@
+@import 'tailwindcss';
+
+/*
+ * TALLY LANDING
+ * Editorial. Brutalista suave. Orgánico.
+ * "La sencillez es una gran virtud pero requiere mucho trabajo"
+ */
+
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Lora', ui-serif, Georgia, serif;
+
+  /* Colores orgánicos - OKLCH del theme system (step 9 = deep brand color) */
+  --color-cream: oklch(98.5% 0.018 88);
+  --color-warm-black: oklch(12% 0.018 88);
+  --color-tomato: oklch(45% 0.17 24);
+  --color-basil: oklch(45% 0.11 136);
+  --color-carrot: oklch(45% 0.16 56);
+  --color-yolk: oklch(45% 0.15 75);
+  --color-kale: oklch(45% 0.09 175);
+  --color-blueberry: oklch(45% 0.13 265);
+  --color-beet: oklch(45% 0.14 335);
+  --color-espresso: oklch(45% 0.06 50);
+
+  /* Neutros cálidos */
+  --color-stone-100: #f5f3eb;
+  --color-stone-200: #e8e4d9;
+  --color-stone-300: #d4cfc2;
+  --color-stone-400: #a69f8f;
+  --color-stone-500: #7a7265;
+  --color-stone-600: #5c564b;
+  --color-stone-700: #3d3832;
+  --color-stone-800: #2a2621;
+  --color-stone-900: #1a1714;
+}
+
+:root {
+  /* Semantic */
+  --bg: var(--color-cream);
+  --fg: var(--color-warm-black);
+  --accent: var(--color-tomato);
+  --accent-alt: var(--color-basil);
+  --muted: var(--color-stone-400);
+}
+
+/* ══════════════════════════════════════════
+   BASE
+   ══════════════════════════════════════════ */
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ══════════════════════════════════════════
+   TYPOGRAPHY - AUDAZ
+   ══════════════════════════════════════════ */
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Display sizes - SIN MIEDO */
+.text-display {
+  font-size: clamp(4rem, 20vw, 20rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
+.text-hero {
+  font-size: clamp(3rem, 12vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.text-headline {
+  font-size: clamp(2rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.text-title {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.text-body-lg {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.5;
+}
+
+.text-body {
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+}
+
+.text-caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   LAYOUT - ESPACIO NEGATIVO
+   ══════════════════════════════════════════ */
+
+.section {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 8vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.section-half {
+  min-height: 50vh;
+  padding: clamp(4rem, 10vw, 12rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Grid con espacio */
+.grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 3vw, 3rem);
+}
+
+/* ══════════════════════════════════════════
+   COLORES COMO BLOQUES
+   ══════════════════════════════════════════ */
+
+.bg-cream { background: var(--color-cream); }
+.bg-warm-black { background: var(--color-warm-black); color: var(--color-cream); }
+.bg-tomato { background: var(--color-tomato); color: var(--color-cream); }
+.bg-basil { background: var(--color-basil); color: var(--color-cream); }
+.bg-carrot { background: var(--color-carrot); color: var(--color-warm-black); }
+.bg-yolk { background: var(--color-yolk); color: var(--color-warm-black); }
+.bg-kale { background: var(--color-kale); color: var(--color-cream); }
+.bg-blueberry { background: var(--color-blueberry); color: var(--color-cream); }
+.bg-beet { background: var(--color-beet); color: var(--color-cream); }
+.bg-espresso { background: var(--color-espresso); color: var(--color-cream); }
+
+.text-tomato { color: var(--color-tomato); }
+.text-basil { color: var(--color-basil); }
+.text-carrot { color: var(--color-carrot); }
+.text-muted { color: var(--color-stone-400); }
+
+/* ══════════════════════════════════════════
+   ANIMACIONES - GSAP CONTROLLED
+   ══════════════════════════════════════════ */
+
+[data-animate] {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+[data-animate="fade-up"] {
+  transform: translateY(60px);
+}
+
+[data-animate="fade"] {
+  /* Solo opacity */
+}
+
+[data-animate="scale"] {
+  transform: scale(0.95);
+}
+
+[data-animate="slide-left"] {
+  transform: translateX(100px);
+}
+
+[data-animate="slide-right"] {
+  transform: translateX(-100px);
+}
+
+/* Parallax elements */
+[data-speed] {
+  will-change: transform;
+}
+
+/* ══════════════════════════════════════════
+   ELEMENTOS UI - MINIMALISMO BRUTAL
+   ══════════════════════════════════════════ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.btn-solid {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.btn-solid:hover {
+  background: transparent;
+  color: var(--fg);
+}
+
+/* Links con underline animado */
+.link {
+  position: relative;
+  text-decoration: none;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ══════════════════════════════════════════
+   DIVIDERS
+   ══════════════════════════════════════════ */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-stone-300);
+}
+
+.divider-thick {
+  height: 3px;
+  background: var(--fg);
+}
+
+/* ══════════════════════════════════════════
+   MARQUEE
+   ══════════════════════════════════════════ */
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+}
+
+.marquee__content {
+  display: flex;
+  flex-shrink: 0;
+  gap: clamp(2rem, 5vw, 5rem);
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ══════════════════════════════════════════
+   CURSOR PERSONALIZADO (opcional)
+   ══════════════════════════════════════════ */
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+/* ══════════════════════════════════════════
+   VIEW TRANSITIONS
+   ══════════════════════════════════════════ */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════
+   REDUCED MOTION
+   ══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

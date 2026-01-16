@@ -5,9 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Tally is a multi-tenant B2B SaaS for the hospitality industry. It provides:
-- **Customer App** (`go.paytally.app`): QR-based bill splitting for diners
-- **Admin Dashboard** (`hub.paytally.app/admin`): Restaurant management
-- **POS** (`hub.paytally.app/pos`): Point of Sale for staff
+
+- **Customer App** (`/go/*`): QR-based bill splitting for diners
+- **Admin Dashboard** (`/hub/admin/*`): Restaurant management
+- **POS** (`/hub/pos/*`): Point of Sale for staff
+- **Landing** (`apps/landing`): Marketing site (Astro)
 
 ## Commands
 
@@ -15,7 +17,7 @@ Tally is a multi-tenant B2B SaaS for the hospitality industry. It provides:
 # Development
 pnpm install          # Install dependencies
 pnpm dev              # Start Next.js dev server (Turbopack)
-pnpm dev:webpack      # Start with Webpack instead
+pnpm dev:landing      # Start Astro landing page
 
 # Quality
 pnpm lint             # Run ESLint
@@ -35,12 +37,22 @@ pnpm supabase:reset   # Reset database (runs migrations)
 
 ## Architecture
 
-### Multi-Tenant Subdomain Routing
+### URL Routing (Path-Based)
 
-The app uses subdomain-based routing handled by `middleware.ts`:
-- `hub.localhost:3000` → rewrites to `/hub/*` routes
-- `go.localhost:3000` → rewrites to `/go/*` routes
-- `localhost:3000` → marketing site (root)
+The app uses path-based routing (see `docs/ROUTING.md`):
+
+- `/hub/admin/*` → Admin dashboard (requires auth)
+- `/hub/pos/*` → Point of Sale (requires auth)
+- `/hub/kds/*` → Kitchen Display (requires auth)
+- `/go/[slug]` → Customer bill view (public via QR)
+- `/auth/callback` → Supabase auth callback
+- `/register` → New restaurant signup
+
+Middleware (`middleware.ts`) handles:
+
+1. Session refresh on every request
+2. Auth protection for `/hub/*` routes
+3. Redirect to login if unauthenticated
 
 ### Directory Structure
 
@@ -68,11 +80,14 @@ src/
 │   └── bill-store.ts       # Order items state
 └── types/                  # TypeScript definitions
     └── database.ts         # Auto-generated Supabase types
+apps/
+└── landing/                # Astro marketing site (separate build)
 ```
 
 ### State Management
 
 Uses Zustand + Immer for global state. Key stores:
+
 - `session-store`: Current payment session data
 - `participant-store`: User's item selections and claims
 - `bill-store`: Order and bill data
@@ -80,6 +95,7 @@ Uses Zustand + Immer for global state. Key stores:
 ### Database
 
 Supabase PostgreSQL with Row Level Security (RLS). Key tables:
+
 - `restaurants`, `tables`, `categories`, `products` (multi-tenant config)
 - `orders`, `order_items` (order management)
 - `sessions`, `participants` (bill splitting with optimistic locking)
@@ -109,7 +125,7 @@ export async function POST(request: Request) {
 
 ### Security Layers
 
-1. **Middleware** (`middleware.ts`): Subdomain routing
+1. **Middleware** (`middleware.ts`): Auth protection & session refresh
 2. **API Validation**: Zod schemas on all inputs
 3. **RLS Policies**: Database-level tenant isolation
 4. **Auth**: Use `getUser()` not `getSession()` for server-side auth checks
@@ -125,6 +141,7 @@ export async function POST(request: Request) {
 ## Documentation
 
 Detailed documentation in `docs/`:
+
 - `ARCHITECTURE.md`: System architecture
 - `DATABASE_SCHEMA.md`: Full database schema
 - `API.md`: API endpoints and patterns
