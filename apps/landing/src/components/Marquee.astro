@@ -44,8 +44,6 @@ const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
 
 <script>
   import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
   gsap.registerPlugin(ScrollTrigger);
 
   // Esperar a que el DOM esté listo
@@ -69,7 +67,7 @@ const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
         trigger: section,
         start: 'top bottom',
         end: 'bottom top',
-        onUpdate: (self: any) => {
+        onUpdate: (self: ScrollTrigger) => {
           const currentScrollY = self.scroll();
           const scrollDirection = currentScrollY > lastScrollY ? 1 : -1;
           lastScrollY = currentScrollY;
@@ -77,7 +75,7 @@ const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
           // Acelerar/desacelerar según dirección de scroll (menos agresivo)
           const speedMultiplier = Math.max(
             0.5,
-            Math.min(2, 1 + self.velocity * 0.0002 * scrollDirection)
+            Math.min(2, 1 + self.getVelocity() * 0.0002 * scrollDirection)
           );
           gsap.to(baseAnimation, {
             timeScale: speedMultiplier,

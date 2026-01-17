@@ -11,7 +11,7 @@ import { useParticipantStore, calculateUserSubtotal } from '@/stores/participant
 import { useBillStore } from '@/stores/bill-store';
 import type { PaymentMethod } from '@/types';
 
-type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
+type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL' | 'DYNAMIC_EQUAL';
 
 interface UseParticipantReturn {
   /** Current participant ID */

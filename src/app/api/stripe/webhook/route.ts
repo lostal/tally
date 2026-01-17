@@ -101,7 +101,7 @@ async function handleCheckoutCompleted(
     await supabase
       .from('subscriptions')
       .update({
-        plan: plan as any,
+        plan: plan as 'essential' | 'pro' | 'enterprise',
         status: 'active',
         stripe_subscription_id: stripeSubscription.id,
         stripe_customer_id: customerId,
@@ -126,7 +126,7 @@ async function handleSubscriptionUpdated(
   await supabase
     .from('subscriptions')
     .update({
-      status: status as any,
+      status: status as 'active' | 'past_due' | 'canceled' | 'trialing',
       current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
       canceled_at: subscription.canceled_at

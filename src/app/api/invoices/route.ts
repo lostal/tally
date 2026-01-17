@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase';
 import { validateBody, serverError, logApiError } from '@/lib/api/validation';
 import { calculateOrderTotals } from '@/lib/fiscal';
+import type { Json } from '@/types/database';
 
 /**
  * Schema for invoice creation
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
         subtotal_cents: totals.subtotalCents,
         tax_cents: totals.taxCents,
         total_cents: totals.totalCents,
-        tax_breakdown: totals.breakdown as any,
+        tax_breakdown: totals.breakdown as unknown as Json,
         status: 'issued',
       })
       .select('id')

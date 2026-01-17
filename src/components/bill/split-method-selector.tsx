@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { List, Calculator, Wallet } from 'lucide-react';
 
-type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
+type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL' | 'DYNAMIC_EQUAL';
 
 interface SplitMethodSelectorProps {
   /** Currently selected method */

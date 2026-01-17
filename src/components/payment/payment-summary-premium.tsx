@@ -12,6 +12,11 @@ interface PaymentSummaryPremiumProps {
   totalCents: number;
   currency?: string;
   className?: string;
+  /** If using DYNAMIC_EQUAL, show split info */
+  splitInfo?: {
+    billTotalCents: number;
+    participantCount: number;
+  };
 }
 
 /**
@@ -57,6 +62,7 @@ export function PaymentSummaryPremium({
   totalCents,
   currency = '€',
   className,
+  splitInfo,
 }: PaymentSummaryPremiumProps) {
   return (
     <motion.div
@@ -65,6 +71,24 @@ export function PaymentSummaryPremium({
       animate={{ opacity: 1, y: 0 }}
       transition={springSmooth}
     >
+      {/* Split info banner (if dynamic equal) */}
+      {splitInfo && splitInfo.participantCount > 1 && (
+        <motion.div
+          className="bg-primary/5 border-primary/10 -m-5 mb-4 flex items-center justify-between rounded-t-2xl border-b p-3 text-xs"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          transition={{ delay: 0.05 }}
+        >
+          <span className="text-muted-foreground">
+            Dividiendo entre {splitInfo.participantCount} personas
+          </span>
+          <span className="text-muted-foreground">
+            Total mesa: {currency}
+            {(splitInfo.billTotalCents / 100).toFixed(2)}
+          </span>
+        </motion.div>
+      )}
+
       {/* Subtotal */}
       <motion.div
         className="flex items-center justify-between text-sm"
@@ -72,7 +96,9 @@ export function PaymentSummaryPremium({
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <span className="text-muted-foreground">Subtotal</span>
+        <span className="text-muted-foreground">
+          {splitInfo && splitInfo.participantCount > 1 ? 'Tu parte' : 'Subtotal'}
+        </span>
         <AnimatedCurrency value={subtotalCents} currency={currency} className="font-medium" />
       </motion.div>
 

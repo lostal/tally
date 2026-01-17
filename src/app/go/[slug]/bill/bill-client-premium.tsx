@@ -14,9 +14,11 @@ import { TipSelectorPremium } from '@/components/payment/tip-selector-premium';
 import { PaymentSummaryPremium } from '@/components/payment/payment-summary-premium';
 import { PaymentButtonPremium } from '@/components/payment/payment-button-premium';
 import { IconButton } from '@/components/shared/motion-primitives';
-import { useParticipantStore, useUIStore } from '@/stores';
+import { useParticipantStore, useUIStore, useSessionStore } from '@/stores';
 import { SubscriptionPlan } from '@/types/subscription';
 import { canSplitByItems } from '@/lib/plans';
+import { useParticipantSync } from '@/lib/hooks';
+import { getMyShare } from '@/lib/utils/split-calculations';
 import type { SelectableOrderItem } from '@/types';
 
 interface BillPageClientProps {
@@ -53,6 +55,7 @@ export function BillPageClient({
     splitMethod,
     fixedAmountCents,
     tipPercentage,
+    participantId,
     toggleItem,
     setClaimedQuantity,
     setSplitMethod,
@@ -63,12 +66,38 @@ export function BillPageClient({
   const setCurrentStep = useUIStore((s) => s.setCurrentStep);
   const canSplitItems = canSplitByItems(plan);
 
+  // Session and participant sync (if available)
+  const session = useSessionStore((s) => s.session);
+  const sessionId = session?.id;
+
+  const { activeParticipants } = useParticipantSync({
+    sessionId,
+    participantId: participantId || undefined,
+    autoFetch: false, // Don't auto-fetch, we already have session from store
+    enableHeartbeat: !!sessionId && !!participantId,
+  });
+
   // Calculate items with selection state
   const itemsWithSelection = initialItems.map((item) => ({
     ...item,
     isSelected: selectedItemIds.includes(item.id),
     claimedQuantity: claimedQuantities[item.id] || item.quantity,
   }));
+
+  // Auto-switch between EQUAL and DYNAMIC_EQUAL based on active participants
+  React.useEffect(() => {
+    if (!sessionId || activeParticipants.length === 0) return;
+
+    const activeCount = activeParticipants.length;
+
+    if (activeCount === 1 && splitMethod === 'DYNAMIC_EQUAL') {
+      // Only me → switch to pay all
+      setSplitMethod('EQUAL');
+    } else if (activeCount > 1 && splitMethod === 'EQUAL') {
+      // Someone joined → switch to dynamic split
+      setSplitMethod('DYNAMIC_EQUAL');
+    }
+  }, [activeParticipants.length, splitMethod, setSplitMethod, sessionId]);
 
   // Calculate totals
   const subtotalCents = React.useMemo(() => {
@@ -77,6 +106,13 @@ export function BillPageClient({
     }
     if (splitMethod === 'EQUAL') {
       return billTotalCents;
+    }
+    if (splitMethod === 'DYNAMIC_EQUAL') {
+      // Calculate my share based on active participants
+      if (!participantId || activeParticipants.length === 0) {
+        return billTotalCents; // Fallback to full amount
+      }
+      return getMyShare(billTotalCents, activeParticipants, participantId);
     }
     // BY_ITEMS
     return selectedItemIds.reduce((total, itemId) => {
@@ -92,6 +128,8 @@ export function BillPageClient({
     selectedItemIds,
     claimedQuantities,
     initialItems,
+    participantId,
+    activeParticipants,
   ]);
 
   const tipCents = Math.round((subtotalCents * tipPercentage) / 100);
@@ -248,6 +286,45 @@ export function BillPageClient({
                     >
                       Total de la cuenta
                     </motion.p>
+                  </motion.section>
+                )}
+
+                {splitMethod === 'DYNAMIC_EQUAL' && (
+                  <motion.section
+                    key="dynamic-equal"
+                    className="bg-secondary/30 border-border rounded-2xl border-2 p-8 text-center"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={springSmooth}
+                  >
+                    <motion.p
+                      className="text-primary font-serif text-5xl font-bold"
+                      initial={{ scale: 0.9 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
+                    >
+                      {formatPrice(subtotalCents)}
+                    </motion.p>
+                    <motion.p
+                      className="text-muted-foreground mt-2"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      Tu parte{' '}
+                      {activeParticipants.length > 1 && `(${activeParticipants.length} personas)`}
+                    </motion.p>
+                    {activeParticipants.length > 1 && (
+                      <motion.p
+                        className="text-muted-foreground mt-1 text-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        Total mesa: {formatPrice(billTotalCents)}
+                      </motion.p>
+                    )}
                   </motion.section>
                 )}
               </AnimatePresence>

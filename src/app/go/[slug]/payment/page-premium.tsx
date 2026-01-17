@@ -3,13 +3,15 @@
 import * as React from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, CreditCard, Smartphone, Lock, Check } from 'lucide-react';
+import { ChevronLeft, CreditCard, Smartphone, Lock, Check, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { springSmooth, springBouncy } from '@/lib/motion';
 
 import { PaymentSummaryPremium } from '@/components/payment/payment-summary-premium';
 import { IconButton } from '@/components/shared/motion-primitives';
-import { useParticipantStore, useUIStore } from '@/stores';
+import { useParticipantStore, useUIStore, useSessionStore } from '@/stores';
+import { useParticipantSync } from '@/lib/hooks';
+import type { Participant } from '@/types';
 
 type PaymentStep = 'method' | 'processing' | 'success';
 
@@ -53,12 +55,52 @@ export default function PaymentPagePremium() {
   const slug = params.slug as string;
   const tableNumber = searchParams.get('table') || '1';
 
-  const { tipPercentage, selectedItemIds, claimedQuantities, fixedAmountCents, splitMethod } =
-    useParticipantStore();
+  const {
+    tipPercentage,
+    selectedItemIds,
+    claimedQuantities,
+    fixedAmountCents,
+    splitMethod,
+    participantId,
+  } = useParticipantStore();
   const setCurrentStep = useUIStore((s) => s.setCurrentStep);
 
   const [paymentStep, setPaymentStep] = React.useState<PaymentStep>('method');
   const [selectedMethod, setSelectedMethod] = React.useState<'card' | 'apple'>('apple');
+  const [participantCountMismatch, setParticipantCountMismatch] = React.useState(false);
+  const [validationError, setValidationError] = React.useState<{
+    type: string;
+    message: string;
+    details?: Record<string, unknown>;
+  } | null>(null);
+
+  // Get session and active participants
+  const session = useSessionStore((s) => s.session);
+  const sessionId = session?.id;
+
+  const { activeParticipants } = useParticipantSync({
+    sessionId,
+    participantId: participantId || undefined,
+    autoFetch: false,
+    enableHeartbeat: !!sessionId && !!participantId,
+  });
+
+  // Create snapshot of participants when component mounts
+  const [participantSnapshot] = React.useState<Participant[]>(() =>
+    activeParticipants.filter((p) => p.isActive)
+  );
+
+  // Detect changes in participant count
+  React.useEffect(() => {
+    if (splitMethod === 'DYNAMIC_EQUAL' && sessionId) {
+      const currentCount = activeParticipants.length;
+      const snapshotCount = participantSnapshot.length;
+
+      if (currentCount !== snapshotCount) {
+        setParticipantCountMismatch(true);
+      }
+    }
+  }, [activeParticipants.length, participantSnapshot.length, splitMethod, sessionId]);
 
   // Calculate amounts
   const subtotalCents = React.useMemo(() => {
@@ -81,7 +123,83 @@ export default function PaymentPagePremium() {
   const tipCents = Math.round((subtotalCents * tipPercentage) / 100);
   const totalCents = subtotalCents + tipCents;
 
+  // Calculate bill total for DYNAMIC_EQUAL (before tip)
+  const billTotalCents = React.useMemo(() => {
+    if (splitMethod === 'DYNAMIC_EQUAL' && activeParticipants.length > 0) {
+      return subtotalCents * activeParticipants.length;
+    }
+    return subtotalCents;
+  }, [splitMethod, subtotalCents, activeParticipants.length]);
+
   const handlePay = async () => {
+    // Clear any previous validation errors
+    setValidationError(null);
+
+    // Only validate for DYNAMIC_EQUAL or if session exists
+    if (sessionId && participantId && splitMethod === 'DYNAMIC_EQUAL') {
+      try {
+        // Call server-side validation
+        const response = await fetch('/api/payment/initiate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sessionId,
+            participantId,
+            amountCents: subtotalCents, // Amount before tip
+            splitMethod,
+            expectedParticipantCount: activeParticipants.length,
+            billTotalCents,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          // Handle validation errors
+          if (response.status === 409) {
+            // Conflict - participant count or amount mismatch
+            setValidationError({
+              type: result.error,
+              message: result.message,
+              details: {
+                expectedCount: result.expectedCount,
+                actualCount: result.actualCount,
+                providedAmount: result.providedAmount,
+                expectedBaseAmount: result.expectedBaseAmount,
+              },
+            });
+            return; // Don't proceed with payment
+          } else if (response.status === 403) {
+            // Participant is inactive
+            setValidationError({
+              type: result.error,
+              message: result.message,
+            });
+            return;
+          } else {
+            // Other errors
+            setValidationError({
+              type: 'VALIDATION_ERROR',
+              message: result.message || 'Failed to validate payment',
+            });
+            return;
+          }
+        }
+
+        // Validation passed, proceed with payment
+      } catch (error) {
+        console.error('Payment validation error:', error);
+        setValidationError({
+          type: 'NETWORK_ERROR',
+          message: 'No se pudo conectar con el servidor. Verifica tu conexión.',
+        });
+        return;
+      }
+    }
+
+    // Proceed with payment
     setPaymentStep('processing');
 
     // Simulate payment processing
@@ -150,7 +268,111 @@ export default function PaymentPagePremium() {
                 tipCents={tipCents}
                 tipPercentage={tipPercentage}
                 totalCents={totalCents}
+                splitInfo={
+                  splitMethod === 'DYNAMIC_EQUAL' && activeParticipants.length > 0
+                    ? {
+                        billTotalCents: subtotalCents * activeParticipants.length,
+                        participantCount: activeParticipants.length,
+                      }
+                    : undefined
+                }
               />
+
+              {/* Participant Count Mismatch Warning */}
+              {participantCountMismatch && splitMethod === 'DYNAMIC_EQUAL' && (
+                <motion.div
+                  className="flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={springSmooth}
+                >
+                  <AlertTriangle className="mt-0.5 size-5 shrink-0 text-yellow-600 dark:text-yellow-500" />
+                  <div className="flex-1 space-y-2">
+                    <p className="text-sm font-medium">El número de participantes ha cambiado</p>
+                    <p className="text-muted-foreground text-xs">
+                      Había {participantSnapshot.length}{' '}
+                      {participantSnapshot.length === 1 ? 'persona' : 'personas'}, ahora hay{' '}
+                      {activeParticipants.length}. El monto puede haber cambiado.
+                    </p>
+                    <button
+                      onClick={() => {
+                        setParticipantCountMismatch(false);
+                        router.back();
+                      }}
+                      className="text-primary hover:text-primary/80 text-xs font-medium underline"
+                    >
+                      Volver y revisar
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Server-side Validation Error */}
+              {validationError && (
+                <motion.div
+                  className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/10 p-4"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={springSmooth}
+                >
+                  <AlertTriangle className="mt-0.5 size-5 shrink-0 text-red-600 dark:text-red-500" />
+                  <div className="flex-1 space-y-2">
+                    <p className="text-sm font-medium">Error de validación</p>
+                    <p className="text-muted-foreground text-xs">{validationError.message}</p>
+
+                    {validationError.type === 'PARTICIPANT_COUNT_MISMATCH' &&
+                      validationError.details && (
+                        <div className="mt-2 rounded-lg bg-red-500/5 p-2 text-xs">
+                          <p>
+                            Esperado: {validationError.details.expectedCount as number}{' '}
+                            {(validationError.details.expectedCount as number) === 1
+                              ? 'persona'
+                              : 'personas'}
+                          </p>
+                          <p>
+                            Actual: {validationError.details.actualCount as number}{' '}
+                            {(validationError.details.actualCount as number) === 1
+                              ? 'persona'
+                              : 'personas'}
+                          </p>
+                        </div>
+                      )}
+
+                    {validationError.type === 'INVALID_AMOUNT' && validationError.details && (
+                      <div className="mt-2 rounded-lg bg-red-500/5 p-2 text-xs">
+                        <p>
+                          Tu monto: €
+                          {((validationError.details.providedAmount as number) / 100).toFixed(2)}
+                        </p>
+                        <p>
+                          Esperado: €
+                          {((validationError.details.expectedBaseAmount as number) / 100).toFixed(
+                            2
+                          )}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setValidationError(null);
+                          router.back();
+                        }}
+                        className="text-primary hover:text-primary/80 text-xs font-medium underline"
+                      >
+                        Volver y actualizar
+                      </button>
+                      <button
+                        onClick={() => setValidationError(null)}
+                        className="text-muted-foreground hover:text-foreground text-xs font-medium underline"
+                      >
+                        Cerrar
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
               {/* Payment Methods */}
               <div className="space-y-4">

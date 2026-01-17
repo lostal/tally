@@ -27,6 +27,14 @@ export interface Participant {
   color: string;
   /** When the participant joined */
   joinedAt: string;
+  /** Whether the participant is currently active (heartbeat tracking) */
+  isActive?: boolean;
+  /** Whether this participant is the host/creator of the session */
+  isHost?: boolean;
+  /** Last time the participant was seen (for heartbeat detection) */
+  lastSeenAt?: string;
+  /** Version for optimistic locking */
+  version?: number;
   /** Whether the participant has confirmed their selection */
   isReady: boolean;
   /** Payment method selected (once at payment stage) */
@@ -36,7 +44,7 @@ export interface Participant {
   /** Fixed amount in cents (for amount-based splitting) */
   fixedAmountCents?: number;
   /** Split method chosen by this participant */
-  splitMethod: 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
+  splitMethod: 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL' | 'DYNAMIC_EQUAL';
   /** Tip percentage */
   tipPercentage: number;
   /** Payment status */

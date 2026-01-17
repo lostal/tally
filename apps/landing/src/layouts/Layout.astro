@@ -95,7 +95,7 @@ const { title, description } = Astro.props;
       // Animate elements on scroll
       document.querySelectorAll('[data-animate]').forEach((element) => {
         const el = element as HTMLElement;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const delay = parseFloat(el.getAttribute('data-delay') || '0');
 
         gsap.to(el, {

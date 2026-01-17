@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { Wallet, Calculator, ListChecks, Check } from 'lucide-react';
+import { Wallet, Calculator, ListChecks, Users, Check } from 'lucide-react';
 import { springSmooth, springSnappy } from '@/lib/motion';
 
-type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
+type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL' | 'DYNAMIC_EQUAL';
 
 interface SplitMethodSelectorProps {
   value: SplitMethod;
@@ -29,6 +29,12 @@ const SPLIT_OPTIONS: OptionConfig[] = [
     label: 'Pagar todo',
     description: 'Pago completo',
     icon: Wallet,
+  },
+  {
+    value: 'DYNAMIC_EQUAL',
+    label: 'Dividir entre personas',
+    description: 'División automática',
+    icon: Users,
   },
   {
     value: 'BY_ITEMS',
@@ -131,6 +137,12 @@ export function SplitMethodSelectorPremium({
                   {option.description}
                   {option.value === 'EQUAL' && participantCount && participantCount > 1 && (
                     <span> · {participantCount} personas</span>
+                  )}
+                  {option.value === 'DYNAMIC_EQUAL' && participantCount && (
+                    <span>
+                      {' '}
+                      · {participantCount} {participantCount === 1 ? 'persona' : 'personas'}
+                    </span>
                   )}
                 </div>
               </div>

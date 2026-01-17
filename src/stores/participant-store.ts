@@ -3,7 +3,7 @@ import { immer } from 'zustand/middleware/immer';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { SelectableOrderItem, PaymentMethod } from '@/types';
 
-type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
+type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL' | 'DYNAMIC_EQUAL';
 
 interface ParticipantState {
   /** Current participant ID */

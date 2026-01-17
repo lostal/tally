@@ -39,3 +39,7 @@ export { useOrderRealtime } from './use-order-realtime';
 
 // Offline queue hook
 export { useOfflineQueue, useQueueOperation } from './use-offline-queue';
+
+// Participant heartbeat and sync hooks
+export { useParticipantHeartbeat } from './use-participant-heartbeat';
+export { useParticipantSync } from './use-participant-sync';
