@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 import { PRICING_PLANS, type SubscriptionPlan } from '@/types';
 
 interface OnboardingWizardProps {
@@ -142,7 +143,7 @@ export function OnboardingWizard({ userId, userEmail: _userEmail }: OnboardingWi
       const { url } = await checkoutResponse.json();
       window.location.href = url;
     } catch (error) {
-      console.error('Onboarding error:', error);
+      logger.error('Onboarding error:', error);
       setIsLoading(false);
     }
   };

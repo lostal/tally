@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/database';
 
 /**
  * Supabase Admin client with service role
@@ -11,7 +12,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
  * - Backend processes
  * - Operations that need to bypass RLS
  */
-export function createAdminClient(): SupabaseClient {
+export function createAdminClient(): SupabaseClient<Database> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -19,7 +20,7 @@ export function createAdminClient(): SupabaseClient {
     throw new Error('Missing Supabase environment variables');
   }
 
-  return createClient(supabaseUrl, serviceRoleKey, {
+  return createClient<Database>(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,

@@ -63,7 +63,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
       quantity: number;
       unit_price_cents: number;
       notes: string | null;
-      status: string;
+      status: string | null;
     }> = [];
     let products: Array<{
       id: string;
@@ -132,7 +132,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
                 unitPriceCents: item.unit_price_cents,
                 totalCents: item.quantity * item.unit_price_cents,
                 notes: item.notes,
-                status: item.status,
+                status: item.status || 'pending',
               };
             }),
             createdAt: order.created_at,

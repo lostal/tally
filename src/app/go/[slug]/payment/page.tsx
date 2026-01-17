@@ -81,6 +81,7 @@ export default function PaymentPage() {
             onClick={() => router.back()}
             disabled={paymentStep !== 'summary'}
             className="z-10 -ml-2"
+            aria-label="Volver"
           >
             <ChevronLeft className="size-6" />
           </Button>

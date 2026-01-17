@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { ArrowRight, Delete, Eraser, Loader2, X } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { logger } from '@/lib/logger';
 import { createEssentialOrder } from '@/app/actions/essential-order';
 // import { useRouter } from 'next/navigation';
 import QRCode from 'react-qr-code';
@@ -111,7 +112,7 @@ export function Keypad({ restaurantId, slug }: KeypadProps) {
       handleClear();
     } catch (error) {
       toast.dismiss();
-      console.error(error);
+      logger.error('keypad charge error', error);
       toast.error('Error al generar el cobro');
     } finally {
       setIsProcessing(false);

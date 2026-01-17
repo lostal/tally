@@ -7,6 +7,7 @@ import { Save, Loader2, Check, Monitor, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/components/providers/theme-provider';
 import { Button } from '@/components/ui/button';
 import { THEME_FAMILIES, generateColorScale } from '@/lib/theme';
+import { logger } from '@/lib/logger';
 import type { ThemeFamily } from '@/lib/theme';
 import type { Restaurant } from '@/types/database';
 import type { RestaurantThemeConfig } from '@/types/theme';
@@ -92,7 +93,7 @@ export function SettingsContent({ restaurant }: SettingsContentProps) {
         router.refresh();
       }
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error saving settings:', error);
     }
     setIsLoading(false);
   };

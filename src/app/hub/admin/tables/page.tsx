@@ -8,10 +8,11 @@ import { TablesContent } from './tables-content';
 export default async function TablesPage() {
   const supabase = await createClient();
 
+  // Check authentication (using getUser for server-side security)
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
     redirect('/admin/login');
   }
 

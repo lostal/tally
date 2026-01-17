@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 /**
  * Auth Callback Handler
@@ -57,7 +58,7 @@ export async function GET(request: Request) {
     }
 
     // Auth error - redirect to register with error message
-    console.error('Auth callback error:', error.message);
+    logger.error('Auth callback error:', error.message);
     return NextResponse.redirect(
       new URL(`/register?error=${encodeURIComponent(error.message)}`, origin)
     );

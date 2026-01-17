@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { SelectableOrderItem, PaymentMethod } from '@/types';
 
 type SplitMethod = 'BY_ITEMS' | 'BY_AMOUNT' | 'EQUAL';
@@ -50,72 +51,89 @@ const initialState = {
  * Participant Store
  *
  * Manages the current user's selection state within a session.
+ * Persisted to sessionStorage to survive page reloads.
  */
 export const useParticipantStore = create<ParticipantState>()(
-  immer((set) => ({
-    ...initialState,
+  persist(
+    immer((set) => ({
+      ...initialState,
 
-    setParticipantId: (id) =>
-      set((state) => {
-        state.participantId = id;
+      setParticipantId: (id) =>
+        set((state) => {
+          state.participantId = id;
+        }),
+
+      toggleItem: (itemId, quantity = 1) =>
+        set((state) => {
+          const index = state.selectedItemIds.indexOf(itemId);
+          if (index === -1) {
+            state.selectedItemIds.push(itemId);
+            state.claimedQuantities[itemId] = quantity;
+          } else {
+            state.selectedItemIds.splice(index, 1);
+            delete state.claimedQuantities[itemId];
+          }
+        }),
+
+      setClaimedQuantity: (itemId, quantity) =>
+        set((state) => {
+          if (state.selectedItemIds.includes(itemId)) {
+            state.claimedQuantities[itemId] = quantity;
+          }
+        }),
+
+      setSplitMethod: (method) =>
+        set((state) => {
+          state.splitMethod = method;
+          // Reset item selection when switching methods
+          if (method !== 'BY_ITEMS') {
+            state.selectedItemIds = [];
+            state.claimedQuantities = {};
+          }
+        }),
+
+      setFixedAmount: (cents) =>
+        set((state) => {
+          state.fixedAmountCents = cents;
+        }),
+
+      setTipPercentage: (percent) =>
+        set((state) => {
+          state.tipPercentage = percent;
+        }),
+
+      setPaymentMethod: (method) =>
+        set((state) => {
+          state.paymentMethod = method;
+        }),
+
+      markReady: () =>
+        set((state) => {
+          state.isReady = true;
+        }),
+
+      cancelReady: () =>
+        set((state) => {
+          state.isReady = false;
+        }),
+
+      reset: () => set(initialState),
+    })),
+    {
+      name: 'tally-participant',
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({
+        participantId: state.participantId,
+        selectedItemIds: state.selectedItemIds,
+        claimedQuantities: state.claimedQuantities,
+        splitMethod: state.splitMethod,
+        fixedAmountCents: state.fixedAmountCents,
+        tipPercentage: state.tipPercentage,
+        paymentMethod: state.paymentMethod,
+        // Note: isReady is NOT persisted - user should re-confirm after reload
       }),
-
-    toggleItem: (itemId, quantity = 1) =>
-      set((state) => {
-        const index = state.selectedItemIds.indexOf(itemId);
-        if (index === -1) {
-          state.selectedItemIds.push(itemId);
-          state.claimedQuantities[itemId] = quantity;
-        } else {
-          state.selectedItemIds.splice(index, 1);
-          delete state.claimedQuantities[itemId];
-        }
-      }),
-
-    setClaimedQuantity: (itemId, quantity) =>
-      set((state) => {
-        if (state.selectedItemIds.includes(itemId)) {
-          state.claimedQuantities[itemId] = quantity;
-        }
-      }),
-
-    setSplitMethod: (method) =>
-      set((state) => {
-        state.splitMethod = method;
-        // Reset item selection when switching methods
-        if (method !== 'BY_ITEMS') {
-          state.selectedItemIds = [];
-          state.claimedQuantities = {};
-        }
-      }),
-
-    setFixedAmount: (cents) =>
-      set((state) => {
-        state.fixedAmountCents = cents;
-      }),
-
-    setTipPercentage: (percent) =>
-      set((state) => {
-        state.tipPercentage = percent;
-      }),
-
-    setPaymentMethod: (method) =>
-      set((state) => {
-        state.paymentMethod = method;
-      }),
-
-    markReady: () =>
-      set((state) => {
-        state.isReady = true;
-      }),
-
-    cancelReady: () =>
-      set((state) => {
-        state.isReady = false;
-      }),
-
-    reset: () => set(initialState),
-  }))
+    }
+  )
 );
 
 // Selectors

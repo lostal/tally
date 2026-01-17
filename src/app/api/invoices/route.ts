@@ -104,7 +104,7 @@ export async function POST(request: Request) {
         subtotal_cents: totals.subtotalCents,
         tax_cents: totals.taxCents,
         total_cents: totals.totalCents,
-        tax_breakdown: totals.breakdown,
+        tax_breakdown: totals.breakdown as any,
         status: 'issued',
       })
       .select('id')

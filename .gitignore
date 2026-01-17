@@ -27,7 +27,7 @@ dist/
 # misc
 .DS_Store
 *.pem
-.github/
+# .github/ - DO NOT ignore, needed for workflows
 
 # debug
 npm-debug.log*

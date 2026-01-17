@@ -1,7 +1,7 @@
 'use server';
 
 import { createAdminClient } from '@/lib/supabase';
-// import { logApiError } from '@/lib/api/validation';
+import { logger } from '@/lib/logger';
 
 interface CreateEssentialOrderParams {
   restaurantId: string;
@@ -45,8 +45,8 @@ export async function createEssentialOrder({
         .insert({
           restaurant_id: restaurantId,
           number: tableNumber,
-          status: 'available',
-          capacity: 4, // default
+          status: 'available' as const,
+          capacity: 4,
         })
         .select('id')
         .single();
@@ -121,7 +121,7 @@ export async function createEssentialOrder({
 
     return { success: true, orderId: order.id };
   } catch (error) {
-    console.error('createEssentialOrder Error:', error);
+    logger.error('createEssentialOrder Error:', error);
     // Explicitly cast error to any to access message safely or generic string
     const msg = error instanceof Error ? error.message : 'Failed to create order';
     return { success: false, error: msg };

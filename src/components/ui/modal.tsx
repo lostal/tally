@@ -62,7 +62,13 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
               {/* Header */}
               <div className="flex items-center justify-between border-b p-4">
                 <h2 className="text-lg font-semibold">{title}</h2>
-                <Button variant="ghost" size="icon" onClick={onClose} className="size-8">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onClose}
+                  className="size-8"
+                  aria-label="Cerrar"
+                >
                   <X className="size-4" />
                 </Button>
               </div>

@@ -89,7 +89,7 @@ export function PosShell({ children, plan = 'essential' }: PosShellProps) {
           </nav>
         )}
 
-        <Button variant="ghost" size="icon" onClick={handleLogout}>
+        <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Cerrar sesión">
           <LogOut className="size-5" />
         </Button>
       </header>

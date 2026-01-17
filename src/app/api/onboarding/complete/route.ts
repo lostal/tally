@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { logApiError } from '@/lib/api/validation';
+import { TRIAL_PERIOD_MS } from '@/lib/constants';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 const completeSchema = z.object({
   userId: z.string().uuid(),
@@ -79,7 +81,7 @@ export async function POST(request: NextRequest) {
       restaurant_id: restaurant.id,
       plan: data.selectedPlan,
       status: 'trialing',
-      trial_end: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 days
+      trial_end: new Date(Date.now() + TRIAL_PERIOD_MS).toISOString(),
     });
 
     if (subscriptionError) {
@@ -151,9 +153,9 @@ export async function POST(request: NextRequest) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function createDemoMenu(supabase: any, restaurantId: string) {
+async function createDemoMenu(supabase: SupabaseClient<any>, restaurantId: string) {
   // Create demo categories
-  const categories = [
+  const categories: Array<{ name: string; sort_order: number }> = [
     { name: 'Entrantes', sort_order: 1 },
     { name: 'Principales', sort_order: 2 },
     { name: 'Bebidas', sort_order: 3 },
@@ -163,28 +165,27 @@ async function createDemoMenu(supabase: any, restaurantId: string) {
   const { data: createdCategories } = await supabase
     .from('categories')
     .insert(
-      categories.map((c: { name: string; sort_order: number }) => ({
-        ...c,
+      categories.map((c) => ({
         restaurant_id: restaurantId,
+        name: c.name,
+        sort_order: c.sort_order,
       }))
     )
     .select();
 
   if (!createdCategories) return;
 
-  const categoryMap = Object.fromEntries(
-    createdCategories.map((c: { name: string; id: string }) => [c.name, c.id])
-  );
+  const categoryMap = Object.fromEntries(createdCategories.map((c) => [c.name, c.id]));
 
   // Create demo products
   const products = [
-    { category: 'Entrantes', name: 'Patatas bravas', price_cents: 650, tax_rate: 10 },
-    { category: 'Entrantes', name: 'Croquetas caseras', price_cents: 850, tax_rate: 10 },
-    { category: 'Principales', name: 'Hamburguesa gourmet', price_cents: 1450, tax_rate: 10 },
-    { category: 'Principales', name: 'Ensalada César', price_cents: 1150, tax_rate: 10 },
-    { category: 'Bebidas', name: 'Cerveza', price_cents: 350, tax_rate: 10 },
-    { category: 'Bebidas', name: 'Agua mineral', price_cents: 250, tax_rate: 10 },
-    { category: 'Postres', name: 'Tarta de queso', price_cents: 550, tax_rate: 10 },
+    { category: 'Entrantes', name: 'Patatas bravas', price_cents: 650 },
+    { category: 'Entrantes', name: 'Croquetas caseras', price_cents: 850 },
+    { category: 'Principales', name: 'Hamburguesa gourmet', price_cents: 1450 },
+    { category: 'Principales', name: 'Ensalada César', price_cents: 1150 },
+    { category: 'Bebidas', name: 'Cerveza', price_cents: 350 },
+    { category: 'Bebidas', name: 'Agua mineral', price_cents: 250 },
+    { category: 'Postres', name: 'Tarta de queso', price_cents: 550 },
   ];
 
   await supabase.from('products').insert(
@@ -193,8 +194,7 @@ async function createDemoMenu(supabase: any, restaurantId: string) {
       category_id: categoryMap[p.category],
       name: p.name,
       price_cents: p.price_cents,
-      tax_rate: p.tax_rate,
-      is_active: true,
+      is_available: true,
     }))
   );
 }

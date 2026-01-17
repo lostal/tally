@@ -8,6 +8,7 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { getClient } from '@/lib/supabase/client';
+import { logger } from '@/lib/logger';
 import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'reconnecting';
@@ -91,7 +92,7 @@ export function useRealtime<T extends object>({
   // Reconnect with exponential backoff
   const scheduleReconnect = useCallback(() => {
     if (reconnectAttempts.current >= maxReconnectAttempts) {
-      console.warn(`[Realtime] Max reconnect attempts reached for ${table}`);
+      logger.warn(`[Realtime] Max reconnect attempts reached for ${table}`);
       setStatus('disconnected');
       return;
     }
@@ -146,10 +147,10 @@ export function useRealtime<T extends object>({
           setStatus('connected');
           reconnectAttempts.current = 0;
         } else if (status === 'CHANNEL_ERROR') {
-          console.error(`[Realtime] Channel error for ${table}`);
+          logger.error(`[Realtime] Channel error for ${table}`);
           scheduleReconnect();
         } else if (status === 'TIMED_OUT') {
-          console.warn(`[Realtime] Subscription timed out for ${table}`);
+          logger.warn(`[Realtime] Subscription timed out for ${table}`);
           scheduleReconnect();
         } else if (status === 'CLOSED') {
           setStatus('disconnected');

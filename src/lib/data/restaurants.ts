@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { logger } from '@/lib/logger';
 import type { Database } from '@/types/database';
 
 type Restaurant = Database['public']['Tables']['restaurants']['Row'];
@@ -24,7 +25,7 @@ export async function getRestaurantBySlug(slug: string): Promise<Restaurant | nu
     .single();
 
   if (error || !data) {
-    console.error('[getRestaurantBySlug]', error);
+    logger.error('[getRestaurantBySlug]', error);
     return null;
   }
 
@@ -49,7 +50,7 @@ export async function getTableByNumber(
     .single();
 
   if (error || !data) {
-    console.error('[getTableByNumber]', error);
+    logger.error('[getTableByNumber]', error);
     return null;
   }
 
@@ -72,7 +73,7 @@ export async function getFirstTable(restaurantId: string): Promise<Table | null>
     .single();
 
   if (error || !data) {
-    console.error('[getFirstTable]', error);
+    logger.error('[getFirstTable]', error);
     return null;
   }
 
@@ -99,7 +100,7 @@ export async function getRestaurantByOwner(): Promise<Restaurant | null> {
 
   if (userError || !userProfile?.restaurant_id) {
     // This is common in dev environments or for superadmins
-    console.warn('[getRestaurantByOwner] No linked restaurant for user. Using fallback.');
+    logger.warn('[getRestaurantByOwner] No linked restaurant for user. Using fallback.');
     return null;
   }
 
@@ -111,7 +112,7 @@ export async function getRestaurantByOwner(): Promise<Restaurant | null> {
     .single();
 
   if (restError || !restaurant) {
-    console.error('[getRestaurantByOwner] Restaurant not found', restError);
+    logger.error('[getRestaurantByOwner] Restaurant not found', restError);
     return null;
   }
 

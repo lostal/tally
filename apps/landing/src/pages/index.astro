@@ -15,12 +15,9 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
        ═══════════════════════════════════════════ -->
   <section class="section relative overflow-hidden">
     <div class="container">
-      <div class="flex flex-col items-center justify-center min-h-[85vh] text-center">
+      <div class="flex min-h-[85vh] flex-col items-center justify-center text-center">
         <!-- El nombre, gigante y centrado -->
-        <h1
-          class="font-serif text-display relative"
-          data-split-text
-        >
+        <h1 class="text-display relative font-serif" data-split-text>
           tally<span class="text-tomato">.</span>
         </h1>
 
@@ -38,13 +35,13 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
 
     <!-- Elementos parallax decorativos + mouse parallax -->
     <div
-      class="absolute -right-32 top-1/4 w-96 h-96 rounded-full bg-tomato opacity-[0.08]"
+      class="bg-tomato absolute top-1/4 -right-32 h-96 w-96 rounded-full opacity-[0.08]"
       data-speed="0.4"
       data-mouse-parallax="0.03"
     >
     </div>
     <div
-      class="absolute -left-40 bottom-1/4 w-64 h-64 rounded-full bg-basil opacity-[0.06]"
+      class="bg-basil absolute bottom-1/4 -left-40 h-64 w-64 rounded-full opacity-[0.06]"
       data-speed="0.6"
       data-mouse-parallax="0.05"
     >
@@ -55,25 +52,21 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
        STATEMENT - Declaración audaz
        ═══════════════════════════════════════════ -->
   <section class="section-half bg-warm-black relative overflow-hidden">
-    <div class="container relative z-10">
-      <p
-        class="font-serif text-headline max-w-4xl"
-        data-animate="fade-up"
-      >
+    <div class="relative z-10 container">
+      <p class="text-headline max-w-4xl font-serif" data-animate="fade-up">
         Cobrar lento <br />
         cuesta caro<span class="text-tomato">.</span>
       </p>
     </div>
     <!-- Círculos decorativos con parallax -->
     <div
-      class="absolute -left-20 top-1/2 w-40 h-40 rounded-full border-2 border-cream/10"
+      class="border-cream/10 absolute top-1/2 -left-20 h-40 w-40 rounded-full border-2"
       data-speed="0.5"
       data-rotate
-    ></div>
-    <div
-      class="absolute right-10 bottom-10 w-24 h-24 rounded-full bg-tomato/20"
-      data-speed="0.3"
-    ></div>
+    >
+    </div>
+    <div class="bg-tomato/20 absolute right-10 bottom-10 h-24 w-24 rounded-full" data-speed="0.3">
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -85,127 +78,153 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
        CÓMO FUNCIONA - 3 pasos, mucho espacio
        ═══════════════════════════════════════════ -->
   <section class="section relative overflow-hidden">
-    <div class="container relative z-10">
-      <p
-        class="text-caption text-muted mb-16"
-        data-animate="fade"
-      >
-        Para tu restaurante
-      </p>
+    <div class="relative z-10 container">
+      <p class="text-caption text-muted mb-16" data-animate="fade">Para tu restaurante</p>
 
       <div class="space-y-32 lg:space-y-48">
         <!-- Paso 1 -->
-        <div
-          class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center relative"
-        >
+        <div class="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
           <div data-animate="fade-up">
-            <span class="font-serif text-hero text-stone-200" data-animate="scale" data-delay="0.2">01</span>
-            <h2 class="font-serif text-headline mt-4">QR en cada mesa</h2>
+            <span class="text-hero font-serif text-stone-200" data-animate="scale" data-delay="0.2"
+              >01</span
+            >
+            <h2 class="text-headline mt-4 font-serif">QR en cada mesa</h2>
             <p class="text-body-lg text-muted mt-6 max-w-md">
               Tus clientes escanean y pagan desde el móvil. Sin esperas.
             </p>
           </div>
-          <div class="bg-stone-100 aspect-[4/3] rounded-sm relative group" data-speed="0.1" data-reveal data-mouse-parallax="0.02">
+          <div
+            class="group relative aspect-[4/3] rounded-sm bg-stone-100"
+            data-speed="0.1"
+            data-reveal
+            data-mouse-parallax="0.02"
+          >
             <!-- Placeholder para mockup -->
-            <div class="w-full h-full flex items-center justify-center transition-transform group-hover:scale-105 duration-500">
-              <div class="w-32 h-32 border-4 border-stone-300 rounded-lg flex items-center justify-center">
-                <span class="font-mono text-stone-400 text-sm">QR</span>
+            <div
+              class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
+            >
+              <div
+                class="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-stone-300"
+              >
+                <span class="font-mono text-sm text-stone-400">QR</span>
               </div>
             </div>
           </div>
           <!-- Elemento decorativo -->
-          <div class="absolute -right-12 top-0 w-32 h-32 bg-carrot/5 rounded-full" data-speed="0.3"></div>
+          <div class="bg-carrot/5 absolute top-0 -right-12 h-32 w-32 rounded-full" data-speed="0.3">
+          </div>
         </div>
 
         <!-- Paso 2 -->
-        <div
-          class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center relative"
-        >
+        <div class="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
           <div class="lg:order-2" data-animate="fade-up">
-            <span class="font-serif text-hero text-stone-200" data-animate="scale" data-delay="0.2">02</span>
-            <h2 class="font-serif text-headline mt-4">División automática</h2>
+            <span class="text-hero font-serif text-stone-200" data-animate="scale" data-delay="0.2"
+              >02</span
+            >
+            <h2 class="text-headline mt-4 font-serif">División automática</h2>
             <p class="text-body-lg text-muted mt-6 max-w-md">
               Ven en tiempo real quién pagó qué. Menos errores en cuenta.
             </p>
           </div>
           <div
-            class="bg-basil aspect-[4/3] rounded-sm lg:order-1 relative group"
+            class="bg-basil group relative aspect-[4/3] rounded-sm lg:order-1"
             data-speed="0.15"
             data-reveal
             data-mouse-parallax="0.02"
           >
             <!-- Placeholder -->
-            <div class="w-full h-full flex items-center justify-center transition-transform group-hover:scale-105 duration-500">
-              <div class="text-center text-cream/60">
+            <div
+              class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
+            >
+              <div class="text-cream/60 text-center">
                 <p class="font-serif text-4xl" data-counter="47" data-suffix=".50">€47.50</p>
-                <p class="text-sm mt-2">Tu parte</p>
+                <p class="mt-2 text-sm">Tu parte</p>
               </div>
             </div>
           </div>
           <!-- Elemento decorativo -->
-          <div class="absolute -left-16 bottom-20 w-24 h-24 border-2 border-basil/20 rounded-full" data-speed="0.4" data-rotate></div>
+          <div
+            class="border-basil/20 absolute bottom-20 -left-16 h-24 w-24 rounded-full border-2"
+            data-speed="0.4"
+            data-rotate
+          >
+          </div>
         </div>
 
         <!-- Paso 3 -->
-        <div
-          class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center relative"
-        >
+        <div class="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
           <div data-animate="fade-up">
-            <span class="font-serif text-hero text-stone-200" data-animate="scale" data-delay="0.2">03</span>
-            <h2 class="font-serif text-headline mt-4">Pagos al instante</h2>
+            <span class="text-hero font-serif text-stone-200" data-animate="scale" data-delay="0.2"
+              >03</span
+            >
+            <h2 class="text-headline mt-4 font-serif">Pagos al instante</h2>
             <p class="text-body-lg text-muted mt-6 max-w-md">
               El dinero llega a tu cuenta al momento. Tarifa plana mensual.
             </p>
           </div>
-          <div class="bg-tomato aspect-[4/3] rounded-sm relative group" data-speed="0.1" data-reveal data-mouse-parallax="0.02">
+          <div
+            class="bg-tomato group relative aspect-[4/3] rounded-sm"
+            data-speed="0.1"
+            data-reveal
+            data-mouse-parallax="0.02"
+          >
             <!-- Placeholder -->
-            <div class="w-full h-full flex items-center justify-center transition-transform group-hover:scale-105 duration-500">
-              <div class="text-center text-cream">
+            <div
+              class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
+            >
+              <div class="text-cream text-center">
                 <p class="font-serif text-4xl">✓</p>
-                <p class="text-sm mt-2">Pagado</p>
+                <p class="mt-2 text-sm">Pagado</p>
               </div>
             </div>
           </div>
           <!-- Elemento decorativo -->
-          <div class="absolute -right-8 bottom-10 w-40 h-40 bg-yolk/5 rounded-full" data-speed="0.25"></div>
+          <div
+            class="bg-yolk/5 absolute -right-8 bottom-10 h-40 w-40 rounded-full"
+            data-speed="0.25"
+          >
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Elementos parallax de fondo -->
-    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-tomato rounded-full" data-speed="0.7"></div>
-    <div class="absolute top-1/2 right-1/3 w-3 h-3 bg-basil/50 rounded-full" data-speed="0.6"></div>
-    <div class="absolute bottom-1/3 left-1/2 w-1.5 h-1.5 bg-carrot rounded-full" data-speed="0.8"></div>
+    <div class="bg-tomato absolute top-1/4 left-1/4 h-2 w-2 rounded-full" data-speed="0.7"></div>
+    <div class="bg-basil/50 absolute top-1/2 right-1/3 h-3 w-3 rounded-full" data-speed="0.6"></div>
+    <div class="bg-carrot absolute bottom-1/3 left-1/2 h-1.5 w-1.5 rounded-full" data-speed="0.8">
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
        BLOQUE COLOR - Statement
        ═══════════════════════════════════════════ -->
   <section class="section bg-basil relative overflow-hidden">
-    <div class="container relative z-10">
-      <p
-        class="font-serif text-headline max-w-3xl"
-        data-animate="fade-up"
-      >
+    <div class="relative z-10 container">
+      <p class="text-headline max-w-3xl font-serif" data-animate="fade-up">
         Menos tiempo cobrando.
         <span class="opacity-60">Más tiempo sirviendo.</span>
       </p>
     </div>
     <!-- Elementos decorativos -->
-    <div class="absolute top-20 right-20 w-64 h-64 bg-cream/5 rounded-full" data-speed="0.4"></div>
-    <div class="absolute bottom-10 left-10 w-32 h-32 border-2 border-cream/10 rounded-full" data-speed="0.5" data-rotate></div>
-    <div class="absolute top-1/2 left-1/3 w-4 h-4 bg-cream/20 rounded-full" data-speed="0.7"></div>
+    <div class="bg-cream/5 absolute top-20 right-20 h-64 w-64 rounded-full" data-speed="0.4"></div>
+    <div
+      class="border-cream/10 absolute bottom-10 left-10 h-32 w-32 rounded-full border-2"
+      data-speed="0.5"
+      data-rotate
+    >
+    </div>
+    <div class="bg-cream/20 absolute top-1/2 left-1/3 h-4 w-4 rounded-full" data-speed="0.7"></div>
   </section>
 
   <!-- ═══════════════════════════════════════════
        PARA RESTAURANTES
        ═══════════════════════════════════════════ -->
   <section class="section relative overflow-hidden">
-    <div class="container relative z-10">
-      <div class="grid lg:grid-cols-12 gap-8 lg:gap-16">
+    <div class="relative z-10 container">
+      <div class="grid gap-8 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-4" data-animate="fade-up">
           <p class="text-caption text-muted mb-4">Para restaurantes</p>
-          <h2 class="font-serif text-headline">
+          <h2 class="text-headline font-serif">
             Menos fricción.
             <br />
             Más rotación.
@@ -214,24 +233,31 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
 
         <div class="lg:col-span-8 lg:col-start-6">
           <div class="space-y-12" data-stagger>
-            <div class="border-t border-stone-300 pt-8 group hover:border-tomato transition-colors duration-300">
+            <div
+              class="group hover:border-tomato border-t border-stone-300 pt-8 transition-colors duration-300"
+            >
               <h3 class="text-title group-hover:text-tomato transition-colors">POS integrado</h3>
               <p class="text-body text-muted mt-3">
-                Sistema de punto de venta completo. Gestiona pedidos, mesas y
-                productos desde cualquier dispositivo.
+                Sistema de punto de venta completo. Gestiona pedidos, mesas y productos desde
+                cualquier dispositivo.
               </p>
             </div>
 
-            <div class="border-t border-stone-300 pt-8 group hover:border-basil transition-colors duration-300">
+            <div
+              class="group hover:border-basil border-t border-stone-300 pt-8 transition-colors duration-300"
+            >
               <h3 class="text-title group-hover:text-basil transition-colors">Tiempo real</h3>
               <p class="text-body text-muted mt-3">
-                Ve quién ha pagado, cuánto falta, qué mesas necesitan atención.
-                Todo sincronizado.
+                Ve quién ha pagado, cuánto falta, qué mesas necesitan atención. Todo sincronizado.
               </p>
             </div>
 
-            <div class="border-t border-stone-300 pt-8 group hover:border-carrot transition-colors duration-300">
-              <h3 class="text-title group-hover:text-carrot transition-colors">Sin comisiones por transacción</h3>
+            <div
+              class="group hover:border-carrot border-t border-stone-300 pt-8 transition-colors duration-300"
+            >
+              <h3 class="text-title group-hover:text-carrot transition-colors">
+                Sin comisiones por transacción
+              </h3>
               <p class="text-body text-muted mt-3">
                 Tarifa plana mensual. Predecible. Sin sorpresas.
               </p>
@@ -241,38 +267,58 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
       </div>
     </div>
     <!-- Elementos decorativos -->
-    <div class="absolute -right-20 top-1/3 w-48 h-48 bg-tomato/5 rounded-full" data-speed="0.3"></div>
-    <div class="absolute left-0 bottom-20 w-20 h-20 border-2 border-stone-300 rounded-full" data-speed="0.6" data-rotate></div>
+    <div class="bg-tomato/5 absolute top-1/3 -right-20 h-48 w-48 rounded-full" data-speed="0.3">
+    </div>
+    <div
+      class="absolute bottom-20 left-0 h-20 w-20 rounded-full border-2 border-stone-300"
+      data-speed="0.6"
+      data-rotate
+    >
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
        COLORES - Showcase de themes
        ═══════════════════════════════════════════ -->
   <section class="py-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-0">
-      <div class="bg-tomato aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-cream/90">Tomate</span>
+    <div class="grid grid-cols-2 gap-0 md:grid-cols-4 lg:grid-cols-7">
+      <div
+        class="bg-tomato flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-cream/90 font-serif">Tomate</span>
       </div>
-      <div class="bg-carrot aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-warm-black/90">Zanahoria</span>
+      <div
+        class="bg-carrot flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-warm-black/90 font-serif">Zanahoria</span>
       </div>
-      <div class="bg-yolk aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-warm-black/90">Yema</span>
+      <div
+        class="bg-yolk flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-warm-black/90 font-serif">Yema</span>
       </div>
-      <div class="bg-basil aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-cream/90">Albahaca</span>
+      <div
+        class="bg-basil flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-cream/90 font-serif">Albahaca</span>
       </div>
-      <div class="bg-kale aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-cream/90">Kale</span>
+      <div
+        class="bg-kale flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-cream/90 font-serif">Kale</span>
       </div>
-      <div class="bg-blueberry aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-cream/90">Arándano</span>
+      <div
+        class="bg-blueberry flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-cream/90 font-serif">Arándano</span>
       </div>
-      <div class="bg-beet aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
-        <span class="font-serif text-title text-cream/90">Remolacha</span>
+      <div
+        class="bg-beet flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
+      >
+        <span class="text-title text-cream/90 font-serif">Remolacha</span>
       </div>
     </div>
-    <p class="text-center text-caption text-muted py-8" data-animate="fade">
+    <p class="text-caption text-muted py-8 text-center" data-animate="fade">
       Personaliza con los colores de tu marca
     </p>
   </section>
@@ -281,24 +327,17 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
        CTA FINAL
        ═══════════════════════════════════════════ -->
   <section class="section bg-warm-black relative overflow-hidden">
-    <div class="container text-center relative z-10">
-      <h2
-        class="font-serif text-hero mb-12"
-        data-animate="scale"
-      >
+    <div class="relative z-10 container text-center">
+      <h2 class="text-hero mb-12 font-serif" data-animate="scale">
         Empieza hoy<span class="text-tomato">.</span>
       </h2>
-      <p
-        class="text-body-lg text-stone-400 mb-12"
-        data-animate="fade-up"
-        data-delay="0.1"
-      >
+      <p class="text-body-lg mb-12 text-stone-400" data-animate="fade-up" data-delay="0.1">
         Prueba 14 días gratis. Sin permanencia.
       </p>
       <div data-animate="fade-up" data-delay="0.2">
         <a
           href={`${appUrl}/register`}
-          class="btn btn-solid !bg-cream !text-warm-black !border-cream hover:!bg-transparent hover:!text-cream inline-flex items-center gap-2 group"
+          class="btn btn-solid !bg-cream !text-warm-black !border-cream hover:!text-cream group inline-flex items-center gap-2 hover:!bg-transparent"
           data-magnetic
         >
           Empezar ahora
@@ -307,19 +346,31 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
       </div>
     </div>
     <!-- Elementos decorativos -->
-    <div class="absolute top-20 left-20 w-96 h-96 bg-tomato/10 rounded-full blur-3xl" data-speed="0.2"></div>
-    <div class="absolute bottom-20 right-20 w-64 h-64 bg-basil/10 rounded-full blur-3xl" data-speed="0.35"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-cream/30 rounded-full" data-speed="0.8"></div>
+    <div
+      class="bg-tomato/10 absolute top-20 left-20 h-96 w-96 rounded-full blur-3xl"
+      data-speed="0.2"
+    >
+    </div>
+    <div
+      class="bg-basil/10 absolute right-20 bottom-20 h-64 w-64 rounded-full blur-3xl"
+      data-speed="0.35"
+    >
+    </div>
+    <div
+      class="bg-cream/30 absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+      data-speed="0.8"
+    >
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
        FOOTER - Mínimo
        ═══════════════════════════════════════════ -->
-  <footer class="py-16 border-t border-stone-300">
+  <footer class="border-t border-stone-300 py-16">
     <div class="container">
-      <div class="flex flex-col md:flex-row justify-between items-start gap-12">
+      <div class="flex flex-col items-start justify-between gap-12 md:flex-row">
         <div>
-          <a href="/" class="font-serif text-title">
+          <a href="/" class="text-title font-serif">
             tally<span class="text-tomato">.</span>
           </a>
           <p class="text-body text-muted mt-4 max-w-xs">
@@ -349,16 +400,9 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
 
       <div class="divider my-12"></div>
 
-      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-caption text-muted">
-          © 2025 Tally. Hecho en España.
-        </p>
-        <a
-          href="mailto:hola@paytally.app"
-          class="link text-body"
-        >
-          hola@paytally.app
-        </a>
+      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <p class="text-caption text-muted">© 2025 Tally. Hecho en España.</p>
+        <a href="mailto:hola@paytally.app" class="link text-body"> hola@paytally.app </a>
       </div>
     </div>
   </footer>

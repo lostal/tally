@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus, Minus, Trash2, Receipt, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
 
 interface OrderContentProps {
@@ -62,7 +63,7 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
       });
       router.refresh();
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error adding item to order:', error);
     }
     setIsLoading(false);
   };
@@ -113,7 +114,7 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
         {/* Header */}
         <div className="flex items-center justify-between border-b p-4">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={handleBack}>
+            <Button variant="ghost" size="icon" onClick={handleBack} aria-label="Volver">
               <ArrowLeft className="size-5" />
             </Button>
             <div>
@@ -148,6 +149,7 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
                       variant="ghost"
                       className="size-8"
                       onClick={() => handleUpdateQuantity(item.id, -1)}
+                      aria-label={item.quantity === 1 ? 'Eliminar producto' : 'Reducir cantidad'}
                     >
                       {item.quantity === 1 ? (
                         <Trash2 className="text-destructive size-4" />
@@ -161,6 +163,7 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
                       variant="ghost"
                       className="size-8"
                       onClick={() => handleUpdateQuantity(item.id, 1)}
+                      aria-label="Aumentar cantidad"
                     >
                       <Plus className="size-4" />
                     </Button>
@@ -182,7 +185,7 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
                         e.stopPropagation();
                         handleMarkServed(item.id);
                       }}
-                      title="Marcar como servido"
+                      aria-label="Marcar como servido"
                     >
                       <Check className="size-4" />
                     </Button>

@@ -1,438 +1,1019 @@
-/**
- * Database types for Supabase
- *
- * These types match the schema defined in supabase/migrations/001_initial_schema.sql
- * In production, generate these with: npx supabase gen types typescript
- */
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-export interface Database {
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: '14.1';
+  };
   public: {
     Tables: {
-      restaurants: {
-        Row: {
-          id: string;
-          name: string;
-          slug: string;
-          logo_url: string | null;
-          theme: RestaurantTheme;
-          settings: Json;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          slug: string;
-          logo_url?: string | null;
-          theme?: RestaurantTheme;
-          settings?: Json;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          slug?: string;
-          logo_url?: string | null;
-          theme?: RestaurantTheme;
-          settings?: Json;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      users: {
-        Row: {
-          id: string;
-          restaurant_id: string | null;
-          auth_id: string | null;
-          email: string | null;
-          name: string;
-          role: UserRole;
-          pin: string | null;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          restaurant_id?: string | null;
-          auth_id?: string | null;
-          email?: string | null;
-          name: string;
-          role: UserRole;
-          pin?: string | null;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          restaurant_id?: string | null;
-          auth_id?: string | null;
-          email?: string | null;
-          name?: string;
-          role?: UserRole;
-          pin?: string | null;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      tables: {
-        Row: {
-          id: string;
-          restaurant_id: string;
-          number: string;
-          capacity: number;
-          status: TableStatus;
-          qr_code: string | null;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          restaurant_id: string;
-          number: string;
-          capacity?: number;
-          status?: TableStatus;
-          qr_code?: string | null;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          restaurant_id?: string;
-          number?: string;
-          capacity?: number;
-          status?: TableStatus;
-          qr_code?: string | null;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
       categories: {
         Row: {
-          id: string;
-          restaurant_id: string;
-          name: string;
+          created_at: string | null;
           description: string | null;
-          sort_order: number;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
+          id: string;
+          is_active: boolean | null;
+          name: string;
+          restaurant_id: string;
+          sort_order: number | null;
+          updated_at: string | null;
         };
         Insert: {
-          id?: string;
-          restaurant_id: string;
-          name: string;
+          created_at?: string | null;
           description?: string | null;
-          sort_order?: number;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
+          id?: string;
+          is_active?: boolean | null;
+          name: string;
+          restaurant_id: string;
+          sort_order?: number | null;
+          updated_at?: string | null;
         };
         Update: {
+          created_at?: string | null;
+          description?: string | null;
           id?: string;
+          is_active?: boolean | null;
+          name?: string;
           restaurant_id?: string;
-          name?: string;
-          description?: string | null;
-          sort_order?: number;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
+          sort_order?: number | null;
+          updated_at?: string | null;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'categories_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
       };
-      products: {
+      invoice_items: {
         Row: {
+          created_at: string | null;
           id: string;
-          restaurant_id: string;
-          category_id: string | null;
-          name: string;
-          description: string | null;
-          price_cents: number;
-          image_url: string | null;
-          is_available: boolean;
-          sort_order: number;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          restaurant_id: string;
-          category_id?: string | null;
-          name: string;
-          description?: string | null;
-          price_cents: number;
-          image_url?: string | null;
-          is_available?: boolean;
-          sort_order?: number;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          restaurant_id?: string;
-          category_id?: string | null;
-          name?: string;
-          description?: string | null;
-          price_cents?: number;
-          image_url?: string | null;
-          is_available?: boolean;
-          sort_order?: number;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      product_modifiers: {
-        Row: {
-          id: string;
-          product_id: string;
-          name: string;
-          price_cents: number;
-          is_required: boolean;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          product_id: string;
-          name: string;
-          price_cents?: number;
-          is_required?: boolean;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          product_id?: string;
-          name?: string;
-          price_cents?: number;
-          is_required?: boolean;
-          created_at?: string;
-        };
-      };
-      orders: {
-        Row: {
-          id: string;
-          restaurant_id: string;
-          table_id: string;
-          waiter_id: string | null;
-          status: OrderStatus;
+          invoice_id: string;
+          product_name: string;
+          quantity: number;
           subtotal_cents: number;
-          discount_cents: number;
-          notes: string | null;
-          created_at: string;
-          updated_at: string;
-          closed_at: string | null;
+          tax_cents: number;
+          tax_rate: number;
+          total_cents: number;
+          unit_price_cents: number;
         };
         Insert: {
+          created_at?: string | null;
           id?: string;
-          restaurant_id: string;
-          table_id: string;
-          waiter_id?: string | null;
-          status?: OrderStatus;
-          subtotal_cents?: number;
-          discount_cents?: number;
-          notes?: string | null;
-          created_at?: string;
-          updated_at?: string;
-          closed_at?: string | null;
+          invoice_id: string;
+          product_name: string;
+          quantity?: number;
+          subtotal_cents: number;
+          tax_cents: number;
+          tax_rate?: number;
+          total_cents: number;
+          unit_price_cents: number;
         };
         Update: {
+          created_at?: string | null;
           id?: string;
-          restaurant_id?: string;
-          table_id?: string;
-          waiter_id?: string | null;
-          status?: OrderStatus;
+          invoice_id?: string;
+          product_name?: string;
+          quantity?: number;
           subtotal_cents?: number;
-          discount_cents?: number;
-          notes?: string | null;
-          created_at?: string;
-          updated_at?: string;
-          closed_at?: string | null;
+          tax_cents?: number;
+          tax_rate?: number;
+          total_cents?: number;
+          unit_price_cents?: number;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'invoice_items_invoice_id_fkey';
+            columns: ['invoice_id'];
+            isOneToOne: false;
+            referencedRelation: 'invoices';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      invoices: {
+        Row: {
+          cancelled_at: string | null;
+          created_at: string | null;
+          deleted_at: string | null;
+          hash: string | null;
+          id: string;
+          invoice_number: string;
+          issued_at: string | null;
+          order_id: string | null;
+          paid_at: string | null;
+          previous_hash: string | null;
+          qr_code: string | null;
+          restaurant_id: string;
+          series: string | null;
+          status: string | null;
+          subtotal_cents: number;
+          tax_breakdown: Json | null;
+          tax_cents: number;
+          total_cents: number;
+        };
+        Insert: {
+          cancelled_at?: string | null;
+          created_at?: string | null;
+          deleted_at?: string | null;
+          hash?: string | null;
+          id?: string;
+          invoice_number: string;
+          issued_at?: string | null;
+          order_id?: string | null;
+          paid_at?: string | null;
+          previous_hash?: string | null;
+          qr_code?: string | null;
+          restaurant_id: string;
+          series?: string | null;
+          status?: string | null;
+          subtotal_cents?: number;
+          tax_breakdown?: Json | null;
+          tax_cents?: number;
+          total_cents?: number;
+        };
+        Update: {
+          cancelled_at?: string | null;
+          created_at?: string | null;
+          deleted_at?: string | null;
+          hash?: string | null;
+          id?: string;
+          invoice_number?: string;
+          issued_at?: string | null;
+          order_id?: string | null;
+          paid_at?: string | null;
+          previous_hash?: string | null;
+          qr_code?: string | null;
+          restaurant_id?: string;
+          series?: string | null;
+          status?: string | null;
+          subtotal_cents?: number;
+          tax_breakdown?: Json | null;
+          tax_cents?: number;
+          total_cents?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'invoices_order_id_fkey';
+            columns: ['order_id'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'invoices_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       order_items: {
         Row: {
+          claimed_by: string | null;
+          claimed_quantity: number | null;
+          created_at: string | null;
           id: string;
+          modifiers: Json | null;
+          notes: string | null;
           order_id: string;
           product_id: string;
           quantity: number;
+          status: string | null;
           unit_price_cents: number;
-          modifiers: Json;
-          notes: string | null;
-          status: OrderItemStatus;
-          created_at: string;
+          version: number | null;
         };
         Insert: {
+          claimed_by?: string | null;
+          claimed_quantity?: number | null;
+          created_at?: string | null;
           id?: string;
+          modifiers?: Json | null;
+          notes?: string | null;
           order_id: string;
           product_id: string;
           quantity?: number;
+          status?: string | null;
           unit_price_cents: number;
-          modifiers?: Json;
-          notes?: string | null;
-          status?: OrderItemStatus;
-          created_at?: string;
+          version?: number | null;
         };
         Update: {
+          claimed_by?: string | null;
+          claimed_quantity?: number | null;
+          created_at?: string | null;
           id?: string;
+          modifiers?: Json | null;
+          notes?: string | null;
           order_id?: string;
           product_id?: string;
           quantity?: number;
+          status?: string | null;
           unit_price_cents?: number;
-          modifiers?: Json;
-          notes?: string | null;
-          status?: OrderItemStatus;
-          created_at?: string;
+          version?: number | null;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'order_items_claimed_by_fkey';
+            columns: ['claimed_by'];
+            isOneToOne: false;
+            referencedRelation: 'participants';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'order_items_order_id_fkey';
+            columns: ['order_id'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'order_items_product_id_fkey';
+            columns: ['product_id'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      orders: {
+        Row: {
+          closed_at: string | null;
+          created_at: string | null;
+          discount_cents: number | null;
+          id: string;
+          notes: string | null;
+          restaurant_id: string;
+          status: string | null;
+          subtotal_cents: number | null;
+          table_id: string;
+          updated_at: string | null;
+          waiter_id: string | null;
+        };
+        Insert: {
+          closed_at?: string | null;
+          created_at?: string | null;
+          discount_cents?: number | null;
+          id?: string;
+          notes?: string | null;
+          restaurant_id: string;
+          status?: string | null;
+          subtotal_cents?: number | null;
+          table_id: string;
+          updated_at?: string | null;
+          waiter_id?: string | null;
+        };
+        Update: {
+          closed_at?: string | null;
+          created_at?: string | null;
+          discount_cents?: number | null;
+          id?: string;
+          notes?: string | null;
+          restaurant_id?: string;
+          status?: string | null;
+          subtotal_cents?: number | null;
+          table_id?: string;
+          updated_at?: string | null;
+          waiter_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'orders_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'orders_table_id_fkey';
+            columns: ['table_id'];
+            isOneToOne: false;
+            referencedRelation: 'tables';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'orders_waiter_id_fkey';
+            columns: ['waiter_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      participants: {
+        Row: {
+          avatar_url: string | null;
+          id: string;
+          is_active: boolean | null;
+          is_host: boolean | null;
+          joined_at: string | null;
+          last_seen_at: string | null;
+          name: string;
+          session_id: string;
+          user_id: string | null;
+          version: number | null;
+        };
+        Insert: {
+          avatar_url?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          is_host?: boolean | null;
+          joined_at?: string | null;
+          last_seen_at?: string | null;
+          name: string;
+          session_id: string;
+          user_id?: string | null;
+          version?: number | null;
+        };
+        Update: {
+          avatar_url?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          is_host?: boolean | null;
+          joined_at?: string | null;
+          last_seen_at?: string | null;
+          name?: string;
+          session_id?: string;
+          user_id?: string | null;
+          version?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'participants_session_id_fkey';
+            columns: ['session_id'];
+            isOneToOne: false;
+            referencedRelation: 'sessions';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       payment_sessions: {
         Row: {
+          completed_at: string | null;
+          created_at: string | null;
           id: string;
           order_id: string;
-          status: PaymentSessionStatus;
+          status: string | null;
           total_cents: number;
-          created_at: string;
-          completed_at: string | null;
         };
         Insert: {
+          completed_at?: string | null;
+          created_at?: string | null;
           id?: string;
           order_id: string;
-          status?: PaymentSessionStatus;
+          status?: string | null;
           total_cents: number;
-          created_at?: string;
-          completed_at?: string | null;
         };
         Update: {
+          completed_at?: string | null;
+          created_at?: string | null;
           id?: string;
           order_id?: string;
-          status?: PaymentSessionStatus;
+          status?: string | null;
           total_cents?: number;
-          created_at?: string;
-          completed_at?: string | null;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'payment_sessions_order_id_fkey';
+            columns: ['order_id'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       payments: {
         Row: {
-          id: string;
-          session_id: string;
-          participant_id: string;
           amount_cents: number;
-          tip_cents: number;
-          payment_method: PaymentMethod | null;
-          stripe_payment_id: string | null;
-          status: PaymentStatus;
-          items_paid: Json;
-          receipt_url: string | null;
-          created_at: string;
           completed_at: string | null;
+          created_at: string | null;
+          id: string;
+          items_paid: Json | null;
+          participant_id: string;
+          payment_method: string | null;
+          receipt_url: string | null;
+          session_id: string;
+          status: string | null;
+          stripe_payment_id: string | null;
+          tip_cents: number | null;
         };
         Insert: {
-          id?: string;
-          session_id: string;
-          participant_id: string;
           amount_cents: number;
-          tip_cents?: number;
-          payment_method?: PaymentMethod | null;
-          stripe_payment_id?: string | null;
-          status?: PaymentStatus;
-          items_paid?: Json;
-          receipt_url?: string | null;
-          created_at?: string;
           completed_at?: string | null;
+          created_at?: string | null;
+          id?: string;
+          items_paid?: Json | null;
+          participant_id: string;
+          payment_method?: string | null;
+          receipt_url?: string | null;
+          session_id: string;
+          status?: string | null;
+          stripe_payment_id?: string | null;
+          tip_cents?: number | null;
         };
         Update: {
-          id?: string;
-          session_id?: string;
-          participant_id?: string;
           amount_cents?: number;
-          tip_cents?: number;
-          payment_method?: PaymentMethod | null;
-          stripe_payment_id?: string | null;
-          status?: PaymentStatus;
-          items_paid?: Json;
-          receipt_url?: string | null;
-          created_at?: string;
           completed_at?: string | null;
+          created_at?: string | null;
+          id?: string;
+          items_paid?: Json | null;
+          participant_id?: string;
+          payment_method?: string | null;
+          receipt_url?: string | null;
+          session_id?: string;
+          status?: string | null;
+          stripe_payment_id?: string | null;
+          tip_cents?: number | null;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'payments_session_id_fkey';
+            columns: ['session_id'];
+            isOneToOne: false;
+            referencedRelation: 'payment_sessions';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      product_modifiers: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          is_required: boolean | null;
+          name: string;
+          price_cents: number | null;
+          product_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: string;
+          is_required?: boolean | null;
+          name: string;
+          price_cents?: number | null;
+          product_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          is_required?: boolean | null;
+          name?: string;
+          price_cents?: number | null;
+          product_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'product_modifiers_product_id_fkey';
+            columns: ['product_id'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      products: {
+        Row: {
+          category_id: string | null;
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          image_url: string | null;
+          is_available: boolean | null;
+          name: string;
+          price_cents: number;
+          restaurant_id: string;
+          sort_order: number | null;
+          tax_rate: number | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          category_id?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          image_url?: string | null;
+          is_available?: boolean | null;
+          name: string;
+          price_cents: number;
+          restaurant_id: string;
+          sort_order?: number | null;
+          tax_rate?: number | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          category_id?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          image_url?: string | null;
+          is_available?: boolean | null;
+          name?: string;
+          price_cents?: number;
+          restaurant_id?: string;
+          sort_order?: number | null;
+          tax_rate?: number | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'products_category_id_fkey';
+            columns: ['category_id'];
+            isOneToOne: false;
+            referencedRelation: 'categories';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'products_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      restaurants: {
+        Row: {
+          created_at: string | null;
+          fiscal_address: string | null;
+          fiscal_city: string | null;
+          fiscal_country: string | null;
+          fiscal_name: string | null;
+          fiscal_postal_code: string | null;
+          id: string;
+          is_active: boolean | null;
+          logo_url: string | null;
+          name: string;
+          owner_auth_id: string | null;
+          settings: Json | null;
+          slug: string;
+          subscription_id: string | null;
+          tax_id: string | null;
+          theme: Json | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          fiscal_address?: string | null;
+          fiscal_city?: string | null;
+          fiscal_country?: string | null;
+          fiscal_name?: string | null;
+          fiscal_postal_code?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          logo_url?: string | null;
+          name: string;
+          owner_auth_id?: string | null;
+          settings?: Json | null;
+          slug: string;
+          subscription_id?: string | null;
+          tax_id?: string | null;
+          theme?: Json | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          fiscal_address?: string | null;
+          fiscal_city?: string | null;
+          fiscal_country?: string | null;
+          fiscal_name?: string | null;
+          fiscal_postal_code?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          logo_url?: string | null;
+          name?: string;
+          owner_auth_id?: string | null;
+          settings?: Json | null;
+          slug?: string;
+          subscription_id?: string | null;
+          tax_id?: string | null;
+          theme?: Json | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'restaurants_subscription_id_fkey';
+            columns: ['subscription_id'];
+            isOneToOne: false;
+            referencedRelation: 'subscriptions';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      sessions: {
+        Row: {
+          closed_at: string | null;
+          created_at: string | null;
+          id: string;
+          restaurant_id: string;
+          status: string | null;
+          table_id: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          closed_at?: string | null;
+          created_at?: string | null;
+          id?: string;
+          restaurant_id: string;
+          status?: string | null;
+          table_id?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          closed_at?: string | null;
+          created_at?: string | null;
+          id?: string;
+          restaurant_id?: string;
+          status?: string | null;
+          table_id?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'sessions_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'sessions_table_id_fkey';
+            columns: ['table_id'];
+            isOneToOne: false;
+            referencedRelation: 'tables';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      subscriptions: {
+        Row: {
+          canceled_at: string | null;
+          commission_rate: number | null;
+          created_at: string | null;
+          current_period_end: string | null;
+          current_period_start: string | null;
+          has_kds: boolean | null;
+          id: string;
+          max_tables: number | null;
+          max_users: number | null;
+          plan: Database['public']['Enums']['subscription_plan'];
+          restaurant_id: string | null;
+          status: Database['public']['Enums']['subscription_status'];
+          stripe_customer_id: string | null;
+          stripe_price_id: string | null;
+          stripe_subscription_id: string | null;
+          trial_end: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          canceled_at?: string | null;
+          commission_rate?: number | null;
+          created_at?: string | null;
+          current_period_end?: string | null;
+          current_period_start?: string | null;
+          has_kds?: boolean | null;
+          id?: string;
+          max_tables?: number | null;
+          max_users?: number | null;
+          plan?: Database['public']['Enums']['subscription_plan'];
+          restaurant_id?: string | null;
+          status?: Database['public']['Enums']['subscription_status'];
+          stripe_customer_id?: string | null;
+          stripe_price_id?: string | null;
+          stripe_subscription_id?: string | null;
+          trial_end?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          canceled_at?: string | null;
+          commission_rate?: number | null;
+          created_at?: string | null;
+          current_period_end?: string | null;
+          current_period_start?: string | null;
+          has_kds?: boolean | null;
+          id?: string;
+          max_tables?: number | null;
+          max_users?: number | null;
+          plan?: Database['public']['Enums']['subscription_plan'];
+          restaurant_id?: string | null;
+          status?: Database['public']['Enums']['subscription_status'];
+          stripe_customer_id?: string | null;
+          stripe_price_id?: string | null;
+          stripe_subscription_id?: string | null;
+          trial_end?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'subscriptions_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: true;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      tables: {
+        Row: {
+          capacity: number | null;
+          created_at: string | null;
+          id: string;
+          is_active: boolean | null;
+          number: string;
+          qr_code: string | null;
+          restaurant_id: string;
+          status: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          capacity?: number | null;
+          created_at?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          number: string;
+          qr_code?: string | null;
+          restaurant_id: string;
+          status?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          capacity?: number | null;
+          created_at?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          number?: string;
+          qr_code?: string | null;
+          restaurant_id?: string;
+          status?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'tables_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      users: {
+        Row: {
+          auth_id: string | null;
+          created_at: string | null;
+          email: string | null;
+          id: string;
+          is_active: boolean | null;
+          name: string;
+          pin: string | null;
+          restaurant_id: string | null;
+          role: string;
+          updated_at: string | null;
+        };
+        Insert: {
+          auth_id?: string | null;
+          created_at?: string | null;
+          email?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          name: string;
+          pin?: string | null;
+          restaurant_id?: string | null;
+          role: string;
+          updated_at?: string | null;
+        };
+        Update: {
+          auth_id?: string | null;
+          created_at?: string | null;
+          email?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          name?: string;
+          pin?: string | null;
+          restaurant_id?: string | null;
+          role?: string;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'users_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
       };
     };
-    Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      claim_order_item: {
+        Args: {
+          p_expected_version: number;
+          p_item_id: string;
+          p_participant_id: string;
+          p_quantity: number;
+        };
+        Returns: {
+          error_message: string;
+          new_version: number;
+          success: boolean;
+        }[];
+      };
+      generate_invoice_hash: { Args: { p_invoice_id: string }; Returns: string };
+      generate_invoice_number: {
+        Args: { p_restaurant_id: string; p_series?: string };
+        Returns: string;
+      };
+      generate_invoice_qr_data: {
+        Args: { p_invoice_id: string };
+        Returns: string;
+      };
+      get_plan_limits: {
+        Args: { p_plan: Database['public']['Enums']['subscription_plan'] };
+        Returns: {
+          commission_rate: number;
+          has_kds: boolean;
+          max_tables: number;
+          max_users: number;
+        }[];
+      };
+      is_subscription_active: {
+        Args: { p_restaurant_id: string };
+        Returns: boolean;
+      };
+      release_order_item: {
+        Args: { p_item_id: string; p_participant_id: string };
+        Returns: boolean;
+      };
+    };
     Enums: {
-      user_role: UserRole;
-      table_status: TableStatus;
-      order_status: OrderStatus;
-      order_item_status: OrderItemStatus;
-      payment_session_status: PaymentSessionStatus;
-      payment_method: PaymentMethod;
-      payment_status: PaymentStatus;
+      subscription_plan: 'essential' | 'pro' | 'enterprise';
+      subscription_status: 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid';
+    };
+    CompositeTypes: {
+      [_ in never]: never;
     };
   };
+};
+
+type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>;
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>];
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
 }
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+      Row: infer R;
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
 
-// Type aliases for convenience
-export type UserRole = 'owner' | 'manager' | 'waiter';
-export type TableStatus = 'available' | 'occupied' | 'paying' | 'reserved';
-export type OrderStatus = 'open' | 'served' | 'paying' | 'closed' | 'cancelled';
-export type OrderItemStatus = 'pending' | 'preparing' | 'served' | 'cancelled';
-export type PaymentSessionStatus = 'active' | 'completed' | 'cancelled';
-export type PaymentMethod = 'card' | 'apple_pay' | 'google_pay';
-export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed';
-
-export interface RestaurantTheme {
-  primaryColor: string;
-  accentColor: string;
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema['Tables']
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
 }
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Insert: infer I;
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
 
-// Table row types
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema['Tables']
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Update: infer U;
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema['Enums']
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
+    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema['CompositeTypes']
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
+    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+    : never;
+
+export const Constants = {
+  public: {
+    Enums: {
+      subscription_plan: ['essential', 'pro', 'enterprise'],
+      subscription_status: ['trialing', 'active', 'past_due', 'canceled', 'unpaid'],
+    },
+  },
+} as const;
+
+// ============================================
+// Convenience Type Aliases (for backwards compatibility)
+// ============================================
 export type Restaurant = Database['public']['Tables']['restaurants']['Row'];
-export type User = Database['public']['Tables']['users']['Row'];
 export type Table = Database['public']['Tables']['tables']['Row'];
 export type Category = Database['public']['Tables']['categories']['Row'];
 export type Product = Database['public']['Tables']['products']['Row'];
-export type ProductModifier = Database['public']['Tables']['product_modifiers']['Row'];
 export type Order = Database['public']['Tables']['orders']['Row'];
 export type OrderItem = Database['public']['Tables']['order_items']['Row'];
+export type User = Database['public']['Tables']['users']['Row'];
+export type Subscription = Database['public']['Tables']['subscriptions']['Row'];
 export type PaymentSession = Database['public']['Tables']['payment_sessions']['Row'];
 export type Payment = Database['public']['Tables']['payments']['Row'];
+export type Session = Database['public']['Tables']['sessions']['Row'];
+export type Participant = Database['public']['Tables']['participants']['Row'];
+export type Invoice = Database['public']['Tables']['invoices']['Row'];
+export type InvoiceItem = Database['public']['Tables']['invoice_items']['Row'];
 
 // Insert types
 export type RestaurantInsert = Database['public']['Tables']['restaurants']['Insert'];
-export type UserInsert = Database['public']['Tables']['users']['Insert'];
 export type TableInsert = Database['public']['Tables']['tables']['Insert'];
 export type CategoryInsert = Database['public']['Tables']['categories']['Insert'];
 export type ProductInsert = Database['public']['Tables']['products']['Insert'];
 export type OrderInsert = Database['public']['Tables']['orders']['Insert'];
 export type OrderItemInsert = Database['public']['Tables']['order_items']['Insert'];
 
-// Update types
-export type RestaurantUpdate = Database['public']['Tables']['restaurants']['Update'];
-export type UserUpdate = Database['public']['Tables']['users']['Update'];
-export type TableUpdate = Database['public']['Tables']['tables']['Update'];
-export type CategoryUpdate = Database['public']['Tables']['categories']['Update'];
-export type ProductUpdate = Database['public']['Tables']['products']['Update'];
-export type OrderUpdate = Database['public']['Tables']['orders']['Update'];
-export type OrderItemUpdate = Database['public']['Tables']['order_items']['Update'];
-
-// Extended types with relations
-export interface CategoryWithProducts extends Category {
-  products: Product[];
-}
-
-export interface OrderWithItems extends Order {
-  order_items: (OrderItem & { product: Product })[];
-  table: Table;
-}
-
-export interface PaymentSessionWithPayments extends PaymentSession {
-  payments: Payment[];
-  order: OrderWithItems;
+// Theme type (legacy compatibility)
+export interface RestaurantTheme {
+  primaryColor: string;
+  accentColor: string;
 }

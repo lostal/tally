@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import { createEssentialOrder } from '@/app/actions/essential-order';
 import QRCode from 'react-qr-code';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 import { springSnappy, springBouncy, springSmooth } from '@/lib/motion';
 import {
   Dialog,
@@ -374,7 +375,7 @@ export function KeypadPremium({ restaurantId, slug }: KeypadPremiumProps) {
       // Reset
       handleClear();
     } catch (error) {
-      console.error(error);
+      logger.error('keypad-premium charge error', error);
       toast.error('Error al generar el cobro', { id: toastId });
     } finally {
       setIsProcessing(false);

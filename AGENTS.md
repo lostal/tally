@@ -19,9 +19,21 @@ Tally is a multi-tenant B2B SaaS for the hospitality industry, providing a "Spli
 
 ```bash
 pnpm install
+
+# Development
 pnpm dev              # Starts Next.js app (localhost:3000)
 pnpm dev:landing      # Starts Astro landing (localhost:4321)
-pnpm build            # Production build
+pnpm dev:all          # ⭐ Start BOTH projects simultaneously
+
+# Build
+pnpm build            # Build Next.js app
+pnpm build:landing    # Build Astro landing
+pnpm build:all        # Build both projects
+
+# Quality
+pnpm lint:all         # Lint both projects
+pnpm format:all       # Format all files
+pnpm type-check:all   # Type-check both projects
 ```
 
 ### Database (Supabase Cloud)

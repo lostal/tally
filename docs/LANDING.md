@@ -203,15 +203,24 @@ pnpm install
 
 # Start dev server
 pnpm dev:landing              # Runs on localhost:4321
+pnpm dev:all                  # Start landing + Next.js app simultaneously
 
 # Build for production
 pnpm build:landing            # Output: apps/landing/dist/
+pnpm build:all                # Build both landing and app
 
 # Preview production build
 pnpm preview:landing
 
-# Type checking
-cd apps/landing && pnpm check
+# Quality checks
+pnpm lint:landing             # Run ESLint
+pnpm format:landing           # Format with Prettier
+pnpm type-check:landing       # TypeScript type checking (astro check)
+
+# Or run all quality checks at once
+pnpm lint:all                 # Lint both projects
+pnpm format:all               # Format all files
+pnpm type-check:all           # Type-check both projects
 ```
 
 ### Environment Variables
@@ -225,7 +234,69 @@ PUBLIC_APP_URL=http://localhost:3000  # Link to main app (dev)
 
 **Note**: Astro environment variables prefixed with `PUBLIC_` are exposed to the client.
 
+## Code Quality
+
+### Linting
+
+The landing uses ESLint with Astro-specific rules:
+
+**Configuration**: `apps/landing/eslint.config.mjs`
+
+```bash
+# Run linting
+pnpm lint:landing
+
+# Auto-fix issues
+cd apps/landing && pnpm lint --fix
+```
+
+**Rules**:
+
+- Astro-specific linting via `eslint-plugin-astro`
+- TypeScript support
+- Warns on unused variables
+
+### Formatting
+
+Prettier is configured with Astro and Tailwind plugins:
+
+**Configuration**: `apps/landing/.prettierrc.json`
+
+```bash
+# Format all files
+pnpm format:landing
+```
+
+**Plugins**:
+
+- `prettier-plugin-astro`: Formats .astro files
+- `prettier-plugin-tailwindcss`: Sorts Tailwind classes
+
+**Settings**:
+
+- Single quotes
+- 2-space indentation
+- Semicolons enabled
+- 100 character line width
+
 ## Deployment
+
+### Platform: Cloudflare Pages
+
+The landing is deployed to **Cloudflare Pages** for optimal performance and global CDN.
+
+**Full deployment guide**: See `apps/landing/CLOUDFLARE_DEPLOYMENT.md`
+
+### Quick Setup
+
+1. **Connect GitHub** repository to Cloudflare Pages
+2. **Build settings**:
+   - Build command: `pnpm build:landing`
+   - Build output: `apps/landing/dist`
+   - Node version: 20.x
+3. **Environment variable**:
+   - `PUBLIC_APP_URL=https://app.paytally.app`
+4. **Custom domain**: `paytally.app`
 
 ### Build Output
 
@@ -235,26 +306,28 @@ pnpm build:landing
 
 Output: `apps/landing/dist/` (static HTML/CSS/JS)
 
-### Hosting Options
+### Hosting Alternatives
 
 The landing can be deployed to any static hosting service:
 
+- **Cloudflare Pages**: ⭐ Recommended (global CDN, auto-optimizations)
 - **Vercel**: Zero-config deployment
 - **Netlify**: Drag-and-drop or Git integration
-- **Cloudflare Pages**: Fast global CDN
 - **AWS S3 + CloudFront**: Custom infra
 - **GitHub Pages**: Free hosting
 
 ### Production Checklist
 
-- [ ] Set `PUBLIC_APP_URL` to production app URL
-- [ ] Update `astro.config.mjs` site URL if needed
+- [ ] Set `PUBLIC_APP_URL` to production app URL (`https://app.paytally.app`)
+- [ ] Update `astro.config.mjs` site URL to `https://paytally.app`
 - [ ] Test all links to main app
 - [ ] Verify animations work (disable browser motion settings)
 - [ ] Check sitemap.xml generation
 - [ ] Test mobile responsiveness
 - [ ] Validate accessibility (screen readers, keyboard nav)
 - [ ] Run Lighthouse audit (target 90+ scores)
+- [ ] Configure custom domain in Cloudflare Pages
+- [ ] Verify security headers in `public/_headers`
 
 ## Configuration Files
 

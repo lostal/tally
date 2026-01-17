@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { logger } from '@/lib/logger';
 import type { Database } from '@/types/database';
 import type { SelectableOrderItem } from '@/types';
 
@@ -42,7 +43,7 @@ export async function getActiveOrderForTable(tableId: string): Promise<OrderWith
     .eq('order_id', order.id);
 
   if (itemsError) {
-    console.error('[getActiveOrderForTable] items error:', itemsError);
+    logger.error('[getActiveOrderForTable] items error:', itemsError);
     return { ...order, items: [] };
   }
 

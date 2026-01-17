@@ -2,7 +2,7 @@
 const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
 ---
 
-<section class="py-12 border-y border-stone-300 overflow-hidden bg-cream">
+<section class="bg-cream overflow-hidden border-y border-stone-300 py-12">
   <div class="marquee-container" id="marquee-section">
     <div class="marquee-content" id="marquee-track">
       {
@@ -69,13 +69,16 @@ const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
         trigger: section,
         start: 'top bottom',
         end: 'bottom top',
-        onUpdate: (self) => {
+        onUpdate: (self: any) => {
           const currentScrollY = self.scroll();
           const scrollDirection = currentScrollY > lastScrollY ? 1 : -1;
           lastScrollY = currentScrollY;
 
           // Acelerar/desacelerar según dirección de scroll (menos agresivo)
-          const speedMultiplier = Math.max(0.5, Math.min(2, 1 + self.velocity * 0.0002 * scrollDirection));
+          const speedMultiplier = Math.max(
+            0.5,
+            Math.min(2, 1 + self.velocity * 0.0002 * scrollDirection)
+          );
           gsap.to(baseAnimation, {
             timeScale: speedMultiplier,
             duration: 0.4,

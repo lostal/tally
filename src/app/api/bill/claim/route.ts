@@ -14,6 +14,14 @@ const ClaimItemSchema = z.object({
 });
 
 /**
+ * Schema for releasing a claimed item
+ */
+const ReleaseItemSchema = z.object({
+  itemId: z.string().uuid(),
+  participantId: z.string().uuid(),
+});
+
+/**
  * POST /api/bill/claim
  *
  * Claim an item for a participant with optimistic locking.
@@ -68,23 +76,47 @@ export async function POST(request: Request) {
 /**
  * DELETE /api/bill/claim
  *
- * Release a claimed item
+ * Release a claimed item.
+ * Validates input with Zod and verifies the participant owns the claim.
  */
 export async function DELETE(request: Request) {
   try {
-    const body = await request.json();
-    const { itemId, participantId } = body;
-
-    if (!itemId || !participantId) {
-      return NextResponse.json({ error: 'Missing itemId or participantId' }, { status: 400 });
+    const { data, error: validationError } = await validateBody(request, ReleaseItemSchema);
+    if (validationError) {
+      return validationError;
     }
 
+    const { itemId, participantId } = data;
     const supabase = createAdminClient();
 
-    const { data: released } = await supabase.rpc('release_order_item', {
+    // Verify the participant exists and owns this claim before releasing
+    const { data: existingClaim, error: claimCheckError } = await supabase
+      .from('order_items')
+      .select('id, claimed_by')
+      .eq('id', itemId)
+      .single();
+
+    if (claimCheckError || !existingClaim) {
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+    }
+
+    // Verify ownership: only the participant who claimed it can release it
+    if (existingClaim.claimed_by !== participantId) {
+      return NextResponse.json(
+        { error: 'You can only release items you have claimed' },
+        { status: 403 }
+      );
+    }
+
+    const { data: released, error: releaseError } = await supabase.rpc('release_order_item', {
       p_item_id: itemId,
       p_participant_id: participantId,
     });
+
+    if (releaseError) {
+      logApiError('DELETE /api/bill/claim', releaseError);
+      return serverError('Failed to release item');
+    }
 
     return NextResponse.json({ success: released });
   } catch (error) {

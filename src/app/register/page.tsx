@@ -8,6 +8,7 @@ import { getClient } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 /**
  * Register Page
@@ -50,7 +51,7 @@ export default function RegisterPage() {
     setIsLoading(true);
     setError(null);
 
-    console.log('Starting registration process...');
+    logger.debug('Starting registration process');
 
     if (!formData.password || formData.password.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres');
@@ -60,7 +61,7 @@ export default function RegisterPage() {
 
     try {
       const supabase = getClient();
-      console.log('Calling Supabase signup...');
+      logger.debug('Calling Supabase signup');
 
       const { data, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -75,10 +76,10 @@ export default function RegisterPage() {
         },
       });
 
-      console.log('Supabase response:', { data, authError });
+      logger.debug('Supabase signup response received', { hasData: !!data, hasError: !!authError });
 
       if (authError) {
-        console.error('Supabase auth error:', authError);
+        logger.error('Supabase auth error during registration', { message: authError.message });
         if (authError.message.includes('already registered')) {
           setError('Este email ya está registrado');
         } else {
@@ -88,12 +89,12 @@ export default function RegisterPage() {
         return;
       }
 
-      console.log('Registration successful, showing success step');
+      logger.debug('Registration successful, showing success step');
 
       // Show success step instead of redirecting immediately
       setStep('success');
     } catch (error) {
-      console.error('Registration error:', error);
+      logger.error('Registration error', { error });
       setError('Error al crear la cuenta');
     } finally {
       setIsLoading(false);

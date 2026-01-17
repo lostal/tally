@@ -23,10 +23,7 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // ===== USANDO PROXY.TS (ESTÁNDAR NEXT.JS 16) =====
-  // Subdomain routing ahora se maneja en proxy.ts siguiendo el estándar oficial
-
-  // PWA headers y configuración de cacheo
+  // Security headers y configuración de cacheo
   async headers() {
     return [
       {
@@ -59,8 +56,7 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Configuración para producción multi-tenant
-  output: 'standalone', // Optimización para Docker/self-hosting
+  // Configuración para producción
   compress: true, // Habilitar compresión gzip
   poweredByHeader: false, // Seguridad: quitar header X-Powered-By
 

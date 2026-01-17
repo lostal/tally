@@ -90,7 +90,13 @@ function SortableCategory({
       {/* Product count and actions - grouped together */}
       <div className="flex items-center gap-1">
         <span className="pr-2 text-xs opacity-60">{productCount}</span>
-        <Button size="icon" variant="ghost" className="size-8" onClick={onEdit}>
+        <Button
+          size="icon"
+          variant="ghost"
+          className="size-8"
+          onClick={onEdit}
+          aria-label="Editar categoría"
+        >
           <Pencil className="size-3" />
         </Button>
         <Button
@@ -103,6 +109,7 @@ function SortableCategory({
               : 'text-destructive/70 hover:bg-destructive/10 hover:text-destructive'
           )}
           onClick={onDelete}
+          aria-label="Eliminar categoría"
         >
           <Trash2 className="size-3" />
         </Button>
@@ -169,15 +176,27 @@ function SortableProduct({
       </span>
 
       {/* Availability toggle */}
-      <Switch checked={product.is_available} onCheckedChange={onToggleAvailability} />
+      <Switch checked={product.is_available ?? false} onCheckedChange={onToggleAvailability} />
 
       {/* Edit button */}
-      <Button size="icon" variant="ghost" className="size-8" onClick={onEdit}>
+      <Button
+        size="icon"
+        variant="ghost"
+        className="size-8"
+        onClick={onEdit}
+        aria-label="Editar producto"
+      >
         <Pencil className="size-4" />
       </Button>
 
       {/* Delete button */}
-      <Button size="icon" variant="ghost" className="text-destructive size-8" onClick={onDelete}>
+      <Button
+        size="icon"
+        variant="ghost"
+        className="text-destructive size-8"
+        onClick={onDelete}
+        aria-label="Eliminar producto"
+      >
         <Trash2 className="size-4" />
       </Button>
     </div>
@@ -220,7 +239,7 @@ export function MenuContent({
 
   const categoryProducts = products
     .filter((p) => p.category_id === selectedCategory)
-    .sort((a, b) => a.sort_order - b.sort_order);
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
 
   // DnD sensors
   const sensors = useSensors(

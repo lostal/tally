@@ -32,7 +32,7 @@ export default async function RestaurantPage({ params, searchParams }: PageProps
       restaurantName={restaurant.name}
       logoUrl={restaurant.logo_url}
       tableNumber={table?.number || '1'}
-      isVerified={restaurant.is_active}
+      isVerified={restaurant.is_active ?? true}
     />
   );
 }

@@ -10,11 +10,11 @@ import { DashboardContentPremium } from './dashboard-content-premium';
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
 
-  // Check session
+  // Check authentication (using getUser for server-side security)
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
     redirect('/admin/login');
   }
 

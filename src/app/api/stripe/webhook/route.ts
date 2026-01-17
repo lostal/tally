@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { logApiError } from '@/lib/api/validation';
+import { logger } from '@/lib/logger';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
-    console.error('[Stripe Webhook] Signature verification failed:', err);
+    logger.error('[Stripe Webhook] Signature verification failed:', err);
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
       }
 
       default:
-        console.log(`[Stripe Webhook] Unhandled event: ${event.type}`);
+        logger.debug('Stripe webhook unhandled event', { type: event.type });
     }
 
     return NextResponse.json({ received: true });
@@ -100,7 +101,7 @@ async function handleCheckoutCompleted(
     await supabase
       .from('subscriptions')
       .update({
-        plan,
+        plan: plan as any,
         status: 'active',
         stripe_subscription_id: stripeSubscription.id,
         stripe_customer_id: customerId,
@@ -125,7 +126,7 @@ async function handleSubscriptionUpdated(
   await supabase
     .from('subscriptions')
     .update({
-      status,
+      status: status as any,
       current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
       canceled_at: subscription.canceled_at
@@ -155,7 +156,7 @@ async function handlePaymentFailed(
   if (invoice.subscription) {
     await supabase
       .from('subscriptions')
-      .update({ status: 'past_due' })
+      .update({ status: 'past_due' as const })
       .eq('stripe_subscription_id', invoice.subscription);
   }
 }

@@ -58,7 +58,13 @@ export function AdminShell({ children }: AdminShellProps) {
           <ChefHat className="text-primary size-6" />
           <span className="font-semibold">tally admin</span>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label={sidebarOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={sidebarOpen}
+        >
           {sidebarOpen ? <X className="size-5" /> : <Menu className="size-5" />}
         </Button>
       </header>

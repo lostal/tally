@@ -7,6 +7,7 @@
 'use client';
 
 import { useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 import { useSessionStore } from '@/stores/session-store';
 import { useRealtime, type ConnectionStatus } from './use-realtime';
 import type { Session, Participant } from '@/types';
@@ -146,7 +147,7 @@ export function useSession({
       });
       reset();
     } catch (err) {
-      console.error('Failed to leave session:', err);
+      logger.error('Failed to leave session:', err);
     }
   }, [sessionId, reset]);
 

@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.{astro,ts,js,json,md}\""
   },
   "dependencies": {
     "astro": "^5.1.0",
@@ -18,7 +20,12 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
     "@tailwindcss/vite": "^4.0.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-astro": "^1.3.3",
+    "prettier": "^3.4.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.2"
   }
 }

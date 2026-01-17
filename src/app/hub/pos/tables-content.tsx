@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Users, Clock, Receipt, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 import type { Table } from '@/types/database';
 
 interface POSTablesContentProps {
@@ -79,7 +80,7 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
           router.push(`/pos/orders/${data.order.id}`);
         }
       } catch (error) {
-        console.error('Error creating order:', error);
+        logger.error('Error creating order:', error);
         setActiveTableId(null);
       }
     }
@@ -110,7 +111,7 @@ export function POSTablesContent({ restaurantId, tables, orders }: POSTablesCont
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {tables.map((table, index) => {
           const order = getTableOrder(table.id);
-          const config = STATUS_CONFIG[table.status] || STATUS_CONFIG.available;
+          const config = STATUS_CONFIG[table.status ?? 'available'] || STATUS_CONFIG.available;
           const isLoading = activeTableId === table.id;
 
           return (

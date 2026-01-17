@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { TrustCardPremium, PoweredByBadge } from '@/components/trust/trust-card-premium';
+import { logger } from '@/lib/logger';
 import { useUIStore } from '@/stores';
 
 interface TrustPageClientProps {
@@ -47,10 +48,10 @@ export function TrustPageClient({
       });
 
       if (!response.ok) {
-        console.error('Failed to create session');
+        logger.error('Failed to create session');
       }
     } catch (error) {
-      console.error('Session creation error:', error);
+      logger.error('Session creation error:', error);
     }
 
     setCurrentStep('bill');

@@ -23,7 +23,7 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ['business', 'finance', 'food'],
     icons: [
       {
-        src: '/icon.svg',
+        src: '/app-icon.svg',
         sizes: 'any',
         type: 'image/svg+xml',
         purpose: 'any',

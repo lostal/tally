@@ -18,7 +18,7 @@
 
 Plataforma de pagos para restaurantes que permite a los comensales dividir la cuenta de forma inteligente tras escanear un código QR en la mesa. Construido con Next.js 16, React 19 y Supabase, priorizando la experiencia móvil y la velocidad de transacción.
 
-El diseño sigue una estética de **Warm Minimalism**: interfaces limpias con colores cálidos que transmiten confianza en el contexto de pagos. Tema dual, tipografía Inter/Lora y micro-animaciones con Framer Motion.
+El diseño sigue una estética de **Warm Minimalism**: interfaces limpias con colores cálidos que transmiten confianza en el contexto de pagos. Tema dual, tipografía Inter/Lora y micro-animaciones con Motion v12.
 
 ---
 
@@ -99,7 +99,7 @@ flowchart TB
 | Autenticación | Supabase Auth + Proxy middleware |
 | Formularios   | React Hook Form + Zod            |
 | Componentes   | Radix UI + custom                |
-| Animaciones   | Framer Motion + GSAP             |
+| Animaciones   | Motion v12 + GSAP                |
 | Drag & Drop   | dnd-kit                          |
 | Testing       | Vitest + Testing Library         |
 

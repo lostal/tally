@@ -166,7 +166,7 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
       {/* Tables grid */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {tables.map((table, index) => {
-          const config = STATUS_CONFIG[table.status] || STATUS_CONFIG.available;
+          const config = STATUS_CONFIG[table.status ?? 'available'] || STATUS_CONFIG.available;
 
           return (
             <motion.div
@@ -195,7 +195,7 @@ export function TablesContent({ restaurantSlug, tables: initialTables }: TablesC
 
               {/* Status selector - using accessible standard select */}
               <Select
-                value={table.status}
+                value={table.status ?? undefined}
                 onValueChange={(value) => handleStatusChange(table.id, value)}
               >
                 <SelectTrigger className={cn('w-full', config.selectClass)}>

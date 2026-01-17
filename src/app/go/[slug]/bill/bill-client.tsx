@@ -122,6 +122,7 @@ export function BillPageClient({
             size="icon"
             onClick={() => router.back()}
             className="z-10 -ml-2 shrink-0"
+            aria-label="Volver"
           >
             <ChevronLeft className="size-6" />
           </Button>

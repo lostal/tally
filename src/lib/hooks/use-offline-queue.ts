@@ -6,6 +6,7 @@ import {
   usePendingOperations,
   useIsProcessingQueue,
 } from '@/stores/offline-queue-store';
+import { logger } from '@/lib/logger';
 import type { ConnectionStatus } from './use-realtime';
 
 /**
@@ -29,7 +30,7 @@ export function useOfflineQueue(connectionStatus: ConnectionStatus) {
 
     for (const op of operations) {
       if (op.retryCount >= op.maxRetries) {
-        console.warn(`[OfflineQueue] Max retries reached for ${op.id}, removing`);
+        logger.warn('OfflineQueue max retries reached, removing', { operationId: op.id });
         removeOperation(op.id);
         continue;
       }
@@ -42,14 +43,14 @@ export function useOfflineQueue(connectionStatus: ConnectionStatus) {
         });
 
         if (response.ok) {
-          console.log(`[OfflineQueue] Successfully synced ${op.id}`);
+          logger.debug('OfflineQueue synced successfully', { operationId: op.id });
           removeOperation(op.id);
         } else {
-          console.warn(`[OfflineQueue] Failed to sync ${op.id}, will retry`);
+          logger.warn('OfflineQueue sync failed, will retry', { operationId: op.id });
           incrementRetry(op.id);
         }
       } catch (error) {
-        console.error(`[OfflineQueue] Network error for ${op.id}:`, error);
+        logger.error('OfflineQueue network error', { operationId: op.id, error });
         incrementRetry(op.id);
       }
     }
@@ -98,7 +99,7 @@ export function useQueueOperation() {
         // Network error - queue for later
         const opType = method === 'POST' ? 'CREATE' : method === 'DELETE' ? 'DELETE' : 'UPDATE';
         addOperation(opType, endpoint, payload);
-        console.log(`[OfflineQueue] Queued ${opType} to ${endpoint}`);
+        logger.debug('OfflineQueue operation queued', { type: opType, endpoint });
         return null;
       }
     },

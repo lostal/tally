@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { logger } from '@/lib/logger';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -34,8 +35,11 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error (prep for Sentry)
-    console.error('[ErrorBoundary] Caught error:', error);
-    console.error('[ErrorBoundary] Component stack:', errorInfo.componentStack);
+    logger.error('ErrorBoundary caught error', {
+      message: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+    });
 
     this.props.onError?.(error, errorInfo);
   }
@@ -69,7 +73,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
  */
 function ErrorFallback({ error, onReset }: { error: Error | null; onReset: () => void }) {
   return (
-    <div className="border-destructive/20 bg-destructive/5 flex min-h-[200px] flex-col items-center justify-center gap-4 rounded-lg border p-6 text-center">
+    <div className="border-destructive/20 bg-destructive/5 flex min-h-50 flex-col items-center justify-center gap-4 rounded-lg border p-6 text-center">
       <div className="text-destructive text-4xl">⚠️</div>
       <div>
         <h3 className="text-lg font-semibold">Algo salió mal</h3>
@@ -92,7 +96,7 @@ export function PaymentErrorBoundary({ children }: { children: React.ReactNode }
   return (
     <ErrorBoundary
       fallback={
-        <div className="flex min-h-[300px] flex-col items-center justify-center gap-4 p-6 text-center">
+        <div className="flex min-h-75 flex-col items-center justify-center gap-4 p-6 text-center">
           <div className="bg-destructive/10 rounded-full p-4">
             <span className="text-4xl">💳</span>
           </div>
@@ -126,7 +130,7 @@ export function BillErrorBoundary({ children }: { children: React.ReactNode }) {
     <ErrorBoundary
       resetKey={resetKey}
       fallback={
-        <div className="flex min-h-[200px] flex-col items-center justify-center gap-4 p-6 text-center">
+        <div className="flex min-h-50 flex-col items-center justify-center gap-4 p-6 text-center">
           <div className="text-4xl">🧾</div>
           <div>
             <h3 className="font-semibold">Error al cargar la cuenta</h3>
