@@ -92,13 +92,14 @@ flowchart TB
 | Categoría     | Tecnología                       |
 | ------------- | -------------------------------- |
 | Framework     | Next.js 16 (App Router)          |
+| Landing       | Astro 5 (Static)                 |
 | UI            | React 19 + TailwindCSS 4         |
 | Estado        | Zustand + Immer                  |
 | Base de datos | Supabase (PostgreSQL + RLS)      |
 | Autenticación | Supabase Auth + Proxy middleware |
 | Formularios   | React Hook Form + Zod            |
 | Componentes   | Radix UI + custom                |
-| Animaciones   | Framer Motion                    |
+| Animaciones   | Framer Motion + GSAP             |
 | Drag & Drop   | dnd-kit                          |
 | Testing       | Vitest + Testing Library         |
 
@@ -107,12 +108,21 @@ flowchart TB
 ## 📁 Estructura
 
 ```text
+apps/
+└── landing/               # Astro marketing site (static)
+    ├── src/
+    │   ├── components/    # Astro components
+    │   ├── layouts/       # Page layouts
+    │   ├── pages/         # Routes (index.astro)
+    │   └── styles/        # Global CSS + design tokens
+    └── public/            # Static assets
+
 src/
-├── app/                    # Next.js App Router
-│   ├── (marketing)/       # Landing pages públicas
-│   ├── [slug]/            # Flujo cliente (trust → bill → payment)
-│   ├── admin/             # Panel de administración
-│   ├── pos/               # Point of Sale para staff
+├── app/                   # Next.js App Router
+│   ├── go/[slug]/         # Flujo cliente (trust → bill → payment)
+│   ├── hub/admin/         # Panel de administración
+│   ├── hub/pos/           # Point of Sale para staff
+│   ├── hub/kds/           # Kitchen Display System
 │   └── api/               # API Routes
 ├── components/            # Componentes React por dominio
 ├── lib/                   # Utilidades y configuraciones

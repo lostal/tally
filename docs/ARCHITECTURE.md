@@ -44,6 +44,8 @@ The app uses path-based routing (not subdomains) for simplicity:
 | Development | `localhost:3000`   | `localhost:4321` |
 | Production  | `app.paytally.app` | `paytally.app`   |
 
+**Note**: Landing and app are separate deployments. Landing is a static Astro site, app is a Next.js server.
+
 ## Directory Structure
 
 ```
@@ -74,6 +76,12 @@ src/
 └── types/                 # TypeScript type definitions
 apps/
 └── landing/               # Astro marketing site (separate build)
+    ├── src/
+    │   ├── components/    # Astro/HTML components
+    │   ├── layouts/       # Page layouts with GSAP animations
+    │   ├── pages/         # File-based routing
+    │   └── styles/        # Global CSS + design tokens
+    └── public/            # Static assets
 ```
 
 ## Data Flow
@@ -144,3 +152,73 @@ See `supabase/migrations/001_initial_schema.sql` for full schema.
 - Don't trust client-side auth alone
 - Log errors without exposing internals
 - All auth redirects go through `/auth/callback`
+
+## Deployment
+
+### Monorepo Structure
+
+The project uses pnpm workspaces with two separate applications:
+
+1. **Next.js App** (`src/`): Main SaaS application
+2. **Astro Landing** (`apps/landing/`): Marketing website
+
+### Deployment Strategy
+
+**Landing Site (Astro)**:
+
+- **Build**: `pnpm build:landing` → Static HTML/CSS/JS output to `apps/landing/dist/`
+- **Domain**: `paytally.app` (production) / `localhost:4321` (dev)
+- **Hosting**: Static hosting (Vercel, Netlify, Cloudflare Pages, etc.)
+- **Dependencies**: None on main app - fully independent
+
+**Main App (Next.js)**:
+
+- **Build**: `pnpm build` → Next.js server build
+- **Domain**: `app.paytally.app` (production) / `localhost:3000` (dev)
+- **Hosting**: Vercel, Node.js server, or Docker container
+- **Environment Variables**: Requires Supabase keys, Stripe keys, etc. (see `.env.example`)
+
+### Environment Variables
+
+**Landing** (`apps/landing/.env`):
+
+```bash
+PUBLIC_APP_URL=https://app.paytally.app  # Link to main app
+```
+
+**Main App** (`.env`):
+
+```bash
+NEXT_PUBLIC_LANDING_URL=https://paytally.app  # Link to landing
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+STRIPE_SECRET_KEY=...
+# ... (see .env.example for full list)
+```
+
+### Build Commands
+
+```bash
+# Development
+pnpm dev              # Start Next.js app
+pnpm dev:landing      # Start Astro landing
+
+# Production builds
+pnpm build            # Build Next.js app
+pnpm build:landing    # Build Astro landing
+
+# Preview production builds locally
+pnpm start            # Preview Next.js build
+pnpm preview:landing  # Preview Astro build
+```
+
+### Deployment Checklist
+
+- [ ] Configure environment variables for both deployments
+- [ ] Set up custom domains (`paytally.app` and `app.paytally.app`)
+- [ ] Deploy landing site to static hosting
+- [ ] Deploy main app to serverless/Node.js hosting
+- [ ] Test cross-linking between landing and app
+- [ ] Configure Supabase production instance
+- [ ] Set up Stripe webhooks pointing to production API

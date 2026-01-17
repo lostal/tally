@@ -15,14 +15,20 @@ Tally is a multi-tenant B2B SaaS for the hospitality industry. It provides:
 
 ```bash
 # Development
-pnpm install          # Install dependencies
+pnpm install          # Install dependencies (root + workspaces)
 pnpm dev              # Start Next.js dev server (Turbopack)
-pnpm dev:landing      # Start Astro landing page
+pnpm dev:landing      # Start Astro landing dev server (port 4321)
+
+# Build & Preview
+pnpm build            # Build Next.js app for production
+pnpm build:landing    # Build Astro landing (static output)
+pnpm preview:landing  # Preview Astro production build locally
 
 # Quality
-pnpm lint             # Run ESLint
-pnpm type-check       # TypeScript type checking
-pnpm format           # Format with Prettier
+pnpm lint             # Run ESLint on Next.js app
+pnpm type-check       # TypeScript type checking (Next.js)
+pnpm type-check:landing # TypeScript type checking (Astro landing)
+pnpm format           # Format all files with Prettier
 
 # Testing
 pnpm test             # Run Vitest in watch mode

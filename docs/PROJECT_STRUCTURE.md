@@ -4,12 +4,31 @@ This document explains the organization of the Tally codebase.
 
 ## Root Directory
 
-- **`src/`**: Source code.
+- **`apps/`**: Monorepo applications (landing site).
+- **`src/`**: Next.js application source code.
 - **`supabase/`**: Local Supabase configuration and migrations.
 - **`public/`**: Static assets (favicons, images).
 - **`docs/`**: Project documentation (this folder).
 - **`next.config.ts`**: Next.js configuration.
 - **`package.json`**: Dependencies and scripts.
+- **`pnpm-workspace.yaml`**: Monorepo workspace configuration.
+
+## Applications (`apps/`)
+
+### `landing/` (Astro Static Site)
+
+Marketing website built with Astro for optimal performance.
+
+- **`src/components/`**: Reusable Astro components (Marquee, etc.).
+- **`src/layouts/`**: Base page layouts with animations and scripts.
+- **`src/pages/`**: File-based routing (currently single-page: `index.astro`).
+- **`src/styles/`**: Global CSS with design tokens (OKLCH colors, typography scale).
+- **`public/`**: Static assets (favicon, images).
+- **`astro.config.mjs`**: Astro configuration (sitemap, Tailwind integration).
+
+**Tech Stack**: Astro 5, Tailwind CSS v4, GSAP animations, Lenis smooth scroll.
+
+**Deployment**: Static HTML/CSS/JS, separate from main Next.js app.
 
 ## Source Code (`src/`)
 
@@ -17,13 +36,12 @@ This document explains the organization of the Tally codebase.
 
 The core routing logic, separated by domain.
 
-- **`(marketing)/`**: Public landing pages (served at `paytally.app`).
-  - `page.tsx`: Home page.
-- **`go/`**: Customer-facing application (served at `go.paytally.app`).
-  - `[slug]/`: Dynamic route for restaurant slug.
-- **`hub/`**: Admin and POS interfaces (served at `hub.paytally.app`).
+- **`go/`**: Customer-facing application.
+  - `[slug]/`: Dynamic route for restaurant slug (QR flow).
+- **`hub/`**: Admin and POS interfaces (protected routes).
   - `admin/`: Management dashboard.
   - `pos/`: Point of Sale interface.
+  - `kds/`: Kitchen Display System.
 - **`api/`**: Backend API routes.
   - `stripe/`: Webhook handlers.
   - `orders/`, `session/`: Core business logic endpoints.

@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "type-check": "tsc --noEmit",
+    "type-check:landing": "pnpm --filter @tally/landing check",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
