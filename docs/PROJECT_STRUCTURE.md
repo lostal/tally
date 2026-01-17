@@ -42,6 +42,8 @@ The core routing logic, separated by domain.
   - `admin/`: Management dashboard.
   - `pos/`: Point of Sale interface.
   - `kds/`: Kitchen Display System.
+  - `onboarding/`: Onboarding wizard.
+- **`auth/`**: Auth callbacks.
 - **`api/`**: Backend API routes.
   - `stripe/`: Webhook handlers.
   - `orders/`, `session/`: Core business logic endpoints.

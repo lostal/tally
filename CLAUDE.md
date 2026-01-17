@@ -110,6 +110,8 @@ src/
 │   ├── go/[slug]/          # Customer flow (trust → bill → payment)
 │   ├── hub/admin/          # Restaurant admin dashboard
 │   ├── hub/pos/            # Point of Sale for staff
+│   ├── hub/onboarding/     # Onboarding wizard
+│   ├── auth/               # Auth callbacks
 │   ├── api/                # API Routes
 │   └── actions/            # Server Actions
 ├── components/             # React components by domain

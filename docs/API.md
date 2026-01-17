@@ -2,13 +2,13 @@
 
 ## Overview
 
-Tally uses Next.js 16 API routes with Supabase as the backend. All API routes are located in `src/app/api/`.
+Tally uses Next.js 15 API routes with Supabase as the backend. All API routes are located in `src/app/api/`.
 
 ## Authentication
 
 ### Proxy Protection
 
-Routes under `/admin/*` and `/pos/*` are protected by `src/proxy.ts` using Supabase session validation.
+Routes under `/admin/*` and `/pos/*` are protected by `middleware.ts` using Supabase session validation.
 
 ### API Route Auth
 

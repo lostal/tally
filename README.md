@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
@@ -16,7 +16,7 @@
 
 ## 📋 Descripción
 
-Plataforma de pagos para restaurantes que permite a los comensales dividir la cuenta de forma inteligente tras escanear un código QR en la mesa. Construido con Next.js 16, React 19 y Supabase, priorizando la experiencia móvil y la velocidad de transacción.
+Plataforma de pagos para restaurantes que permite a los comensales dividir la cuenta de forma inteligente tras escanear un código QR en la mesa. Construido con Next.js 15, React 19 y Supabase, priorizando la experiencia móvil y la velocidad de transacción.
 
 El diseño sigue una estética de **Warm Minimalism**: interfaces limpias con colores cálidos que transmiten confianza en el contexto de pagos. Tema dual, tipografía Inter/Lora y micro-animaciones con Motion v12.
 
@@ -58,7 +58,7 @@ flowchart TB
         Payment[Pago]
     end
 
-    subgraph Frontend["🖥️ Next.js 16"]
+    subgraph Frontend["🖥️ Next.js 15"]
         AppRouter[App Router]
         ServerComp[Server Components]
         Zustand[Zustand Stores]
@@ -91,7 +91,7 @@ flowchart TB
 
 | Categoría     | Tecnología                       |
 | ------------- | -------------------------------- |
-| Framework     | Next.js 16 (App Router)          |
+| Framework     | Next.js 15 (App Router)          |
 | Landing       | Astro 5 (Static)                 |
 | UI            | React 19 + TailwindCSS 4         |
 | Estado        | Zustand + Immer                  |
@@ -123,6 +123,8 @@ src/
 │   ├── hub/admin/         # Panel de administración
 │   ├── hub/pos/           # Point of Sale para staff
 │   ├── hub/kds/           # Kitchen Display System
+│   ├── hub/onboarding/    # Configuración inicial
+│   ├── auth/              # Rutas de autenticación
 │   └── api/               # API Routes
 ├── components/            # Componentes React por dominio
 ├── lib/                   # Utilidades y configuraciones
@@ -136,27 +138,27 @@ src/
 
 ## 🔐 Seguridad
 
-| Capa            | Implementación                               |
-| --------------- | -------------------------------------------- |
-| **Proxy**       | `proxy.ts` protege `/admin/*` y `/pos/*`     |
-| **API**         | Validación Zod + verificación de usuario     |
-| **Base datos**  | Row Level Security (RLS) en todas las tablas |
-| **Auth**        | `getUser()` en servidor (no `getSession()`)  |
-| **Service Key** | Solo en API routes server-side               |
+| Capa            | Implementación                                |
+| --------------- | --------------------------------------------- |
+| **Proxy**       | `middleware.ts` protege `/admin/*` y `/pos/*` |
+| **API**         | Validación Zod + verificación de usuario      |
+| **Base datos**  | Row Level Security (RLS) en todas las tablas  |
+| **Auth**        | `getUser()` en servidor (no `getSession()`)   |
+| **Service Key** | Solo en API routes server-side                |
 
 ---
 
 ## 💡 Decisiones de Desarrollo
 
-| Decisión            | Justificación                                                       |
-| ------------------- | ------------------------------------------------------------------- |
-| **Next.js 16**      | App Router, proxy.ts, Server Components, optimizaciones automáticas |
-| **Supabase**        | PostgreSQL completo, RLS, realtime y auth integrados                |
-| **Zustand + Immer** | Estado simple y performante con updates inmutables                  |
-| **TailwindCSS 4**   | CSS-first config, mejor performance, design tokens nativos          |
-| **Zod en API**      | Validación type-safe con errores descriptivos                       |
-| **Vitest**          | Testing rápido compatible con Vite, mocks para Next.js y Supabase   |
-| **Warm Minimalism** | Estética que transmite confianza para contexto de pagos             |
+| Decisión            | Justificación                                                            |
+| ------------------- | ------------------------------------------------------------------------ |
+| **Next.js 15**      | App Router, middleware.ts, Server Components, optimizaciones automáticas |
+| **Supabase**        | PostgreSQL completo, RLS, realtime y auth integrados                     |
+| **Zustand + Immer** | Estado simple y performante con updates inmutables                       |
+| **TailwindCSS 4**   | CSS-first config, mejor performance, design tokens nativos               |
+| **Zod en API**      | Validación type-safe con errores descriptivos                            |
+| **Vitest**          | Testing rápido compatible con Vite, mocks para Next.js y Supabase        |
+| **Warm Minimalism** | Estética que transmite confianza para contexto de pagos                  |
 
 ---
 

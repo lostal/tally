@@ -40,7 +40,7 @@ pnpm type-check:all   # Type-check both projects
 
 ## 3. Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript (Strict Mode)
 - **Styling**: Tailwind CSS v4, Shadcn/UI, Lucide React
 - **Backend**: Supabase (PostgreSQL, Auth, Realtime)

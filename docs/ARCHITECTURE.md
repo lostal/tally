@@ -8,7 +8,7 @@ Tally is a SaaS application for restaurant bill splitting built with Next.js 16 
 
 | Layer      | Technology               |
 | ---------- | ------------------------ |
-| Framework  | Next.js 16 (App Router)  |
+| Framework  | Next.js 15 (App Router)  |
 | Landing    | Astro (Static)           |
 | UI         | React 19 + TailwindCSS 4 |
 | State      | Zustand + Immer          |
