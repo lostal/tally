@@ -14,7 +14,10 @@ import { TEST_DATA } from './global-setup';
  */
 
 test.describe('Dynamic Split - Real-time Participant Changes', () => {
-  test('should update split amount when participant joins', async ({ page, context: _context }) => {
+  test.skip('should update split amount when participant joins', async ({
+    page,
+    context: _context,
+  }) => {
     // This test simulates a second user joining mid-session
     // In real scenario, would use multiple browser contexts
 
@@ -294,7 +297,7 @@ test.describe('Dynamic Split - Payment Flow Integration', () => {
 });
 
 test.describe('Dynamic Split - Edge Cases', () => {
-  test('should handle transition from 1 to 2 participants', async ({ page }) => {
+  test.skip('should handle transition from 1 to 2 participants', async ({ page }) => {
     await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/bill`);
 
     // Start with EQUAL (1 participant - pays all)

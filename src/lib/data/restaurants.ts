@@ -16,6 +16,7 @@ export interface RestaurantWithTable {
  */
 export async function getRestaurantBySlug(slug: string): Promise<Restaurant | null> {
   const supabase = await createClient();
+  // const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from('restaurants')

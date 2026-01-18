@@ -1,13 +1,16 @@
+```typescript
 import { notFound } from 'next/navigation';
 import {
-  getRestaurantBySlug,
   getActiveOrderForTable,
   transformToSelectableItems,
   calculateOrderTotal,
 } from '@/lib/data';
-import { getTableByNumber, getFirstTable } from '@/lib/data/restaurants';
+import { getRestaurantWithTable } from '@/lib/data/restaurants';
 import { BillPageClient } from './bill-client-premium';
 import { SubscriptionPlan } from '@/types/subscription';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -15,29 +18,23 @@ interface PageProps {
 }
 
 /**
- * Bill Page (Server Component)
+ * Restaurant Bill Page (Server Component)
  *
- * Shows the order items for the current table.
+ * Displays the bill for a specific table.
  * Fetches order data from Supabase and passes to client component.
  */
 export default async function BillPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
   const { table: tableNumber } = await searchParams;
 
-  // Fetch restaurant
-  const restaurant = await getRestaurantBySlug(slug);
-  if (!restaurant) {
+  // Fetch restaurant and table from Supabase
+  const data = await getRestaurantWithTable(slug, tableNumber);
+
+  if (!data) {
     notFound();
   }
 
-  // Fetch table
-  const table = tableNumber
-    ? await getTableByNumber(restaurant.id, tableNumber)
-    : await getFirstTable(restaurant.id);
-
-  if (!table) {
-    notFound();
-  }
+  const { restaurant, table } = data;
 
   // Fetch active order for this table
   const order = await getActiveOrderForTable(table.id);
