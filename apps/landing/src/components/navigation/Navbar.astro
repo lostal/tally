@@ -2,22 +2,15 @@
 import Button from '../ui/Button.astro';
 ---
 
-<nav
-  id="navbar"
-  class="fixed top-0 left-0 right-0 z-100 transition-all duration-300 ease-out"
->
+<nav id="navbar" class="fixed top-0 right-0 left-0 z-100 transition-all duration-300 ease-out">
   <div class="container-landing py-4">
     <div
       class="liquid-glass mx-auto flex max-w-5xl items-center justify-between gap-8 rounded-2xl px-6 py-4"
     >
       <!-- Logo/Wordmark -->
-      <a href="/" class="flex items-center gap-2 group">
-        <svg
-          class="h-8 w-8 text-primary"
-          viewBox="0 0 32 32"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect width="32" height="32" rx="8" fill="currentColor" />
+      <a href="/" class="group flex items-center gap-2">
+        <svg class="text-primary h-8 w-8" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="currentColor"></rect>
           <text
             x="16"
             y="23"
@@ -30,20 +23,31 @@ import Button from '../ui/Button.astro';
             t.
           </text>
         </svg>
-        <span class="font-serif text-xl font-bold text-primary group-hover:opacity-70 transition-opacity">
-          Tally
+        <span
+          class="text-primary font-serif text-xl font-bold transition-opacity group-hover:opacity-70"
+        >
+          tally.
         </span>
       </a>
 
       <!-- Navigation Links (desktop) -->
       <div class="hidden items-center gap-8 md:flex">
-        <a href="#features" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <a
+          href="#features"
+          class="text-muted-foreground hover:text-foreground text-sm transition-colors"
+        >
           Características
         </a>
-        <a href="#demo" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <a
+          href="#demo"
+          class="text-muted-foreground hover:text-foreground text-sm transition-colors"
+        >
           Demo
         </a>
-        <a href="#pricing" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <a
+          href="#pricing"
+          class="text-muted-foreground hover:text-foreground text-sm transition-colors"
+        >
           Precios
         </a>
       </div>
@@ -135,7 +139,7 @@ import Button from '../ui/Button.astro';
   } else {
     // If not using View Transitions or script runs late
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-       initNavbarBehavior();
+      initNavbarBehavior();
     }
   }
 </script>
