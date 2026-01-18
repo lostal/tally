@@ -8,6 +8,188 @@ export type Database = {
   };
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string;
+          created_at: string | null;
+          id: string;
+          ip_address: string | null;
+          metadata: Json | null;
+          resource_id: string;
+          resource_type: string;
+          restaurant_id: string;
+          user_id: string;
+        };
+        Insert: {
+          action: string;
+          created_at?: string | null;
+          id?: string;
+          ip_address?: string | null;
+          metadata?: Json | null;
+          resource_id: string;
+          resource_type: string;
+          restaurant_id: string;
+          user_id: string;
+        };
+        Update: {
+          action?: string;
+          created_at?: string | null;
+          id?: string;
+          ip_address?: string | null;
+          metadata?: Json | null;
+          resource_id?: string;
+          resource_type?: string;
+          restaurant_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'audit_logs_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'audit_logs_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cash_registers: {
+        Row: {
+          actual_cash_cents: number | null;
+          closed_at: string | null;
+          closed_by: string | null;
+          created_at: string | null;
+          difference_cents: number | null;
+          expected_cash_cents: number | null;
+          id: string;
+          opened_at: string | null;
+          opened_by: string;
+          opening_amount_cents: number;
+          restaurant_id: string;
+          status: string | null;
+          updated_at: string | null;
+          z_report: Json | null;
+        };
+        Insert: {
+          actual_cash_cents?: number | null;
+          closed_at?: string | null;
+          closed_by?: string | null;
+          created_at?: string | null;
+          difference_cents?: number | null;
+          expected_cash_cents?: number | null;
+          id?: string;
+          opened_at?: string | null;
+          opened_by: string;
+          opening_amount_cents?: number;
+          restaurant_id: string;
+          status?: string | null;
+          updated_at?: string | null;
+          z_report?: Json | null;
+        };
+        Update: {
+          actual_cash_cents?: number | null;
+          closed_at?: string | null;
+          closed_by?: string | null;
+          created_at?: string | null;
+          difference_cents?: number | null;
+          expected_cash_cents?: number | null;
+          id?: string;
+          opened_at?: string | null;
+          opened_by?: string;
+          opening_amount_cents?: number;
+          restaurant_id?: string;
+          status?: string | null;
+          updated_at?: string | null;
+          z_report?: Json | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cash_registers_closed_by_fkey';
+            columns: ['closed_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cash_registers_opened_by_fkey';
+            columns: ['opened_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cash_registers_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cash_transactions: {
+        Row: {
+          amount_cents: number;
+          created_at: string | null;
+          id: string;
+          notes: string | null;
+          reason: string;
+          register_id: string;
+          restaurant_id: string;
+          type: string;
+          user_id: string;
+        };
+        Insert: {
+          amount_cents: number;
+          created_at?: string | null;
+          id?: string;
+          notes?: string | null;
+          reason: string;
+          register_id: string;
+          restaurant_id: string;
+          type: string;
+          user_id: string;
+        };
+        Update: {
+          amount_cents?: number;
+          created_at?: string | null;
+          id?: string;
+          notes?: string | null;
+          reason?: string;
+          register_id?: string;
+          restaurant_id?: string;
+          type?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cash_transactions_register_id_fkey';
+            columns: ['register_id'];
+            isOneToOne: false;
+            referencedRelation: 'cash_registers';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cash_transactions_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cash_transactions_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       categories: {
         Row: {
           created_at: string | null;
@@ -253,6 +435,9 @@ export type Database = {
           subtotal_cents: number | null;
           table_id: string;
           updated_at: string | null;
+          void_reason: string | null;
+          voided_at: string | null;
+          voided_by: string | null;
           waiter_id: string | null;
         };
         Insert: {
@@ -266,6 +451,9 @@ export type Database = {
           subtotal_cents?: number | null;
           table_id: string;
           updated_at?: string | null;
+          void_reason?: string | null;
+          voided_at?: string | null;
+          voided_by?: string | null;
           waiter_id?: string | null;
         };
         Update: {
@@ -279,6 +467,9 @@ export type Database = {
           subtotal_cents?: number | null;
           table_id?: string;
           updated_at?: string | null;
+          void_reason?: string | null;
+          voided_at?: string | null;
+          voided_by?: string | null;
           waiter_id?: string | null;
         };
         Relationships: [
@@ -294,6 +485,13 @@ export type Database = {
             columns: ['table_id'];
             isOneToOne: false;
             referencedRelation: 'tables';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'orders_voided_by_fkey';
+            columns: ['voided_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
             referencedColumns: ['id'];
           },
           {
@@ -397,6 +595,10 @@ export type Database = {
           participant_id: string;
           payment_method: string | null;
           receipt_url: string | null;
+          refund_amount_cents: number | null;
+          refund_reason: string | null;
+          refunded_at: string | null;
+          refunded_by: string | null;
           session_id: string;
           status: string | null;
           stripe_payment_id: string | null;
@@ -411,6 +613,10 @@ export type Database = {
           participant_id: string;
           payment_method?: string | null;
           receipt_url?: string | null;
+          refund_amount_cents?: number | null;
+          refund_reason?: string | null;
+          refunded_at?: string | null;
+          refunded_by?: string | null;
           session_id: string;
           status?: string | null;
           stripe_payment_id?: string | null;
@@ -425,12 +631,23 @@ export type Database = {
           participant_id?: string;
           payment_method?: string | null;
           receipt_url?: string | null;
+          refund_amount_cents?: number | null;
+          refund_reason?: string | null;
+          refunded_at?: string | null;
+          refunded_by?: string | null;
           session_id?: string;
           status?: string | null;
           stripe_payment_id?: string | null;
           tip_cents?: number | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'payments_refunded_by_fkey';
+            columns: ['refunded_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'payments_session_id_fkey';
             columns: ['session_id'];
@@ -807,6 +1024,71 @@ export type Database = {
           },
         ];
       };
+      void_approvals: {
+        Row: {
+          approved_by: string | null;
+          created_at: string | null;
+          id: string;
+          order_id: string;
+          reason: string;
+          requested_by: string;
+          resolved_at: string | null;
+          restaurant_id: string;
+          status: string | null;
+        };
+        Insert: {
+          approved_by?: string | null;
+          created_at?: string | null;
+          id?: string;
+          order_id: string;
+          reason: string;
+          requested_by: string;
+          resolved_at?: string | null;
+          restaurant_id: string;
+          status?: string | null;
+        };
+        Update: {
+          approved_by?: string | null;
+          created_at?: string | null;
+          id?: string;
+          order_id?: string;
+          reason?: string;
+          requested_by?: string;
+          resolved_at?: string | null;
+          restaurant_id?: string;
+          status?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'void_approvals_approved_by_fkey';
+            columns: ['approved_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'void_approvals_order_id_fkey';
+            columns: ['order_id'];
+            isOneToOne: false;
+            referencedRelation: 'orders';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'void_approvals_requested_by_fkey';
+            columns: ['requested_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'void_approvals_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -825,6 +1107,36 @@ export type Database = {
           success: boolean;
         }[];
       };
+      close_cash_register: {
+        Args: {
+          p_actual_cash_cents: number;
+          p_closed_by: string;
+          p_register_id: string;
+        };
+        Returns: {
+          actual_cash_cents: number | null;
+          closed_at: string | null;
+          closed_by: string | null;
+          created_at: string | null;
+          difference_cents: number | null;
+          expected_cash_cents: number | null;
+          id: string;
+          opened_at: string | null;
+          opened_by: string;
+          opening_amount_cents: number;
+          restaurant_id: string;
+          status: string | null;
+          updated_at: string | null;
+          z_report: Json | null;
+        };
+        SetofOptions: {
+          from: '*';
+          to: 'cash_registers';
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      deny_old_void_approvals: { Args: never; Returns: undefined };
       generate_invoice_hash: { Args: { p_invoice_id: string }; Returns: string };
       generate_invoice_number: {
         Args: { p_restaurant_id: string; p_series?: string };
@@ -834,6 +1146,7 @@ export type Database = {
         Args: { p_invoice_id: string };
         Returns: string;
       };
+      generate_z_report: { Args: { p_register_id: string }; Returns: Json };
       get_plan_limits: {
         Args: { p_plan: Database['public']['Enums']['subscription_plan'] };
         Returns: {
@@ -989,28 +1302,32 @@ export const Constants = {
 // ============================================
 // Convenience Type Aliases (for backwards compatibility)
 // ============================================
-export type Restaurant = Database['public']['Tables']['restaurants']['Row'];
-export type Table = Database['public']['Tables']['tables']['Row'];
-export type Category = Database['public']['Tables']['categories']['Row'];
-export type Product = Database['public']['Tables']['products']['Row'];
-export type Order = Database['public']['Tables']['orders']['Row'];
-export type OrderItem = Database['public']['Tables']['order_items']['Row'];
-export type User = Database['public']['Tables']['users']['Row'];
-export type Subscription = Database['public']['Tables']['subscriptions']['Row'];
-export type PaymentSession = Database['public']['Tables']['payment_sessions']['Row'];
-export type Payment = Database['public']['Tables']['payments']['Row'];
-export type Session = Database['public']['Tables']['sessions']['Row'];
-export type Participant = Database['public']['Tables']['participants']['Row'];
-export type Invoice = Database['public']['Tables']['invoices']['Row'];
-export type InvoiceItem = Database['public']['Tables']['invoice_items']['Row'];
+export type Restaurant = Tables<'restaurants'>;
+export type Table = Tables<'tables'>;
+export type Category = Tables<'categories'>;
+export type Product = Tables<'products'>;
+export type Order = Tables<'orders'>;
+export type OrderItem = Tables<'order_items'>;
+export type User = Tables<'users'>;
+export type Subscription = Tables<'subscriptions'>;
+export type PaymentSession = Tables<'payment_sessions'>;
+export type Payment = Tables<'payments'>;
+export type Session = Tables<'sessions'>;
+export type Participant = Tables<'participants'>;
+export type Invoice = Tables<'invoices'>;
+export type InvoiceItem = Tables<'invoice_items'>;
+export type CashRegister = Tables<'cash_registers'>;
+export type CashTransaction = Tables<'cash_transactions'>;
+export type AuditLog = Tables<'audit_logs'>;
+export type VoidApproval = Tables<'void_approvals'>;
 
 // Insert types
-export type RestaurantInsert = Database['public']['Tables']['restaurants']['Insert'];
-export type TableInsert = Database['public']['Tables']['tables']['Insert'];
-export type CategoryInsert = Database['public']['Tables']['categories']['Insert'];
-export type ProductInsert = Database['public']['Tables']['products']['Insert'];
-export type OrderInsert = Database['public']['Tables']['orders']['Insert'];
-export type OrderItemInsert = Database['public']['Tables']['order_items']['Insert'];
+export type RestaurantInsert = TablesInsert<'restaurants'>;
+export type TableInsert = TablesInsert<'tables'>;
+export type CategoryInsert = TablesInsert<'categories'>;
+export type ProductInsert = TablesInsert<'products'>;
+export type OrderInsert = TablesInsert<'orders'>;
+export type OrderItemInsert = TablesInsert<'order_items'>;
 
 // Theme type (legacy compatibility)
 export interface RestaurantTheme {

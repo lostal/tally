@@ -1,6 +1,7 @@
 ---
 import '@/styles/globals.css';
 import { ClientRouter } from 'astro:transitions';
+import Header from '@/components/Header.astro';
 
 interface Props {
   title: string;
@@ -39,6 +40,7 @@ const { title, description } = Astro.props;
     <ClientRouter />
   </head>
   <body>
+    <Header />
     <slot />
 
     <!-- GSAP + ScrollTrigger + Lenis + SplitType -->
@@ -77,16 +79,15 @@ const { title, description } = Astro.props;
 
           gsap.to(rotatingWord, {
             opacity: 0,
-            y: -10,
-            duration: 0.3,
-            ease: 'power2.in',
+            duration: 0.2,
+            ease: 'power1.in',
             onComplete: () => {
               rotatingWord.textContent = words[currentIndex];
-              gsap.fromTo(
-                rotatingWord,
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
-              );
+              gsap.to(rotatingWord, {
+                opacity: 1,
+                duration: 0.2,
+                ease: 'power1.out',
+              });
             },
           });
         }, 3000);
@@ -184,99 +185,57 @@ const { title, description } = Astro.props;
         });
       });
 
-      // Magnetic buttons
-      document.querySelectorAll('[data-magnetic]').forEach((button) => {
-        const btn = button as HTMLElement;
-        btn.addEventListener('mousemove', (event) => {
-          const e = event as MouseEvent;
-          const rect = btn.getBoundingClientRect();
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
+      // Custom cursor
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-          gsap.to(btn, {
-            x: x * 0.3,
-            y: y * 0.3,
-            duration: 0.3,
-            ease: 'power2.out',
-          });
-        });
+      if (!isTouchDevice) {
+        document.body.style.cursor = 'none';
 
-        btn.addEventListener('mouseleave', () => {
-          gsap.to(btn, {
-            x: 0,
-            y: 0,
-            duration: 0.5,
-            ease: 'elastic.out(1, 0.5)',
-          });
-        });
-      });
+        const cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
 
-      // Custom cursor - punto grande con color adaptativo real
-      document.body.style.cursor = 'none';
+        document.addEventListener('mousemove', (event: MouseEvent) => {
+          cursor.style.left = `${event.clientX}px`;
+          cursor.style.top = `${event.clientY}px`;
 
-      const cursor = document.createElement('div');
-      cursor.className = 'custom-cursor';
-      document.body.appendChild(cursor);
+          const elementUnderCursor = document.elementFromPoint(event.clientX, event.clientY);
+          if (elementUnderCursor) {
+            const section = elementUnderCursor.closest('section');
 
-      let mouseX = 0,
-        mouseY = 0;
-      let cursorX = 0,
-        cursorY = 0;
+            let newColor = '#1a1815';
 
-      document.addEventListener('mousemove', (event) => {
-        const e = event as MouseEvent;
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-
-        // Detectar color de fondo en la posición del mouse
-        const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
-        if (elementUnderCursor) {
-          const section = elementUnderCursor.closest('section');
-
-          let newColor = '#1a1815'; // warm-black por defecto (para fondos claros)
-
-          if (section) {
-            if (section.classList.contains('bg-warm-black')) {
-              newColor = '#fdfbef'; // cream en fondo oscuro
-            } else if (section.classList.contains('bg-basil')) {
-              newColor = '#c9a227'; // yolk en verde
-            } else if (section.classList.contains('bg-tomato')) {
-              newColor = '#fdfbef'; // cream en rojo
-            } else if (section.classList.contains('bg-kale')) {
-              newColor = '#c9a227'; // yolk en kale
-            } else if (
-              section.classList.contains('bg-carrot') ||
-              section.classList.contains('bg-yolk')
-            ) {
-              newColor = '#1a1815'; // warm-black en naranjas/amarillos
+            if (section) {
+              if (section.classList.contains('bg-warm-black')) {
+                newColor = '#fdfbef';
+              } else if (section.classList.contains('bg-basil')) {
+                newColor = '#c9a227';
+              } else if (section.classList.contains('bg-tomato')) {
+                newColor = '#fdfbef';
+              } else if (section.classList.contains('bg-kale')) {
+                newColor = '#c9a227';
+              } else if (
+                section.classList.contains('bg-carrot') ||
+                section.classList.contains('bg-yolk')
+              ) {
+                newColor = '#1a1815';
+              }
             }
+
+            cursor.style.backgroundColor = newColor;
           }
+        });
 
-          cursor.style.backgroundColor = newColor;
-        }
-      });
-
-      function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
-
-        cursor.style.left = `${cursorX}px`;
-        cursor.style.top = `${cursorY}px`;
-
-        requestAnimationFrame(animateCursor);
+        const hoverElements = document.querySelectorAll('a, button, [data-magnetic]');
+        hoverElements.forEach((el) => {
+          el.addEventListener('mouseenter', () => {
+            cursor.classList.add('cursor-hover');
+          });
+          el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('cursor-hover');
+          });
+        });
       }
-      animateCursor();
-
-      // Cursor hover states - expandir en interactuables
-      const hoverElements = document.querySelectorAll('a, button, [data-magnetic]');
-      hoverElements.forEach((el) => {
-        el.addEventListener('mouseenter', () => {
-          cursor.classList.add('cursor-hover');
-        });
-        el.addEventListener('mouseleave', () => {
-          cursor.classList.remove('cursor-hover');
-        });
-      });
 
       // Number counters
       document.querySelectorAll('[data-counter]').forEach((el) => {
@@ -300,41 +259,6 @@ const { title, description } = Astro.props;
             );
           },
           once: true,
-        });
-      });
-
-      // Scroll progress indicator
-      const progressBar = document.createElement('div');
-      progressBar.className = 'scroll-progress';
-      document.body.appendChild(progressBar);
-
-      ScrollTrigger.create({
-        start: 'top top',
-        end: 'bottom bottom',
-        onUpdate: (self) => {
-          gsap.to(progressBar, {
-            scaleX: self.progress,
-            duration: 0.1,
-            ease: 'none',
-          });
-        },
-      });
-
-      // Elements que se mueven con el mouse (parallax mouse)
-      document.querySelectorAll('[data-mouse-parallax]').forEach((el) => {
-        const speed = parseFloat(el.getAttribute('data-mouse-parallax') || '0.05');
-
-        document.addEventListener('mousemove', (event) => {
-          const e = event as MouseEvent;
-          const x = (e.clientX - window.innerWidth / 2) * speed;
-          const y = (e.clientY - window.innerHeight / 2) * speed;
-
-          gsap.to(el, {
-            x: x,
-            y: y,
-            duration: 0.8,
-            ease: 'power2.out',
-          });
         });
       });
 
@@ -374,18 +298,6 @@ const { title, description } = Astro.props;
         width: 50px;
         height: 50px;
         opacity: 0.6;
-      }
-
-      .scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: var(--color-tomato);
-        transform-origin: left;
-        transform: scaleX(0);
-        z-index: 9998;
       }
 
       @media (hover: none) {

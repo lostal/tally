@@ -46,56 +46,51 @@ const items = ['Escanear', 'Seleccionar', 'Pagar', 'Listo'];
   import gsap from 'gsap';
   gsap.registerPlugin(ScrollTrigger);
 
-  // Esperar a que el DOM esté listo
-  document.addEventListener('DOMContentLoaded', () => {
-    const track = document.getElementById('marquee-track');
-    const section = document.getElementById('marquee-section');
+  const track = document.getElementById('marquee-track');
+  const section = document.getElementById('marquee-section');
 
-    if (track && section) {
-      // Animación base - siempre moviéndose
-      const baseAnimation = gsap.to(track, {
-        xPercent: -16.66, // -100/6 (6 repeticiones)
+  if (track && section) {
+    let currentAnimation: gsap.core.Timeline | null = null;
+
+    const createAnimation = (direction: 'left' | 'right') => {
+      const anim = gsap.to(track, {
+        xPercent: direction === 'left' ? -50 : 50,
         duration: 25,
         ease: 'none',
         repeat: -1,
       });
+      return anim;
+    };
 
-      // Velocidad adaptativa basada en scroll
-      let lastScrollY = 0;
+    currentAnimation = createAnimation('left');
 
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top bottom',
-        end: 'bottom top',
-        onUpdate: (self: ScrollTrigger) => {
-          const currentScrollY = self.scroll();
-          const scrollDirection = currentScrollY > lastScrollY ? 1 : -1;
-          lastScrollY = currentScrollY;
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top bottom',
+      end: 'bottom top',
+      onUpdate: (self: ScrollTrigger) => {
+        const velocity = self.getVelocity();
 
-          // Acelerar/desacelerar según dirección de scroll (menos agresivo)
-          const speedMultiplier = Math.max(
-            0.5,
-            Math.min(2, 1 + self.getVelocity() * 0.0002 * scrollDirection)
-          );
-          gsap.to(baseAnimation, {
-            timeScale: speedMultiplier,
-            duration: 0.4,
-            ease: 'power2.out',
-          });
-        },
-        onLeave: () => {
-          gsap.to(baseAnimation, {
-            timeScale: 1,
-            duration: 0.6,
-          });
-        },
-        onEnterBack: () => {
-          gsap.to(baseAnimation, {
-            timeScale: 1,
-            duration: 0.6,
-          });
-        },
-      });
-    }
-  });
+        if (velocity < -50) {
+          if (currentAnimation) currentAnimation.kill();
+          currentAnimation = createAnimation('right');
+        } else if (velocity > 50) {
+          if (currentAnimation) currentAnimation.kill();
+          currentAnimation = createAnimation('left');
+        }
+      },
+      onLeave: () => {
+        if (currentAnimation) {
+          currentAnimation.kill();
+        }
+        currentAnimation = createAnimation('left');
+      },
+      onEnterBack: () => {
+        if (currentAnimation) {
+          currentAnimation.kill();
+        }
+        currentAnimation = createAnimation('left');
+      },
+    });
+  }
 </script>

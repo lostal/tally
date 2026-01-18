@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase';
 import { validateBody, serverError, logApiError } from '@/lib/api/validation';
 import { calculateOrderTotals } from '@/lib/fiscal';
 import type { Json } from '@/types/database';
+import { verifyApiAuthWithRole } from '@/lib/auth/rbac';
 
 /**
  * Schema for invoice creation
@@ -18,14 +20,30 @@ const CreateInvoiceSchema = z.object({
  *
  * Generate a fiscal invoice from an order
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // 1. Verify authentication and permissions
+    const { restaurantId: userRestaurantId, error: authError } = await verifyApiAuthWithRole(
+      request,
+      'orders:read'
+    );
+    if (authError) return authError;
+
+    // 2. Validate body
     const { data, error: validationError } = await validateBody(request, CreateInvoiceSchema);
     if (validationError) {
       return validationError;
     }
 
     const { orderId, restaurantId } = data;
+
+    // 3. Verify restaurant matches authenticated user's restaurant
+    if (restaurantId !== userRestaurantId) {
+      return NextResponse.json(
+        { error: 'Access denied to this restaurant', code: 'FORBIDDEN' },
+        { status: 403 }
+      );
+    }
     const supabase = createAdminClient();
 
     // Get order with items
@@ -135,11 +153,26 @@ export async function POST(request: Request) {
 
     await supabase.from('invoice_items').insert(invoiceItems);
 
+    // Generate QR for Verifactu
+    await supabase.rpc('generate_invoice_qr_data', {
+      p_invoice_id: invoice.id,
+    });
+
+    // Get updated invoice with hash and QR
+    const { data: finalInvoice } = await supabase
+      .from('invoices')
+      .select('id, hash, previous_hash, qr_code')
+      .eq('id', invoice.id)
+      .single();
+
     return NextResponse.json(
       {
         invoice: {
           id: invoice.id,
           invoiceNumber,
+          hash: finalInvoice?.hash,
+          previousHash: finalInvoice?.previous_hash,
+          qrCode: finalInvoice?.qr_code,
           ...totals,
           restaurant: restaurant || null,
         },

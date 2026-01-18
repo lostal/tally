@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Table2, UtensilsCrossed, FolderOpen, ArrowRight } from 'lucide-react';
+import { Table2, UtensilsCrossed, FolderOpen, ArrowRight, Wallet } from 'lucide-react';
 import Link from 'next/link';
 import type { Restaurant } from '@/types/database';
 
@@ -67,6 +67,17 @@ export function DashboardContent({ restaurant, stats }: DashboardContentProps) {
             <div className="flex items-center gap-4">
               <UtensilsCrossed className="size-5" />
               <span className="font-medium">Gestionar menú</span>
+            </div>
+            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+          </Link>
+
+          <Link
+            href="/admin/cash"
+            className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
+          >
+            <div className="flex items-center gap-4">
+              <Wallet className="size-5" />
+              <span className="font-medium">Control de Caja</span>
             </div>
             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </Link>

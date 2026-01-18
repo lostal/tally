@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Users,
   Clock,
+  Wallet,
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -258,18 +259,25 @@ export function DashboardContentPremium({ restaurant, stats }: DashboardContentP
             index={0}
           />
           <QuickLinkCard
+            href="/admin/cash"
+            icon={Wallet}
+            label="Control de Caja"
+            description="Entradas, salidas y cierre Z"
+            index={1}
+          />
+          <QuickLinkCard
             href="/admin/tables"
             icon={Table2}
             label="Ver mesas"
             description="Gestiona el estado de las mesas"
-            index={1}
+            index={2}
           />
           <QuickLinkCard
             href="/admin/settings"
             icon={Settings}
             label="Configuración"
             description="Personaliza tu restaurante"
-            index={2}
+            index={3}
           />
         </div>
       </motion.div>

@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Marquee from '@/components/Marquee.astro';
 
 // App URL for links - defaults to localhost:3000 in development
 const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
@@ -11,11 +10,16 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
   description="Cobra más rápido, rota más mesas, gana más. Pagos con QR, división automática, tarifa plana. 12 minutos menos por mesa."
 >
   <!-- ═══════════════════════════════════════════
-       HERO - Solo "tally." Nada más.
-       ═══════════════════════════════════════════ -->
-  <section class="section relative overflow-hidden">
-    <div class="container">
-      <div class="flex min-h-[85vh] flex-col items-center justify-center text-center">
+         HERO - Mensaje emocional + promesa
+         ═══════════════════════════════════════════ -->
+  <section
+    class="section relative min-h-[60vh] overflow-hidden pt-24 md:min-h-[70vh] md:pt-32"
+    id="hero"
+  >
+    <div class="container px-4 md:px-6 lg:px-8">
+      <div
+        class="flex min-h-[50vh] flex-col items-center justify-center text-center md:min-h-[60vh]"
+      >
         <!-- El nombre, gigante y centrado -->
         <h1 class="text-display relative font-serif" data-split-text>
           tally<span class="text-tomato">.</span>
@@ -23,12 +27,11 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
 
         <!-- Subtítulo alineado con la 't' pero sin chocar con la 'y' -->
         <p
-          class="text-body-lg text-muted mt-8"
-          style="margin-right: 180px;"
+          class="text-body-lg text-muted mt-8 max-w-2xl md:mr-48"
           data-animate="fade-up"
           data-delay="0.2"
         >
-          Pagos al instante. Más <span id="rotating-word" class="text-foreground">rotación</span>.
+          Pagos al instante. Más <span id="rotating-word" class="text-warm-black">rotación</span>.
         </p>
       </div>
     </div>
@@ -38,52 +41,66 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
       class="bg-tomato absolute top-1/4 -right-32 h-96 w-96 rounded-full opacity-[0.08]"
       data-speed="0.4"
       data-mouse-parallax="0.03"
+      aria-hidden="true"
     >
     </div>
     <div
       class="bg-basil absolute bottom-1/4 -left-40 h-64 w-64 rounded-full opacity-[0.06]"
       data-speed="0.6"
       data-mouse-parallax="0.05"
+      aria-hidden="true"
     >
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       STATEMENT - Declaración audaz
-       ═══════════════════════════════════════════ -->
+        EL PROBLEMA - Painkiller
+        ═══════════════════════════════════════════ -->
   <section class="section-half bg-warm-black relative overflow-hidden">
     <div class="relative z-10 container">
-      <p class="text-headline max-w-4xl font-serif" data-animate="fade-up">
+      <h2 class="text-headline mb-8 max-w-4xl font-serif" data-animate="fade-up">
         Cobrar lento <br />
         cuesta caro<span class="text-tomato">.</span>
-      </p>
+      </h2>
+      <ul class="max-w-2xl space-y-4" data-stagger>
+        <li class="text-body-lg text-stone-300">
+          Pierdes 8-12 minutos por mesa en el proceso de cobro
+        </li>
+        <li class="text-body-lg text-stone-300">
+          Errores en divisiones de cuenta te cuestan dinero y clientes
+        </li>
+        <li class="text-body-lg text-stone-300">
+          El personal está en caja en lugar de atender mesas
+        </li>
+      </ul>
     </div>
     <!-- Círculos decorativos con parallax -->
     <div
       class="border-cream/10 absolute top-1/2 -left-20 h-40 w-40 rounded-full border-2"
       data-speed="0.5"
       data-rotate
+      aria-hidden="true"
     >
     </div>
-    <div class="bg-tomato/20 absolute right-10 bottom-10 h-24 w-24 rounded-full" data-speed="0.3">
+    <div
+      class="bg-tomato/20 absolute right-10 bottom-10 h-24 w-24 rounded-full"
+      data-speed="0.3"
+      aria-hidden="true"
+    >
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       MARQUEE - Palabras clave
-       ═══════════════════════════════════════════ -->
-  <Marquee />
-
-  <!-- ═══════════════════════════════════════════
-       CÓMO FUNCIONA - 3 pasos, mucho espacio
-       ═══════════════════════════════════════════ -->
+        EL PROBLEMA - Painkiller
+        ═══════════════════════════════════════════ -->
+  CÓMO FUNCIONA - 3 pasos, mucho espacio ═══════════════════════════════════════════ -->
   <section class="section relative overflow-hidden">
-    <div class="relative z-10 container">
-      <p class="text-caption text-muted mb-16" data-animate="fade">Para tu restaurante</p>
+    <div class="relative z-10 container px-4 md:px-6 lg:px-8">
+      <p class="text-caption text-muted mb-12 md:mb-16" data-animate="fade">Para tu restaurante</p>
 
-      <div class="space-y-32 lg:space-y-48">
+      <div class="space-y-24 md:space-y-32 lg:space-y-48">
         <!-- Paso 1 -->
-        <div class="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+        <div class="relative grid items-center gap-8 md:grid-cols-2 lg:gap-16">
           <div data-animate="fade-up">
             <span class="text-hero font-serif text-stone-200" data-animate="scale" data-delay="0.2"
               >01</span
@@ -99,25 +116,48 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
             data-reveal
             data-mouse-parallax="0.02"
           >
-            <!-- Placeholder para mockup -->
             <div
               class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
             >
-              <div
-                class="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-stone-300"
-              >
-                <span class="font-mono text-sm text-stone-400">QR</span>
+              <div class="flex flex-col items-center gap-4">
+                <div
+                  class="flex h-24 w-24 items-center justify-center rounded-lg border-4 border-stone-300 bg-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-stone-400"
+                  >
+                    <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                    <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                    <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                    <rect width="5" height="5" x="16" y="16" rx="1"></rect>
+                    <rect width="9" height="9" x="7" y="7" rx="1"></rect>
+                  </svg>
+                </div>
+                <p class="text-body text-muted text-center">Escanear QR desde el móvil</p>
               </div>
             </div>
           </div>
           <!-- Elemento decorativo -->
-          <div class="bg-carrot/5 absolute top-0 -right-12 h-32 w-32 rounded-full" data-speed="0.3">
+          <div
+            class="bg-carrot/5 absolute top-0 -right-12 h-32 w-32 rounded-full"
+            data-speed="0.3"
+            aria-hidden="true"
+          >
           </div>
         </div>
 
         <!-- Paso 2 -->
-        <div class="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-          <div class="lg:order-2" data-animate="fade-up">
+        <div class="relative grid items-center gap-8 md:grid-cols-2 lg:gap-16">
+          <div class="md:order-2" data-animate="fade-up">
             <span class="text-hero font-serif text-stone-200" data-animate="scale" data-delay="0.2"
               >02</span
             >
@@ -132,13 +172,32 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
             data-reveal
             data-mouse-parallax="0.02"
           >
-            <!-- Placeholder -->
             <div
               class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
             >
-              <div class="text-cream/60 text-center">
-                <p class="font-serif text-4xl" data-counter="47" data-suffix=".50">€47.50</p>
-                <p class="mt-2 text-sm">Tu parte</p>
+              <div class="text-cream text-center">
+                <div class="flex flex-col items-center gap-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="64"
+                    height="64"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-cream/80"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line>
+                  </svg>
+                  <div>
+                    <p class="font-serif text-5xl" data-counter="47" data-suffix=".50">€47.50</p>
+                    <p class="text-cream/80 mt-2 text-sm">Tu parte</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -147,6 +206,7 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
             class="border-basil/20 absolute bottom-20 -left-16 h-24 w-24 rounded-full border-2"
             data-speed="0.4"
             data-rotate
+            aria-hidden="true"
           >
           </div>
         </div>
@@ -168,13 +228,31 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
             data-reveal
             data-mouse-parallax="0.02"
           >
-            <!-- Placeholder -->
             <div
               class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
             >
               <div class="text-cream text-center">
-                <p class="font-serif text-4xl">✓</p>
-                <p class="mt-2 text-sm">Pagado</p>
+                <div class="flex flex-col items-center gap-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="80"
+                    height="80"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-cream"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  <div>
+                    <p class="font-serif text-4xl">Pagado</p>
+                    <p class="text-cream/80 mt-2 text-sm">Dinero en tu cuenta</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -182,6 +260,7 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
           <div
             class="bg-yolk/5 absolute -right-8 bottom-10 h-40 w-40 rounded-full"
             data-speed="0.25"
+            aria-hidden="true"
           >
           </div>
         </div>
@@ -189,40 +268,228 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
     </div>
 
     <!-- Elementos parallax de fondo -->
-    <div class="bg-tomato absolute top-1/4 left-1/4 h-2 w-2 rounded-full" data-speed="0.7"></div>
-    <div class="bg-basil/50 absolute top-1/2 right-1/3 h-3 w-3 rounded-full" data-speed="0.6"></div>
-    <div class="bg-carrot absolute bottom-1/3 left-1/2 h-1.5 w-1.5 rounded-full" data-speed="0.8">
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       BLOQUE COLOR - Statement
-       ═══════════════════════════════════════════ -->
-  <section class="section bg-basil relative overflow-hidden">
-    <div class="relative z-10 container">
-      <p class="text-headline max-w-3xl font-serif" data-animate="fade-up">
-        Menos tiempo cobrando.
-        <span class="opacity-60">Más tiempo sirviendo.</span>
-      </p>
-    </div>
-    <!-- Elementos decorativos -->
-    <div class="bg-cream/5 absolute top-20 right-20 h-64 w-64 rounded-full" data-speed="0.4"></div>
     <div
-      class="border-cream/10 absolute bottom-10 left-10 h-32 w-32 rounded-full border-2"
-      data-speed="0.5"
-      data-rotate
+      class="bg-tomato absolute top-1/4 left-1/4 h-2 w-2 rounded-full"
+      data-speed="0.7"
+      aria-hidden="true"
     >
     </div>
-    <div class="bg-cream/20 absolute top-1/2 left-1/3 h-4 w-4 rounded-full" data-speed="0.7"></div>
+    <div
+      class="bg-basil/50 absolute top-1/2 right-1/3 h-3 w-3 rounded-full"
+      data-speed="0.6"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="bg-carrot absolute bottom-1/3 left-1/2 h-1.5 w-1.5 rounded-full"
+      data-speed="0.8"
+      aria-hidden="true"
+    >
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       PARA RESTAURANTES
-       ═══════════════════════════════════════════ -->
+         LA SOLUCIÓN - Beneficios
+         ═══════════════════════════════════════════ -->
   <section class="section relative overflow-hidden">
-    <div class="relative z-10 container">
-      <div class="grid gap-8 lg:grid-cols-12 lg:gap-16">
-        <div class="lg:col-span-4" data-animate="fade-up">
+    <div class="relative z-10 container px-4 md:px-6 lg:px-8">
+      <h2 class="text-headline mb-12 max-w-3xl font-serif" data-animate="fade-up">
+        Tally hace que cobrar sea instantáneo<span class="text-tomato">.</span>
+      </h2>
+
+      <div class="grid gap-8 md:grid-cols-3 lg:gap-12">
+        <!-- Beneficio 1 -->
+        <div class="relative" data-animate="fade-up">
+          <div
+            class="group relative aspect-[4/3] rounded-sm bg-stone-100"
+            data-speed="0.1"
+            data-reveal
+            data-mouse-parallax="0.02"
+          >
+            <div
+              class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
+            >
+              <div class="flex flex-col items-center gap-4">
+                <div
+                  class="flex h-24 w-24 items-center justify-center rounded-lg border-4 border-stone-300 bg-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-stone-400"
+                  >
+                    <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                    <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                    <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                    <rect width="5" height="5" x="16" y="16" rx="1"></rect>
+                    <rect width="9" height="9" x="7" y="7" rx="1"></rect>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-title mt-6 font-serif">Tus clientes pagan en 30 segundos</h3>
+          <p class="text-body-lg text-muted mt-4">
+            Escanean el QR, eligen cómo dividir, y listo. Sin esperar camarero.
+          </p>
+        </div>
+
+        <!-- Beneficio 2 -->
+        <div class="relative" data-animate="fade-up">
+          <div
+            class="bg-basil group relative aspect-[4/3] rounded-sm"
+            data-speed="0.15"
+            data-reveal
+            data-mouse-parallax="0.02"
+          >
+            <div
+              class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
+            >
+              <div class="text-cream text-center">
+                <div class="flex flex-col items-center gap-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="64"
+                    height="64"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-cream/80"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-title mt-6 font-serif">Tú ves todo en tiempo real</h3>
+          <p class="text-body-lg text-muted mt-4">
+            Sabes quién pagó qué. Cero confusiones, cero discusiones.
+          </p>
+        </div>
+
+        <!-- Beneficio 3 -->
+        <div class="relative" data-animate="fade-up">
+          <div
+            class="bg-tomato group relative aspect-[4/3] rounded-sm"
+            data-speed="0.1"
+            data-reveal
+            data-mouse-parallax="0.02"
+          >
+            <div
+              class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-105"
+            >
+              <div class="text-cream text-center">
+                <div class="flex flex-col items-center gap-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="80"
+                    height="80"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-cream"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-title mt-6 font-serif">El dinero está en tu cuenta al momento</h3>
+          <p class="text-body-lg text-muted mt-4">
+            Tarifa plana mensual. Sin comisiones por transacción.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elementos parallax de fondo -->
+    <div
+      class="bg-tomato absolute top-1/4 left-1/4 h-2 w-2 rounded-full"
+      data-speed="0.7"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="bg-basil/50 absolute top-1/2 right-1/3 h-3 w-3 rounded-full"
+      data-speed="0.6"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="bg-carrot absolute bottom-1/3 left-1/2 h-1.5 w-1.5 rounded-full"
+      data-speed="0.8"
+      aria-hidden="true"
+    >
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+         MENSAJE DEL FUNDADOR - Why I built this
+         ═══════════════════════════════════════════ -->
+  <section class="section bg-cream relative overflow-hidden">
+    <div class="relative z-10 container max-w-3xl px-4 md:px-6 lg:px-8">
+      <h2 class="text-headline mb-8 font-serif" data-animate="fade-up">
+        Soy Álvaro, y construí Tally porque...
+      </h2>
+      <div class="space-y-6" data-stagger>
+        <p class="text-body-lg text-muted">
+          Me di cuenta de que los restaurantes pierden un tiempo valioso en el proceso de cobro. Es
+          un problema que se repite todos los días.
+        </p>
+        <p class="text-body-lg text-muted">
+          En las horas punta, el personal está en caja en lugar de servir a los clientes. Las mesas
+          tardan más en rotar.
+        </p>
+        <p class="text-body-lg text-muted">
+          Los clientes esperan 10-15 minutos solo para pagar. Esa espera no debería existir.
+        </p>
+        <p class="text-body-lg text-muted">
+          No encontraba una solución simple que resolviera esto.
+        </p>
+        <p class="text-body-lg text-warm-black font-serif">Así que construí Tally.</p>
+      </div>
+    </div>
+    <!-- Elementos decorativos -->
+    <div
+      class="bg-tomato/5 absolute top-20 right-20 h-48 w-48 rounded-full"
+      data-speed="0.3"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute bottom-20 left-0 h-20 w-20 rounded-full border-2 border-stone-300"
+      data-speed="0.6"
+      data-rotate
+      aria-hidden="true"
+    >
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+         PARA RESTAURANTES
+         ═══════════════════════════════════════════ -->
+  <section class="section relative overflow-hidden" id="features">
+    <div class="relative z-10 container px-4 md:px-6 lg:px-8">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="md:col-span-6 lg:col-span-5" data-animate="fade-up">
           <p class="text-caption text-muted mb-4">Para restaurantes</p>
           <h2 class="text-headline font-serif">
             Menos fricción.
@@ -231,15 +498,15 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
           </h2>
         </div>
 
-        <div class="lg:col-span-8 lg:col-start-6">
+        <div class="lg:col-span-7 lg:col-start-6">
           <div class="space-y-12" data-stagger>
             <div
               class="group hover:border-tomato border-t border-stone-300 pt-8 transition-colors duration-300"
             >
               <h3 class="text-title group-hover:text-tomato transition-colors">POS integrado</h3>
               <p class="text-body text-muted mt-3">
-                Sistema de punto de venta completo. Gestiona pedidos, mesas y productos desde
-                cualquier dispositivo.
+                Gestiona pedidos, mesas y productos desde cualquier dispositivo. Todo sincronizado
+                en tiempo real.
               </p>
             </div>
 
@@ -248,7 +515,7 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
             >
               <h3 class="text-title group-hover:text-basil transition-colors">Tiempo real</h3>
               <p class="text-body text-muted mt-3">
-                Ve quién ha pagado, cuánto falta, qué mesas necesitan atención. Todo sincronizado.
+                Ve quién ha pagado, cuánto falta, qué mesas necesitan atención.
               </p>
             </div>
 
@@ -267,80 +534,98 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
       </div>
     </div>
     <!-- Elementos decorativos -->
-    <div class="bg-tomato/5 absolute top-1/3 -right-20 h-48 w-48 rounded-full" data-speed="0.3">
+    <div
+      class="bg-tomato/5 absolute top-1/3 -right-20 h-48 w-48 rounded-full"
+      data-speed="0.3"
+      aria-hidden="true"
+    >
     </div>
     <div
       class="absolute bottom-20 left-0 h-20 w-20 rounded-full border-2 border-stone-300"
       data-speed="0.6"
       data-rotate
+      aria-hidden="true"
     >
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       COLORES - Showcase de themes
-       ═══════════════════════════════════════════ -->
-  <section class="py-8">
-    <div class="grid grid-cols-2 gap-0 md:grid-cols-4 lg:grid-cols-7">
+        COLORES - Showcase de themes
+        ═══════════════════════════════════════════ -->
+  <section class="bg-cream overflow-hidden">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
       <div
         class="bg-tomato flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-cream/90 font-serif">Tomate</span>
+        <span class="text-title text-cream/90 font-serif text-xs sm:text-sm md:text-base"
+          >Tomate</span
+        >
       </div>
       <div
         class="bg-carrot flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-warm-black/90 font-serif">Zanahoria</span>
+        <span class="text-title text-warm-black/90 font-serif text-xs sm:text-sm md:text-base"
+          >Zanahoria</span
+        >
       </div>
       <div
         class="bg-yolk flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-warm-black/90 font-serif">Yema</span>
+        <span class="text-title text-warm-black/90 font-serif text-xs sm:text-sm md:text-base"
+          >Yema</span
+        >
       </div>
       <div
         class="bg-basil flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-cream/90 font-serif">Albahaca</span>
+        <span class="text-title text-cream/90 font-serif text-xs sm:text-sm md:text-base"
+          >Albahaca</span
+        >
       </div>
       <div
         class="bg-kale flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-cream/90 font-serif">Kale</span>
+        <span class="text-title text-cream/90 font-serif text-xs sm:text-sm md:text-base">Kale</span
+        >
       </div>
       <div
         class="bg-blueberry flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-cream/90 font-serif">Arándano</span>
+        <span class="text-title text-cream/90 font-serif text-xs sm:text-sm md:text-base"
+          >Arándano</span
+        >
       </div>
       <div
         class="bg-beet flex aspect-square items-center justify-center transition-transform duration-300 hover:scale-105"
       >
-        <span class="text-title text-cream/90 font-serif">Remolacha</span>
+        <span class="text-title text-cream/90 font-serif text-xs sm:text-sm md:text-base"
+          >Remolacha</span
+        >
       </div>
     </div>
-    <p class="text-caption text-muted py-8 text-center" data-animate="fade">
+    <p class="text-caption text-muted px-4 py-8 text-center md:px-8 lg:px-16" data-animate="fade">
       Personaliza con los colores de tu marca
     </p>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       CTA FINAL
-       ═══════════════════════════════════════════ -->
+         CTA FINAL
+         ═══════════════════════════════════════════ -->
   <section class="section bg-warm-black relative overflow-hidden">
-    <div class="relative z-10 container text-center">
+    <div class="relative z-10 container px-4 text-center md:px-6 lg:px-8">
       <h2 class="text-hero mb-12 font-serif" data-animate="scale">
-        Empieza hoy<span class="text-tomato">.</span>
+        Empieza a cobrar más rápido hoy<span class="text-tomato">.</span>
       </h2>
       <p class="text-body-lg mb-12 text-stone-400" data-animate="fade-up" data-delay="0.1">
-        Prueba 14 días gratis. Sin permanencia.
+        Prueba 14 días gratis. Sin tarjeta de crédito. Sin compromiso.
       </p>
       <div data-animate="fade-up" data-delay="0.2">
         <a
           href={`${appUrl}/register`}
-          class="btn btn-solid !bg-cream !text-warm-black !border-cream hover:!text-cream group inline-flex items-center gap-2 hover:!bg-transparent"
+          class="btn !text-cream !border-cream hover:!bg-cream hover:!text-warm-black group inline-flex items-center gap-2 !bg-transparent"
           data-magnetic
         >
-          Empezar ahora
+          Empezar prueba gratis
           <span class="transition-transform group-hover:translate-x-1">→</span>
         </a>
       </div>
@@ -349,16 +634,19 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
     <div
       class="bg-tomato/10 absolute top-20 left-20 h-96 w-96 rounded-full blur-3xl"
       data-speed="0.2"
+      aria-hidden="true"
     >
     </div>
     <div
       class="bg-basil/10 absolute right-20 bottom-20 h-64 w-64 rounded-full blur-3xl"
       data-speed="0.35"
+      aria-hidden="true"
     >
     </div>
     <div
       class="bg-cream/30 absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
       data-speed="0.8"
+      aria-hidden="true"
     >
     </div>
   </section>
@@ -366,8 +654,8 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
   <!-- ═══════════════════════════════════════════
        FOOTER - Mínimo
        ═══════════════════════════════════════════ -->
-  <footer class="border-t border-stone-300 py-16">
-    <div class="container">
+  <footer class="border-t border-stone-300 px-4 py-16 md:px-8 lg:px-16">
+    <div class="mx-auto max-w-7xl">
       <div class="flex flex-col items-start justify-between gap-12 md:flex-row">
         <div>
           <a href="/" class="text-title font-serif">
@@ -383,16 +671,16 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
             <p class="text-caption text-muted mb-4">Producto</p>
             <ul class="space-y-3">
               <li><a href={`${appUrl}/register`} class="link text-body">Empezar gratis</a></li>
-              <li><a href="#" class="link text-body">Precios</a></li>
-              <li><a href="#" class="link text-body">Demo</a></li>
+              <li><a href="/precios" class="link text-body">Precios</a></li>
+              <li><a href="/demo" class="link text-body">Demo</a></li>
             </ul>
           </div>
           <div>
             <p class="text-caption text-muted mb-4">Recursos</p>
             <ul class="space-y-3">
-              <li><a href="#" class="link text-body">Soporte</a></li>
-              <li><a href="#" class="link text-body">Privacidad</a></li>
-              <li><a href="#" class="link text-body">Términos</a></li>
+              <li><a href="/soporte" class="link text-body">Soporte</a></li>
+              <li><a href="/privacidad" class="link text-body">Privacidad</a></li>
+              <li><a href="/terminos" class="link text-body">Términos</a></li>
             </ul>
           </div>
         </div>
@@ -401,9 +689,18 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
       <div class="divider my-12"></div>
 
       <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <p class="text-caption text-muted">© 2025 Tally. Hecho en España.</p>
+        <p class="text-caption text-muted">
+          © <span id="current-year"></span> Tally. Hecho en España.
+        </p>
         <a href="mailto:hola@paytally.app" class="link text-body"> hola@paytally.app </a>
       </div>
     </div>
   </footer>
+
+  <script>
+    const yearSpan = document.getElementById('current-year');
+    if (yearSpan) {
+      yearSpan.textContent = String(new Date().getFullYear());
+    }
+  </script>
 </Layout>

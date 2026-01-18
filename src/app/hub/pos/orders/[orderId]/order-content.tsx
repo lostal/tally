@@ -3,10 +3,23 @@
 import * as React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Plus, Minus, Trash2, Receipt, Check } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, Trash2, Receipt, Check, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
+import { ModifierSelector } from '@/components/pos/modifier-selector';
+import { parseModifiers, formatModifiers } from '@/lib/pos/modifiers';
+import type { Json } from '@/types/database';
 
 interface OrderContentProps {
   order: {
@@ -24,6 +37,7 @@ interface OrderContentProps {
     quantity: number;
     unit_price_cents: number;
     status: string;
+    modifiers?: Json;
   }>;
   categories: Array<{
     id: string;
@@ -37,10 +51,24 @@ interface OrderContentProps {
   }>;
 }
 
+interface ApiModifier {
+  id: string;
+  name: string;
+  price_cents: number;
+  is_required: boolean;
+}
+
 export function OrderContent({ order, orderItems, categories, products }: OrderContentProps) {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = React.useState(categories[0]?.id || null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showVoidDialog, setShowVoidDialog] = React.useState(false);
+  const [voidReason, setVoidReason] = React.useState('');
+  const [voidLoading, setVoidLoading] = React.useState(false);
+  const [modifierDialog, setModifierDialog] = React.useState<{
+    product: { id: string; name: string; price_cents: number };
+    modifiers: Array<{ id: string; name: string; priceCents: number; isRequired: boolean }>;
+  } | null>(null);
 
   const categoryProducts = products.filter((p) => p.category_id === selectedCategory);
 
@@ -52,6 +80,38 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
   const handleAddItem = async (product: { id: string; name: string; price_cents: number }) => {
     setIsLoading(true);
     try {
+      // Fetch modifiers for this product
+      const res = await fetch(`/api/products/${product.id}/modifiers`);
+      const { modifiers } = await res.json();
+
+      // If product has modifiers, show the modifier selector dialog
+      if (modifiers && modifiers.length > 0) {
+        // Convert snake_case to camelCase for the component
+        const formattedModifiers = modifiers.map((m: ApiModifier) => ({
+          id: m.id,
+          name: m.name,
+          priceCents: m.price_cents,
+          isRequired: m.is_required,
+        }));
+
+        setModifierDialog({ product, modifiers: formattedModifiers });
+      } else {
+        // No modifiers, add item directly
+        await addItemToOrder(product, []);
+      }
+    } catch (error) {
+      logger.error('Error fetching modifiers:', error);
+      // If fetching modifiers fails, add item without modifiers
+      await addItemToOrder(product, []);
+    }
+    setIsLoading(false);
+  };
+
+  const addItemToOrder = async (
+    product: { id: string; name: string; price_cents: number },
+    selectedModifiers: Array<{ id: string; name: string; priceCents: number }>
+  ) => {
+    try {
       await fetch(`/api/orders/${order.id}/items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -59,13 +119,18 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
           productId: product.id,
           quantity: 1,
           unitPriceCents: product.price_cents,
+          modifiers: selectedModifiers.map((m) => ({
+            id: m.id,
+            name: m.name,
+            priceCents: m.priceCents,
+          })),
         }),
       });
       router.refresh();
+      setModifierDialog(null);
     } catch (error) {
       logger.error('Error adding item to order:', error);
     }
-    setIsLoading(false);
   };
 
   const handleUpdateQuantity = async (itemId: string, delta: number) => {
@@ -107,6 +172,43 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
     router.push('/pos');
   };
 
+  const handleVoidOrder = async () => {
+    if (!voidReason || voidReason.length < 5) {
+      alert('Por favor, proporciona un motivo (mínimo 5 caracteres)');
+      return;
+    }
+
+    setVoidLoading(true);
+    try {
+      const res = await fetch(`/api/orders/${order.id}/void`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: voidReason }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        if (result.approved) {
+          alert('Pedido anulado correctamente');
+        } else {
+          alert('Solicitud de anulación enviada al manager');
+        }
+        router.push('/hub/pos');
+        router.refresh();
+      } else {
+        alert(`Error: ${result.error || 'No se pudo anular el pedido'}`);
+      }
+    } catch (error) {
+      logger.error('Error voiding order:', error);
+      alert('Error al anular el pedido');
+    } finally {
+      setVoidLoading(false);
+      setShowVoidDialog(false);
+      setVoidReason('');
+    }
+  };
+
   return (
     <div className="flex h-[calc(100dvh-5rem)] flex-col gap-4 lg:flex-row">
       {/* Left: Order Items */}
@@ -122,10 +224,16 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
               <p className="text-muted-foreground text-sm">{orderItems.length} productos</p>
             </div>
           </div>
-          <Button variant="outline" onClick={handleCloseOrder}>
-            <Receipt className="mr-2 size-4" />
-            Cobrar
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="destructive" size="sm" onClick={() => setShowVoidDialog(true)}>
+              <XCircle className="mr-2 size-4" />
+              Anular
+            </Button>
+            <Button variant="outline" onClick={handleCloseOrder}>
+              <Receipt className="mr-2 size-4" />
+              Cobrar
+            </Button>
+          </div>
         </div>
 
         {/* Items list */}
@@ -170,6 +278,11 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
                   </div>
                   <div>
                     <p className="font-medium">{item.productName}</p>
+                    {item.modifiers && parseModifiers(item.modifiers).length > 0 && (
+                      <p className="text-muted-foreground text-xs">
+                        {formatModifiers(parseModifiers(item.modifiers))}
+                      </p>
+                    )}
                     <p className="text-muted-foreground text-sm">
                       €{(item.unit_price_cents / 100).toFixed(2)} c/u
                     </p>
@@ -251,6 +364,54 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
           )}
         </div>
       </div>
+
+      {/* Void Order Dialog */}
+      <Dialog open={showVoidDialog} onOpenChange={setShowVoidDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Anular Pedido</DialogTitle>
+            <DialogDescription>
+              Proporciona un motivo para anular este pedido. Esta acción requiere aprobación de un
+              manager si eres camarero.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="voidReason">Motivo de anulación</Label>
+              <Input
+                id="voidReason"
+                placeholder="Ej: Cliente canceló el pedido"
+                value={voidReason}
+                onChange={(e) => setVoidReason(e.target.value)}
+                minLength={5}
+              />
+              <p className="text-muted-foreground text-xs">Mínimo 5 caracteres</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowVoidDialog(false)}>
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleVoidOrder}
+              disabled={voidLoading || voidReason.length < 5}
+            >
+              {voidLoading ? 'Anulando...' : 'Confirmar Anulación'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modifier Selector Dialog */}
+      {modifierDialog && (
+        <ModifierSelector
+          productName={modifierDialog.product.name}
+          modifiers={modifierDialog.modifiers}
+          onConfirm={(selected) => addItemToOrder(modifierDialog.product, selected)}
+          onCancel={() => setModifierDialog(null)}
+        />
+      )}
     </div>
   );
 }

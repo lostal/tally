@@ -1,0 +1,88 @@
+---
+import Layout from '@/layouts/Layout.astro';
+const appUrl = import.meta.env.PUBLIC_APP_URL || 'http://localhost:3000';
+---
+
+<Layout
+  title="Demo — Tally"
+  description="Descubre cómo funciona Tally en una demostración interactiva. Prueba la experiencia de pago QR."
+>
+  <section class="section relative overflow-hidden pt-24 md:pt-32">
+    <div class="container px-4 text-center md:px-6 lg:px-8">
+      <h1 class="text-headline mb-8 font-serif">
+        Prueba la experiencia<span class="text-tomato">.</span>
+      </h1>
+      <p class="text-body-lg text-muted mx-auto mb-16 max-w-2xl">
+        Escanea este QR con tu móvil para probar la app cliente.
+      </p>
+
+      <div class="mb-16 flex justify-center">
+        <div
+          class="flex h-80 w-80 items-center justify-center rounded-lg border-4 border-stone-300 bg-white"
+        >
+          <div class="text-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="128"
+              height="128"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-stone-400"
+            >
+              <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+              <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+              <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+              <rect width="5" height="5" x="16" y="16" rx="1"></rect>
+              <rect width="9" height="9" x="7" y="7" rx="1"></rect>
+            </svg>
+            <p class="text-caption text-muted mt-4">QR Demo</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-title mb-8 font-serif">¿Qué puedes probar?</h2>
+        <div class="grid gap-8 text-left md:grid-cols-2">
+          <div class="border-t border-stone-300 pt-6">
+            <h3 class="text-headline mb-4 font-serif">Como cliente</h3>
+            <ul class="text-body text-muted space-y-3">
+              <li>Escanear el QR de la mesa</li>
+              <li>Ver el menú y pedidos</li>
+              <li>Pagar con tarjeta o Apple Pay</li>
+              <li>Dividir la cuenta con amigos</li>
+            </ul>
+          </div>
+          <div class="border-t border-stone-300 pt-6">
+            <h3 class="text-headline mb-4 font-serif">Como restaurante</h3>
+            <ul class="text-body text-muted space-y-3">
+              <li>Ver pagos en tiempo real</li>
+              <li>Gestionar mesas y pedidos</li>
+              <li>Ver estadísticas de rotación</li>
+              <li>Personalizar colores de tu marca</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-warm-black relative overflow-hidden">
+    <div class="container text-center">
+      <h2 class="text-hero mb-12 font-serif">
+        ¿Listo para empezar?<span class="text-tomato">.</span>
+      </h2>
+      <p class="text-body-lg mb-12 text-stone-400">Prueba 14 días gratis. Sin permanencia.</p>
+      <a
+        href={`${appUrl}/register`}
+        class="btn btn-solid !bg-cream !text-warm-black !border-cream hover:!text-cream group inline-flex items-center gap-2"
+      >
+        Empezar ahora
+        <span class="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </div>
+  </section>
+</Layout>

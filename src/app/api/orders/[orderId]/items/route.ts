@@ -1,17 +1,26 @@
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase';
 import { logApiError, serverError } from '@/lib/api/validation';
+import { verifyApiAuthWithRole } from '@/lib/auth/rbac';
 
 interface RouteParams {
   params: Promise<{ orderId: string }>;
 }
 
+const ModifierSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  priceCents: z.number().int(),
+});
+
 const AddItemSchema = z.object({
   productId: z.string().uuid('Product ID must be a valid UUID'),
   quantity: z.number().int().min(1, 'Quantity must be at least 1'),
   unitPriceCents: z.number().int().min(0, 'Price cannot be negative'),
+  modifiers: z.array(ModifierSchema).optional(),
+  notes: z.string().optional(),
 });
 
 const UpdateItemSchema = z.object({
@@ -21,56 +30,22 @@ const UpdateItemSchema = z.object({
 });
 
 /**
- * Verify user has access to modify this order (staff of restaurant)
- */
-async function verifyOrderAccess(orderId: string, userId: string) {
-  const supabase = createAdminClient();
-
-  // Get order's restaurant
-  const { data: order } = await supabase
-    .from('orders')
-    .select('restaurant_id')
-    .eq('id', orderId)
-    .single();
-
-  if (!order) return false;
-
-  // Check if user belongs to this restaurant
-  const { data: userData } = await supabase
-    .from('users')
-    .select('restaurant_id')
-    .eq('auth_id', userId)
-    .single();
-
-  return userData?.restaurant_id === order.restaurant_id;
-}
-
-/**
  * POST /api/orders/[orderId]/items
  *
  * Add item to order. Requires authenticated staff member.
  */
-export async function POST(request: Request, { params }: RouteParams) {
+export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     const { orderId } = await params;
 
-    // 1. Verify authentication
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // 1. Verify authentication and permissions
+    const { restaurantId, error: authError } = await verifyApiAuthWithRole(
+      request,
+      'orders:create'
+    );
+    if (authError) return authError;
 
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized', code: 'UNAUTHORIZED' }, { status: 401 });
-    }
-
-    // 2. Verify access
-    const hasAccess = await verifyOrderAccess(orderId, user.id);
-    if (!hasAccess) {
-      return NextResponse.json({ error: 'Access denied', code: 'FORBIDDEN' }, { status: 403 });
-    }
-
-    // 3. Validate body
+    // 2. Validate body
     const body = await request.json();
     const validation = AddItemSchema.safeParse(body);
 
@@ -81,8 +56,19 @@ export async function POST(request: Request, { params }: RouteParams) {
       );
     }
 
-    const { productId, quantity, unitPriceCents } = validation.data;
+    const { productId, quantity, unitPriceCents, modifiers, notes } = validation.data;
     const adminSupabase = createAdminClient();
+
+    // 3. Verify order belongs to user's restaurant
+    const { data: order } = await adminSupabase
+      .from('orders')
+      .select('restaurant_id')
+      .eq('id', orderId)
+      .single();
+
+    if (!order || order.restaurant_id !== restaurantId) {
+      return NextResponse.json({ error: 'Order not found', code: 'NOT_FOUND' }, { status: 404 });
+    }
 
     // 4. Check if item already exists
     const { data: existing } = await adminSupabase
@@ -105,6 +91,8 @@ export async function POST(request: Request, { params }: RouteParams) {
         product_id: productId,
         quantity,
         unit_price_cents: unitPriceCents,
+        modifiers: modifiers || [],
+        notes: notes || null,
         status: 'pending',
       });
     }
@@ -121,24 +109,27 @@ export async function POST(request: Request, { params }: RouteParams) {
  *
  * Update item quantity or status. Requires authenticated staff member.
  */
-export async function PATCH(request: Request, { params }: RouteParams) {
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
     const { orderId } = await params;
 
-    // 1. Verify authentication
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // 1. Verify authentication and permissions
+    const { restaurantId, error: authError } = await verifyApiAuthWithRole(
+      request,
+      'orders:create'
+    );
+    if (authError) return authError;
 
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized', code: 'UNAUTHORIZED' }, { status: 401 });
-    }
+    // 2. Verify order belongs to user's restaurant
+    const adminSupabase = createAdminClient();
+    const { data: order } = await adminSupabase
+      .from('orders')
+      .select('restaurant_id')
+      .eq('id', orderId)
+      .single();
 
-    // 2. Verify access
-    const hasAccess = await verifyOrderAccess(orderId, user.id);
-    if (!hasAccess) {
-      return NextResponse.json({ error: 'Access denied', code: 'FORBIDDEN' }, { status: 403 });
+    if (!order || order.restaurant_id !== restaurantId) {
+      return NextResponse.json({ error: 'Order not found', code: 'NOT_FOUND' }, { status: 404 });
     }
 
     // 3. Validate body
@@ -153,7 +144,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     }
 
     const { itemId, quantity, status } = validation.data;
-    const adminSupabase = createAdminClient();
 
     // 4. Update item
     if (quantity !== undefined) {
