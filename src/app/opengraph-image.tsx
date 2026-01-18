@@ -6,6 +6,9 @@ import { ImageResponse } from 'next/og';
  * Generates a dynamic OG image for the home page.
  * Size: 1200x630 (recommended for social media)
  *
+ * Note: Edge runtime is recommended for OG image generation
+ * as it provides better performance for on-demand image creation.
+ *
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image
  */
 export const runtime = 'edge';

@@ -53,7 +53,7 @@
     "immer": "^10.1.1",
     "lucide-react": "^0.562.0",
     "motion": "^12.25.0",
-    "next": "^15.5.9",
+    "next": "^16.1.3",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.54.2",
@@ -66,6 +66,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.39.2",
     "@next/eslint-plugin-next": "^16.1.1",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.18",

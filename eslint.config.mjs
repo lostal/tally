@@ -6,10 +6,18 @@ import hooksPlugin from 'eslint-plugin-react-hooks';
 
 export default [
   {
-    ignores: ['.next/**', 'node_modules/**', 'coverage/**', 'apps/landing/.astro/**'],
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'coverage/**',
+      'apps/landing/.astro/**',
+      'apps/landing/dist/**',
+      '.astro/**',
+      'dist/**',
+    ],
   },
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     plugins: {
       '@next/next': nextPlugin,
       '@typescript-eslint': tsPlugin,
