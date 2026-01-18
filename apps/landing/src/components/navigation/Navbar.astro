@@ -33,16 +33,16 @@ import Button from '../ui/Button.astro';
       <!-- Navigation Links (desktop) -->
       <div class="hidden items-center gap-8 md:flex">
         <a
-          href="#features"
+          href="#solution"
           class="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
-          Características
+          Producto
         </a>
         <a
           href="#demo"
           class="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
-          Demo
+          Cómo funciona
         </a>
         <a
           href="#pricing"
@@ -61,24 +61,6 @@ import Button from '../ui/Button.astro';
 </nav>
 
 <style>
-  .liquid-glass {
-    /* Liquid Glass Effect - Premium glassmorphism */
-    backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(250, 250, 248, 0.7); /* var(--background) with opacity */
-    border: 1px solid rgba(224, 221, 217, 0.2); /* var(--border) with opacity */
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.04),
-      0 1px 2px rgba(0, 0, 0, 0.02),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5); /* Subtle inner glow */
-  }
-
-  .dark .liquid-glass {
-    background-color: rgba(26, 24, 21, 0.8);
-    border: 1px solid rgba(61, 58, 54, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Scroll animation */
   /* Scroll animation (Desktop only) */
   @media (min-width: 768px) {
     #navbar {
@@ -88,17 +70,6 @@ import Button from '../ui/Button.astro';
 
     #navbar.visible {
       transform: translateY(0);
-    }
-  }
-
-  @supports not (backdrop-filter: blur(12px)) {
-    /* Fallback for browsers that don't support backdrop-filter */
-    .liquid-glass {
-      background-color: rgb(250, 250, 248);
-    }
-
-    .dark .liquid-glass {
-      background-color: rgb(26, 24, 21);
     }
   }
 </style>

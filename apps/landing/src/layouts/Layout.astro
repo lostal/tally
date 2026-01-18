@@ -104,9 +104,11 @@ const structuredData = {
     <!-- View Transitions -->
     <ViewTransitions />
 
-    <!-- GSAP Animations -->
+    <!-- Animation Scripts -->
     <script>
       import '../scripts/animations';
+      import '../scripts/scroll-animations';
+      import '../scripts/micro-animations';
     </script>
   </head>
   <body
@@ -122,9 +124,9 @@ const structuredData = {
 
     <!-- Global Background Effect -->
     <div class="pointer-events-none fixed inset-0 z-[-1]">
-      <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02] mix-blend-overlay"></div>
+      <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.015] mix-blend-overlay"></div>
       <div
-        class="bg-primary/20 absolute top-0 right-0 left-0 -z-10 m-auto h-[310px] w-[310px] rounded-full opacity-20 blur-[100px]"
+        class="bg-primary/10 absolute top-0 right-0 left-0 -z-10 m-auto h-[310px] w-[310px] rounded-full opacity-30 blur-[120px]"
       >
       </div>
     </div>
@@ -137,8 +139,8 @@ const structuredData = {
       </div>
     </main>
 
-    <!-- Fixed Footer: Revealed from bottom as content scrolls away -->
-    <footer class="bg-background fixed right-0 bottom-0 left-0 z-10 py-12" style="height: 400px;">
+    <!-- Footer -->
+    <footer class="bg-background border-border/50 relative border-t py-12">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto w-[90%]">
           <div class="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">

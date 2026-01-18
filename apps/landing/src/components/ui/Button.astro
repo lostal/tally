@@ -38,6 +38,13 @@ const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`
 const Component = href ? 'a' : 'button';
 ---
 
-<Component {...rest} class={classes} href={href} type={!href ? type : undefined}>
+<Component
+  {...rest}
+  class={classes}
+  href={href}
+  type={!href ? type : undefined}
+  data-magnetic="0.15"
+  data-ripple
+>
   <slot />
 </Component>

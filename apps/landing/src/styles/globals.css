@@ -224,6 +224,111 @@
   .ring-pulse {
     animation: ring-pulse 2s ease-in-out infinite;
   }
+
+  /* Liquid glass effect - Premium glassmorphism */
+  .liquid-glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(250, 250, 248, 0.7);
+    border: 1px solid rgba(224, 221, 217, 0.2);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.02),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .dark .liquid-glass {
+    background-color: rgba(26, 24, 21, 0.8);
+    border: 1px solid rgba(61, 58, 54, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  @supports not (backdrop-filter: blur(12px)) {
+    .liquid-glass {
+      background-color: rgb(250, 250, 248);
+    }
+
+    .dark .liquid-glass {
+      background-color: rgb(26, 24, 21);
+    }
+  }
+
+  /* Scroll reveal animations */
+  [data-animate] {
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-animate].in-view {
+    opacity: 1;
+  }
+
+  [data-animate='fade-up'] {
+    transform: translateY(30px);
+  }
+
+  [data-animate='fade-up'].in-view {
+    transform: translateY(0);
+  }
+
+  [data-animate='fade-down'] {
+    transform: translateY(-30px);
+  }
+
+  [data-animate='fade-down'].in-view {
+    transform: translateY(0);
+  }
+
+  [data-animate='fade-left'] {
+    transform: translateX(30px);
+  }
+
+  [data-animate='fade-left'].in-view {
+    transform: translateX(0);
+  }
+
+  [data-animate='fade-right'] {
+    transform: translateX(-30px);
+  }
+
+  [data-animate='fade-right'].in-view {
+    transform: translateX(0);
+  }
+
+  [data-animate='scale'] {
+    transform: scale(0.9);
+  }
+
+  [data-animate='scale'].in-view {
+    transform: scale(1);
+  }
+
+  /* Ripple effect */
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: ripple-animation 0.6s ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  /* Magnetic elements - smooth transition */
+  [data-magnetic] {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* Tilt elements - smooth transition */
+  [data-tilt] {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+  }
 }
 
 /* ============================================

@@ -1,13 +1,17 @@
 ---
 import Button from '../ui/Button.astro';
+import GridBackground from '../ui/GridBackground.astro';
 import { ArrowRight, Check } from '@lucide/astro';
 ---
 
 <section class="relative flex min-h-screen items-center overflow-hidden">
+  <!-- Grid Background -->
+  <GridBackground />
+
   <div class="container-landing relative z-10 py-32 lg:py-24">
     <div class="grid items-center gap-16 lg:grid-cols-2">
       <!-- Text Content -->
-      <div class="space-y-8">
+      <div class="space-y-8" data-animate="fade-up">
         <h1
           class="font-serif text-6xl font-bold tracking-tight text-balance sm:text-7xl lg:text-8xl"
         >
@@ -29,20 +33,20 @@ import { ArrowRight, Check } from '@lucide/astro';
         </div>
 
         <!-- Trust indicators -->
-        <div class="text-muted-foreground flex flex-wrap items-center gap-6 text-sm">
-          <div class="flex items-center gap-2">
+        <div class="text-muted-foreground flex flex-wrap items-center gap-6 text-sm" data-stagger="100">
+          <div class="flex items-center gap-2" data-animate="fade-up" data-stagger-item>
             <div class="bg-primary/10 flex h-5 w-5 items-center justify-center rounded-full">
               <Check class="text-primary h-3 w-3" />
             </div>
             <span>Sin permanencia</span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2" data-animate="fade-up" data-stagger-item>
             <div class="bg-primary/10 flex h-5 w-5 items-center justify-center rounded-full">
               <Check class="text-primary h-3 w-3" />
             </div>
             <span>30 días gratis</span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2" data-animate="fade-up" data-stagger-item>
             <div class="bg-primary/10 flex h-5 w-5 items-center justify-center rounded-full">
               <Check class="text-primary h-3 w-3" />
             </div>
@@ -52,10 +56,10 @@ import { ArrowRight, Check } from '@lucide/astro';
       </div>
 
       <!-- Visual - iPhone Mockup -->
-      <div class="perspective-1000 relative hidden lg:block">
+      <div class="relative hidden lg:block" data-animate="scale">
         <!-- iPhone Frame -->
         <div
-          class="relative z-10 mx-auto h-[600px] w-[300px] rotate-x-10 -rotate-y-12 transform rounded-[2.5rem] border-14 border-gray-800 bg-gray-800 shadow-xl transition-transform duration-700 ease-out hover:rotate-0"
+          class="relative z-10 mx-auto h-[600px] w-[300px] rounded-[2.5rem] border-[14px] border-gray-800 bg-gray-800 shadow-2xl"
         >
           <div class="absolute top-[72px] -left-[17px] h-[32px] w-[3px] rounded-l-lg bg-gray-800">
           </div>
