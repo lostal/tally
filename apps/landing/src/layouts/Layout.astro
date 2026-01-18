@@ -3,6 +3,7 @@ import { ViewTransitions } from 'astro:transitions';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/lora';
 import '../styles/globals.css';
+import Navbar from '../components/navigation/Navbar.astro';
 
 interface Props {
   title?: string;
@@ -116,6 +117,8 @@ const structuredData = {
     >
       Saltar al contenido principal
     </a>
+
+    <Navbar />
 
     <main id="main-content">
       <slot />

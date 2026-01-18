@@ -1,0 +1,141 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<nav
+  id="navbar"
+  class="fixed top-0 left-0 right-0 z-100 transition-all duration-300 ease-out"
+>
+  <div class="container-landing py-4">
+    <div
+      class="liquid-glass mx-auto flex max-w-5xl items-center justify-between gap-8 rounded-2xl px-6 py-4"
+    >
+      <!-- Logo/Wordmark -->
+      <a href="/" class="flex items-center gap-2 group">
+        <svg
+          class="h-8 w-8 text-primary"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="32" height="32" rx="8" fill="currentColor" />
+          <text
+            x="16"
+            y="23"
+            font-family="Georgia, serif"
+            font-size="18"
+            font-weight="600"
+            fill="var(--color-primary-foreground)"
+            text-anchor="middle"
+          >
+            t.
+          </text>
+        </svg>
+        <span class="font-serif text-xl font-bold text-primary group-hover:opacity-70 transition-opacity">
+          Tally
+        </span>
+      </a>
+
+      <!-- Navigation Links (desktop) -->
+      <div class="hidden items-center gap-8 md:flex">
+        <a href="#features" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          Características
+        </a>
+        <a href="#demo" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          Demo
+        </a>
+        <a href="#pricing" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          Precios
+        </a>
+      </div>
+
+      <!-- CTA -->
+      <Button size="sm" href="https://app.paytally.app/register" class="shrink-0">
+        Empezar gratis
+      </Button>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .liquid-glass {
+    /* Liquid Glass Effect - Premium glassmorphism */
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(250, 250, 248, 0.7); /* var(--background) with opacity */
+    border: 1px solid rgba(224, 221, 217, 0.2); /* var(--border) with opacity */
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.02),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5); /* Subtle inner glow */
+  }
+
+  .dark .liquid-glass {
+    background-color: rgba(26, 24, 21, 0.8);
+    border: 1px solid rgba(61, 58, 54, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Scroll animation */
+  /* Scroll animation (Desktop only) */
+  @media (min-width: 768px) {
+    #navbar {
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #navbar.visible {
+      transform: translateY(0);
+    }
+  }
+
+  @supports not (backdrop-filter: blur(12px)) {
+    /* Fallback for browsers that don't support backdrop-filter */
+    .liquid-glass {
+      background-color: rgb(250, 250, 248);
+    }
+
+    .dark .liquid-glass {
+      background-color: rgb(26, 24, 21);
+    }
+  }
+</style>
+
+<script>
+  function initNavbarBehavior() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) {
+      console.warn('Navbar element not found');
+      return;
+    }
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      // Show navbar if we've scrolled down a bit (20px)
+      if (currentScroll > 20) {
+        navbar.classList.add('visible');
+      } else {
+        // At the very top - hide navbar
+        navbar.classList.remove('visible');
+      }
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Attach scroll listener with passive: true for performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
+
+  // Optimize for Astro View Transitions
+  document.addEventListener('astro:page-load', initNavbarBehavior);
+
+  // Fallback for initial load if View Transitions event doesn't fire (e.g. hard refresh without VT enabled pages)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavbarBehavior);
+  } else {
+    // If not using View Transitions or script runs late
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+       initNavbarBehavior();
+    }
+  }
+</script>
