@@ -99,7 +99,7 @@ const structuredData = {
     <meta property="twitter:image" content={ogImageURL} />
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
     <!-- View Transitions -->
     <ViewTransitions />
@@ -121,14 +121,66 @@ const structuredData = {
     <!-- Global Background Effect -->
     <div class="fixed inset-0 z-[-1] pointer-events-none">
        <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02] mix-blend-overlay"></div>
-       <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"></div>
        <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 opacity-20 blur-[100px]"></div>
     </div>
 
     <Navbar />
 
-    <main id="main-content" class="relative">
-      <slot />
+    <main id="main-content" class="relative z-20 bg-background">
+      <!-- Grid Pattern Inside Main (fades at bottom) -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[600px] bg-gradient-to-t from-background to-transparent"></div>
+      </div>
+      <div class="relative z-10">
+        <slot />
+      </div>
     </main>
+
+    <!-- Fixed Footer: Revealed from bottom as content scrolls away -->
+    <footer class="fixed bottom-0 left-0 right-0 z-10 py-12 bg-background" style="height: 400px;">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+       <div class="w-[90%] mx-auto">
+           <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+               <div class="col-span-2 lg:col-span-2">
+                   <a href="/" class="font-serif text-2xl font-bold mb-4 block">Tally.</a>
+                   <p class="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
+                       El sistema operativo integral para la hostelería moderna.
+                   </p>
+               </div>
+
+               <div>
+                   <h4 class="font-medium mb-4">Producto</h4>
+                   <ul class="space-y-3 text-sm text-muted-foreground">
+                       <li><a href="#features" class="hover:text-foreground transition-colors">Características</a></li>
+                       <li><a href="#pricing" class="hover:text-foreground transition-colors">Precios</a></li>
+                       <li><a href="#demo" class="hover:text-foreground transition-colors">Demo</a></li>
+                   </ul>
+               </div>
+
+               <div>
+                   <h4 class="font-medium mb-4">Recursos</h4>
+                   <ul class="space-y-3 text-sm text-muted-foreground">
+                       <li><a href="https://docs.paytally.app" class="hover:text-foreground transition-colors">Documentación</a></li>
+                       <li><a href="/blog" class="hover:text-foreground transition-colors">Blog</a></li>
+                   </ul>
+               </div>
+
+               <div>
+                   <h4 class="font-medium mb-4">Legal</h4>
+                   <ul class="space-y-3 text-sm text-muted-foreground">
+                       <li><a href="/privacy" class="hover:text-foreground transition-colors">Privacidad</a></li>
+                       <li><a href="/terms" class="hover:text-foreground transition-colors">Términos</a></li>
+                   </ul>
+               </div>
+           </div>
+
+           <div class="border-t border-border pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+               <div>&copy; {new Date().getFullYear()} PayTally S.L.</div>
+               <div>Álvaro Lostal.</div>
+           </div>
+       </div>
+      </div>
+    </footer>
   </body>
 </html>

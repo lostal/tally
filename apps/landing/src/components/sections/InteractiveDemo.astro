@@ -1,103 +1,117 @@
 ---
 import Section from '../ui/Section.astro';
-import Button from '../ui/Button.astro';
-import { MapPin, ClipboardList, ChefHat, QrCode, Users, CheckCircle } from '@lucide/astro';
+import { MapPin, ClipboardList, ChefHat, QrCode, Users, CheckCircle, ArrowRight } from '@lucide/astro';
 ---
 
-<Section id="demo">
-  <div class="mx-auto mb-16 max-w-3xl text-center">
-    <h2 class="mb-6 font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl text-balance">
-      Experiencia fluida
+<Section id="demo" className="relative overflow-hidden">
+  <div class="mx-auto mb-20 max-w-3xl md:text-center">
+    <h2 class="font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl md:text-6xl mb-6 text-balance">
+      Experiencia fluida, <br/> <span class="text-muted-foreground italic">mesa a mesa.</span>
     </h2>
     <p class="text-xl text-muted-foreground text-balance">
-      Desde la toma de comanda hasta el pago, todo conectado.
+      Un recorrido diseñado para eliminar fricción. Desde que el cliente se sienta hasta que paga.
     </p>
   </div>
 
-  <div class="relative">
-    <!-- Connecting Line -->
-    <div class="absolute left-1/2 top-4 bottom-4 w-0.5 -translate-x-1/2 bg-linear-to-b from-border/0 via-border to-border/0 md:hidden"></div>
-    <div class="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 bg-linear-to-r from-border/0 via-border to-border/0 hidden md:block"></div>
+  <div class="relative mx-auto max-w-5xl">
+    <!-- Central Connecting Line (Desktop) -->
+    <div class="absolute left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-border to-transparent hidden md:block"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-6 gap-8 relative z-10">
-      <!-- Step 1 -->
-      <div class="group relative flex flex-col items-center gap-4">
-         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
-            <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
-             <MapPin class="h-10 w-10 text-primary relative z-10" />
-            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">1</div>
-         </div>
-         <div class="text-center">
-            <h3 class="font-bold text-foreground">Plano Sala</h3>
-            <p class="text-xs text-muted-foreground mt-1">Gestión visual</p>
-         </div>
-      </div>
+    <div class="space-y-12 md:space-y-0 relative">
+        <!-- Step 1: Left -->
+        <div class="md:flex md:items-center md:justify-between group">
+            <div class="md:w-[42%] md:text-right order-1">
+                <h3 class="text-2xl font-serif font-medium mb-2 text-foreground group-hover:text-primary transition-colors">1. Plano de Sala</h3>
+                <p class="text-muted-foreground leading-relaxed">
+                    Visualización en tiempo real de mesas libres, ocupadas y tiempos de espera. Asigna mesas con un solo toque.
+                </p>
+            </div>
+            <div class="md:w-[16%] flex justify-center order-2 my-4 md:my-0 relative">
+                <div class="w-12 h-12 rounded-2xl bg-card border border-border shadow-sm flex items-center justify-center z-10 group-hover:scale-110 group-hover:border-primary/50 group-hover:shadow-[0_0_20px_-5px_var(--color-primary)] transition-all duration-300">
+                    <MapPin class="w-5 h-5 text-primary" />
+                </div>
+            </div>
+            <div class="md:w-[42%] order-3 bg-card/50 border border-border/50 rounded-2xl p-6 backdrop-blur-sm group-hover:bg-card group-hover:border-primary/20 transition-all duration-300">
+                <!-- Abstract UI Representation -->
+                <div class="grid grid-cols-2 gap-3 opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="h-16 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center"><span class="text-xs text-green-600 font-medium">Libre</span></div>
+                    <div class="h-16 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center"><span class="text-xs text-red-600 font-medium">Ocupada</span></div>
+                </div>
+            </div>
+        </div>
 
-       <!-- Step 2 -->
-      <div class="group relative flex flex-col items-center gap-4">
-         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
-             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
-             <ClipboardList class="h-10 w-10 text-primary relative z-10" />
-            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">2</div>
-         </div>
-          <div class="text-center">
-            <h3 class="font-bold text-foreground">Comanda</h3>
-            <p class="text-xs text-muted-foreground mt-1">Toma rápida</p>
-         </div>
-      </div>
+        <!-- Step 2: Right -->
+        <div class="md:flex md:items-center md:justify-between group">
+            <div class="md:w-[42%] order-1 md:order-3">
+                 <h3 class="text-2xl font-serif font-medium mb-2 text-foreground group-hover:text-blueberry transition-colors">2. Comanda Digital</h3>
+                <p class="text-muted-foreground leading-relaxed">
+                    Toma nota en la mesa sin papeletas. Modificadores, notas de cocina y alérgenos sincronizados al instante.
+                </p>
+            </div>
+            <div class="md:w-[16%] flex justify-center order-2 my-4 md:my-0 relative">
+                <div class="w-12 h-12 rounded-2xl bg-card border border-border shadow-sm flex items-center justify-center z-10 group-hover:scale-110 group-hover:border-blueberry/50 group-hover:shadow-[0_0_20px_-5px_var(--color-blueberry)] transition-all duration-300">
+                    <ClipboardList class="w-5 h-5 text-blueberry" />
+                </div>
+            </div>
+             <div class="md:w-[42%] md:text-right order-3 md:order-1 bg-card/50 border border-border/50 rounded-2xl p-6 backdrop-blur-sm group-hover:bg-card group-hover:border-blueberry/20 transition-all duration-300">
+                <div class="flex flex-col gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="h-8 w-3/4 bg-muted/50 rounded self-end"></div>
+                    <div class="h-8 w-1/2 bg-muted/30 rounded self-end"></div>
+                    <div class="h-8 w-2/3 bg-blueberry/10 rounded self-end"></div>
+                </div>
+            </div>
+        </div>
 
-      <!-- Step 3 -->
-      <div class="group relative flex flex-col items-center gap-4">
-         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
-             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
-             <ChefHat class="h-10 w-10 text-primary relative z-10" />
-            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">3</div>
-         </div>
-          <div class="text-center">
-            <h3 class="font-bold text-foreground">Cocina</h3>
-            <p class="text-xs text-muted-foreground mt-1">KDS instantáneo</p>
-         </div>
-      </div>
+        <!-- Step 3: Left -->
+        <div class="md:flex md:items-center md:justify-between group">
+             <div class="md:w-[42%] md:text-right order-1">
+                <h3 class="text-2xl font-serif font-medium mb-2 text-foreground group-hover:text-tomato transition-colors">3. KDS Cocina</h3>
+                <p class="text-muted-foreground leading-relaxed">
+                    Las comandas aparecen en la pantalla de cocina ordenadas por prioridad. Cero gritos, cero errores.
+                </p>
+            </div>
+            <div class="md:w-[16%] flex justify-center order-2 my-4 md:my-0 relative">
+                <div class="w-12 h-12 rounded-2xl bg-card border border-border shadow-sm flex items-center justify-center z-10 group-hover:scale-110 group-hover:border-tomato/50 group-hover:shadow-[0_0_20px_-5px_var(--color-tomato)] transition-all duration-300">
+                    <ChefHat class="w-5 h-5 text-tomato" />
+                </div>
+            </div>
+             <div class="md:w-[42%] order-3 bg-card/50 border border-border/50 rounded-2xl p-6 backdrop-blur-sm group-hover:bg-card group-hover:border-tomato/20 transition-all duration-300">
+                 <div class="flex gap-2 overflow-hidden opacity-60 group-hover:opacity-100 transition-opacity">
+                     <div class="w-24 h-24 rounded bg-card border border-l-4 border-l-orange-400 shadow-sm shrink-0"></div>
+                     <div class="w-24 h-24 rounded bg-card border border-l-4 border-l-green-400 shadow-sm shrink-0"></div>
+                 </div>
+            </div>
+        </div>
 
+        <!-- Step 4: Right -->
+        <div class="md:flex md:items-center md:justify-between group">
+            <div class="md:w-[42%] order-1 md:order-3">
+                 <h3 class="text-2xl font-serif font-medium mb-2 text-foreground group-hover:text-basil transition-colors">4. QR & Pago</h3>
+                <p class="text-muted-foreground leading-relaxed">
+                    El cliente escanea el QR, divide la cuenta (Split) y paga con Apple Pay / Google Pay sin esperar al camarero.
+                </p>
+            </div>
+            <div class="md:w-[16%] flex justify-center order-2 my-4 md:my-0 relative">
+                <div class="w-12 h-12 rounded-2xl bg-card border border-border shadow-sm flex items-center justify-center z-10 group-hover:scale-110 group-hover:border-basil/50 group-hover:shadow-[0_0_20px_-5px_var(--color-basil)] transition-all duration-300">
+                    <QrCode class="w-5 h-5 text-basil" />
+                </div>
+            </div>
+             <div class="md:w-[42%] md:text-right order-3 md:order-1 bg-card/50 border border-border/50 rounded-2xl p-6 backdrop-blur-sm group-hover:bg-card group-hover:border-basil/20 transition-all duration-300">
+                 <div class="flex justify-end opacity-60 group-hover:opacity-100 transition-opacity">
+                     <div class="w-16 h-16 bg-white rounded-lg p-1 shadow-sm">
+                         <div class="w-full h-full bg-black"></div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
 
-      <!-- Step 4 -->
-      <div class="group relative flex flex-col items-center gap-4">
-         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
-             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
-             <QrCode class="h-10 w-10 text-primary relative z-10" />
-            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">4</div>
-         </div>
-          <div class="text-center">
-            <h3 class="font-bold text-foreground">QR</h3>
-            <p class="text-xs text-muted-foreground mt-1">Cliente escanea</p>
-         </div>
-      </div>
-
-       <!-- Step 5 -->
-      <div class="group relative flex flex-col items-center gap-4">
-         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
-             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
-             <Users class="h-10 w-10 text-primary relative z-10" />
-            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">5</div>
-         </div>
-          <div class="text-center">
-            <h3 class="font-bold text-foreground">Split</h3>
-            <p class="text-xs text-muted-foreground mt-1">División fácil</p>
-         </div>
-      </div>
-
-       <!-- Step 6 -->
-      <div class="group relative flex flex-col items-center gap-4">
-         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
-             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
-             <CheckCircle class="h-10 w-10 text-basil relative z-10" />
-            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">6</div>
-         </div>
-          <div class="text-center">
-            <h3 class="font-bold text-foreground">Pago</h3>
-            <p class="text-xs text-muted-foreground mt-1">Confirmado</p>
-         </div>
-      </div>
+    <!-- Final Flow Arrow -->
+    <div class="flex justify-center mt-12 md:mt-16">
+        <div class="flex items-center gap-2 text-muted-foreground/50 text-sm font-medium tracking-widest uppercase animate-pulse">
+            <span>Ciclo completado</span>
+            <ArrowRight class="w-4 h-4" />
+        </div>
     </div>
   </div>
 </Section>

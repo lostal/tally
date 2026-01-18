@@ -1,72 +1,91 @@
 ---
 import Section from '../ui/Section.astro';
-import { WifiOff, FileCheck, Lock, Zap } from '@lucide/astro';
+import { WifiOff, FileCheck, Lock, Zap, Database, Server } from '@lucide/astro';
 ---
 
 <Section id="trust">
-  <div class="mx-auto mb-20 max-w-3xl md:text-center">
-    <h2 class="mb-6 font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl md:text-6xl text-balance">
+  <div class="mx-auto mb-16 max-w-3xl md:text-center">
+    <h2 class="mb-4 font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl md:text-6xl text-balance">
       Tecnología robusta
     </h2>
     <p class="text-xl text-muted-foreground text-balance">
-      Construido con los estándares más altos. Seguridad, velocidad y fiabilidad.
+      Construido para escalar. Seguridad bancaria y fiabilidad absoluta.
     </p>
   </div>
 
-  <div class="grid md:grid-cols-2 gap-8">
-      <!-- Card 1 -->
-      <div class="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-300">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(250px,auto)]">
+      <!-- Card 1: Offline First (Large) -->
+      <div class="md:col-span-2 group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-300">
           <div class="absolute inset-0 bg-linear-to-br from-basil/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div class="relative z-10 flex flex-col h-full">
-              <div class="w-12 h-12 rounded-2xl bg-basil/10 flex items-center justify-center text-basil mb-6 group-hover:scale-110 transition-transform duration-300">
+
+          <div class="relative z-10 flex flex-col items-start h-full">
+               <div class="w-12 h-12 rounded-2xl bg-basil/10 flex items-center justify-center text-basil mb-6 shadow-sm">
                   <WifiOff class="w-6 h-6" />
-              </div>
-              <h3 class="text-xl font-serif font-medium mb-3">Offline-First Engine</h3>
-              <p class="text-muted-foreground leading-relaxed">
-                  Tu restaurante nunca se detiene. Sincronización transparente con local-first databases (IndexedDB). Si cae internet, sigues vendiendo.
-              </p>
+               </div>
+               <h3 class="text-2xl font-serif font-medium mb-3">Offline-First Engine</h3>
+               <p class="text-muted-foreground leading-relaxed max-w-md">
+                   Tu restaurante nunca se detiene. Sincronización transparente con bases de datos locales (IndexedDB). Si cae internet, sigues vendiendo y la app sincroniza al volver.
+               </p>
+
+               <!-- Abstract Visual -->
+               <div class="absolute right-0 bottom-0 w-1/3 h-full opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                   <div class="w-full h-full bg-[repeating-linear-gradient(45deg,var(--color-basil),var(--color-basil)_10px,transparent_10px,transparent_20px)]"></div>
+               </div>
           </div>
       </div>
 
-       <!-- Card 2 -->
-      <div class="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-300">
-          <div class="absolute inset-0 bg-linear-to-br from-blueberry/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div class="relative z-10 flex flex-col h-full">
-              <div class="w-12 h-12 rounded-2xl bg-blueberry/10 flex items-center justify-center text-blueberry mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FileCheck class="w-6 h-6" />
-              </div>
-              <h3 class="text-xl font-serif font-medium mb-3">Verifactu Ready</h3>
-              <p class="text-muted-foreground leading-relaxed">
-                  Cumplimiento total normativa antifraude y Ley Crea y Crece. Facturación electrónica certificada y sellado de tiempo inmutable.
-              </p>
-          </div>
+      <!-- Card 2: Security (Tall/Standard) -->
+      <div class="md:col-span-1 border border-border/50 bg-card/30 rounded-3xl p-8 hover:bg-card hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+           <div class="absolute inset-0 bg-linear-to-bl from-espresso/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <div>
+               <div class="w-12 h-12 rounded-2xl bg-espresso/10 flex items-center justify-center text-espresso mb-6 shadow-sm">
+                   <Lock class="w-6 h-6" />
+               </div>
+               <h3 class="text-xl font-serif font-medium mb-3">Seguridad Enterprise</h3>
+               <p class="text-muted-foreground text-sm">
+                   Aislamiento de datos con Row-Level Security (RLS) y encriptación de extremo a extremo.
+               </p>
+           </div>
+           <div class="mt-6 flex gap-2">
+               <div class="px-3 py-1 rounded-full bg-espresso/10 text-xs font-bold text-espresso border border-espresso/20">SOC2</div>
+               <div class="px-3 py-1 rounded-full bg-espresso/10 text-xs font-bold text-espresso border border-espresso/20">GDPR</div>
+           </div>
       </div>
 
-       <!-- Card 3 -->
-      <div class="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-300">
-          <div class="absolute inset-0 bg-linear-to-br from-espresso/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div class="relative z-10 flex flex-col h-full">
-              <div class="w-12 h-12 rounded-2xl bg-espresso/10 flex items-center justify-center text-espresso mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Lock class="w-6 h-6" />
-              </div>
-              <h3 class="text-xl font-serif font-medium mb-3">Enterprise Security</h3>
-              <p class="text-muted-foreground leading-relaxed">
-                  Aislamiento de datos con Row-Level Security (RLS) en PostgreSQL. Tus datos están encriptados y seguros a nivel de base de datos.
-              </p>
-          </div>
+      <!-- Card 3: Verifactu (Standard) -->
+      <div class="md:col-span-1 border border-border/50 bg-card/30 rounded-3xl p-8 hover:bg-card hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
+           <div class="absolute inset-0 bg-linear-to-tr from-blueberry/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <div class="relative z-10">
+               <div class="w-12 h-12 rounded-2xl bg-blueberry/10 flex items-center justify-center text-blueberry mb-6 shadow-sm">
+                   <FileCheck class="w-6 h-6" />
+               </div>
+               <h3 class="text-xl font-serif font-medium mb-3">Verifactu Ready</h3>
+               <p class="text-muted-foreground text-sm">
+                   Cumplimiento total con la Ley Antifraude. Facturación certificada y sellado inmutable.
+               </p>
+           </div>
       </div>
 
-       <!-- Card 4 -->
-      <div class="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-300">
-          <div class="absolute inset-0 bg-linear-to-br from-tomato/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div class="relative z-10 flex flex-col h-full">
-              <div class="w-12 h-12 rounded-2xl bg-tomato/10 flex items-center justify-center text-tomato mb-6 group-hover:scale-110 transition-transform duration-300">
+      <!-- Card 4: Speed/Optimistic UI (Large) -->
+      <div class="md:col-span-2 group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row items-center gap-8">
+          <div class="absolute inset-0 bg-linear-to-l from-tomato/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+          <div class="flex-1 relative z-10">
+               <div class="w-12 h-12 rounded-2xl bg-tomato/10 flex items-center justify-center text-tomato mb-6 shadow-sm">
                   <Zap class="w-6 h-6" />
+               </div>
+               <h3 class="text-2xl font-serif font-medium mb-3">Optimistic UI & Latencia Cero</h3>
+               <p class="text-muted-foreground leading-relaxed">
+                   La interfaz responde instantáneamente al toque, sin esperar al servidor. Una experiencia nativa a 60fps que se siente "mágica".
+               </p>
+          </div>
+
+          <!-- Speed Visual -->
+          <div class="flex-1 w-full h-32 bg-background/50 rounded-xl border border-border/50 relative overflow-hidden flex items-center justify-center">
+              <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
+              <div class="font-mono text-sm text-tomato font-bold tracking-widest animate-pulse">
+                  &lt; 10ms RESPONSE
               </div>
-              <h3 class="text-xl font-serif font-medium mb-3">Optimistic UI</h3>
-              <p class="text-muted-foreground leading-relaxed">
-                  Latencia cero en percepción. La interfaz responde instantáneamente mientras sincroniza en segundo plano. Sensación nativa fluida.
-              </p>
           </div>
       </div>
   </div>

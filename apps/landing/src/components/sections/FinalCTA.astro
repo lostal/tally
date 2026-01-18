@@ -1,104 +1,86 @@
 ---
-import Section from '../ui/Section.astro';
 import Button from '../ui/Button.astro';
-import { ArrowRight, Book, MessageCircle, Github, Twitter } from '@lucide/astro';
 ---
 
-<Section id="final-cta" className="overflow-hidden">
-  <div class="relative w-full rounded-[2.5rem] bg-foreground text-background overflow-hidden px-8 py-24 md:px-16 md:py-32 text-center shadow-2xl">
-      <!-- Background Mesh -->
-      <div class="absolute inset-0 pointer-events-none">
-          <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_70%)]"></div>
-          <div class="absolute -bottom-1/2 -left-1/2 w-full h-full bg-tomato opacity-20 blur-[120px]"></div>
-          <div class="absolute -top-1/2 -right-1/2 w-full h-full bg-blueberry opacity-20 blur-[120px]"></div>
-      </div>
+<section id="final-cta" class="relative z-20 overflow-hidden pt-24 md:pt-32" style="margin-bottom: 400px;">
 
-      <div class="relative z-10 max-w-4xl mx-auto space-y-10">
-          <h2 class="font-serif text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl text-balance">
-             Tu restaurante, <br/>
-             <span class="text-transparent bg-clip-text bg-linear-to-r from-tomato via-espresso to-blueberry animate-gradient-x">siguiente nivel.</span>
-          </h2>
-          <p class="text-xl md:text-2xl text-background/80 text-balance max-w-2xl mx-auto leading-relaxed">
-             Sin tarjeta de crédito. Sin permanencia. <br/>
-             Únete a los restaurantes que ya están facturando más.
-          </p>
 
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Button href="https://app.paytally.app/register" class="h-14 px-8 rounded-full text-lg bg-background text-foreground hover:bg-background/90 shadow-lg shadow-white/5 transition-all hover:scale-105">
-                  Empezar gratis
-              </Button>
-              <Button variant="outline" href="mailto:hola@paytally.app" class="h-14 px-8 rounded-full text-lg border-background/20 text-background hover:bg-background/10">
-                  Agendar Demo
-              </Button>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div
+        id="cta-container"
+        class="relative w-full bg-foreground text-background overflow-hidden px-6 py-20 md:px-16 md:py-28 text-center mx-auto rounded-t-[40px] will-change-transform"
+        style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"
+      >
+          <!-- Background Mesh -->
+          <div class="absolute inset-0 pointer-events-none">
+              <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]"></div>
+              <div class="absolute -bottom-1/2 -left-1/2 w-full h-full bg-tomato opacity-15 blur-[100px]"></div>
+              <div class="absolute -top-1/2 -right-1/2 w-full h-full bg-blueberry opacity-15 blur-[100px]"></div>
           </div>
 
-          <div class="pt-8 flex items-center justify-center gap-8 text-sm text-background/60">
-             <div class="flex items-center gap-2">
-                 <div class="w-1.5 h-1.5 rounded-full bg-basil"></div>
-                 30 días de prueba
-             </div>
-              <div class="flex items-center gap-2">
-                 <div class="w-1.5 h-1.5 rounded-full bg-tomato"></div>
-                 Setup en 5 min
-             </div>
+          <div class="relative z-10 max-w-4xl mx-auto space-y-10">
+              <h2 class="font-serif text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl text-balance text-background">
+                 Tu restaurante, <br/>
+                 <span class="text-transparent bg-clip-text bg-linear-to-r from-tomato via-white to-blueberry animate-gradient-x">siguiente nivel.</span>
+              </h2>
+              <p class="text-xl md:text-2xl text-background/80 text-balance max-w-2xl mx-auto leading-relaxed">
+                 Sin tarjeta de crédito. Sin permanencia. <br/>
+                 Únete a los restaurantes que ya están facturando más.
+              </p>
+
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                  <Button href="https://app.paytally.app/register" class="h-14 px-8 rounded-full text-lg bg-white text-black hover:bg-gray-100 ring-2 ring-white font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-all hover:scale-105">
+                      Empezar gratis
+                  </Button>
+                  <Button variant="outline" href="mailto:hola@paytally.app" class="h-14 px-8 rounded-full text-lg border-2 border-white text-white hover:bg-white hover:text-black font-semibold transition-all">
+                      Agendar Demo
+                  </Button>
+              </div>
+
+              <div class="pt-8 flex items-center justify-center gap-8 text-sm text-background/60">
+                 <div class="flex items-center gap-2">
+                     <div class="w-1.5 h-1.5 rounded-full bg-basil"></div>
+                     30 días de prueba
+                 </div>
+                  <div class="flex items-center gap-2">
+                     <div class="w-1.5 h-1.5 rounded-full bg-tomato"></div>
+                     Setup en 5 min
+                 </div>
+              </div>
           </div>
       </div>
   </div>
-</Section>
+</section>
 
-<footer class="border-t border-border/50 py-16 bg-background">
-   <div class="container-landing max-w-7xl mx-auto px-6 lg:px-8">
-       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
-           <div class="col-span-2 lg:col-span-2">
-               <a href="/" class="font-serif text-2xl font-bold mb-6 block">Tally.</a>
-               <p class="text-muted-foreground text-sm leading-relaxed max-w-xs mb-8">
-                   El sistema operativo integral para la hostelería moderna. Diseñado para velocidad, construido para escalar.
-               </p>
-               <div class="flex gap-4">
-                   <a href="#" class="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors" aria-label="Twitter">
-                       <Twitter class="w-4 h-4" />
-                   </a>
-                   <a href="#" class="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors" aria-label="Github">
-                       <Github class="w-4 h-4" />
-                   </a>
-               </div>
-           </div>
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-           <div>
-               <h4 class="font-medium mb-6">Producto</h4>
-               <ul class="space-y-4 text-sm text-muted-foreground">
-                   <li><a href="#features" class="hover:text-foreground transition-colors">Características</a></li>
-                   <li><a href="#pricing" class="hover:text-foreground transition-colors">Precios</a></li>
-                   <li><a href="#demo" class="hover:text-foreground transition-colors">Demo</a></li>
-                   <li><a href="/changelog" class="hover:text-foreground transition-colors">Changelog</a></li>
-               </ul>
-           </div>
+  gsap.registerPlugin(ScrollTrigger);
 
-           <div>
-               <h4 class="font-medium mb-6">Recursos</h4>
-               <ul class="space-y-4 text-sm text-muted-foreground">
-                   <li><a href="https://docs.paytally.app" class="hover:text-foreground transition-colors">Documentación</a></li>
-                   <li><a href="/blog" class="hover:text-foreground transition-colors">Blog</a></li>
-                   <li><a href="/guides" class="hover:text-foreground transition-colors">Guías</a></li>
-                   <li><a href="/status" class="hover:text-foreground transition-colors">Estado del sistema</a></li>
-               </ul>
-           </div>
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const cta = document.getElementById('cta-container');
 
-           <div>
-               <h4 class="font-medium mb-6">Legal</h4>
-               <ul class="space-y-4 text-sm text-muted-foreground">
-                   <li><a href="/privacy" class="hover:text-foreground transition-colors">Privacidad</a></li>
-                   <li><a href="/terms" class="hover:text-foreground transition-colors">Términos</a></li>
-                   <li><a href="/cookies" class="hover:text-foreground transition-colors">Cookies</a></li>
-               </ul>
-           </div>
-       </div>
-
-       <div class="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-           <div>&copy; {new Date().getFullYear()} PayTally S.L. Todos los derechos reservados.</div>
-           <div class="flex gap-8">
-               <span>Hecho con ❤️ en Madrid</span>
-           </div>
-       </div>
-   </div>
-</footer>
+  if (!isMobile && cta) {
+      gsap.fromTo(cta,
+          {
+              width: "100%",
+              borderBottomLeftRadius: "0px",
+              borderBottomRightRadius: "0px"
+          },
+          {
+              width: "95%",
+              borderBottomLeftRadius: "40px",
+              borderBottomRightRadius: "40px",
+              ease: "none",
+              scrollTrigger: {
+                  trigger: "#final-cta",
+                  start: "bottom bottom",
+                  end: "+=400", // Animation completes after scrolling 400px (footer height)
+                  scrub: true,
+              }
+          }
+      );
+  }
+</script>
