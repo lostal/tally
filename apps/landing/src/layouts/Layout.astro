@@ -109,7 +109,7 @@ const structuredData = {
       import '../scripts/animations';
     </script>
   </head>
-  <body>
+  <body class="bg-background text-foreground antialiased selection:bg-primary/10 selection:text-primary">
     <!-- Skip to main content for accessibility -->
     <a
       href="#main-content"
@@ -118,9 +118,16 @@ const structuredData = {
       Saltar al contenido principal
     </a>
 
+    <!-- Global Background Effect -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+       <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02] mix-blend-overlay"></div>
+       <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"></div>
+       <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 opacity-20 blur-[100px]"></div>
+    </div>
+
     <Navbar />
 
-    <main id="main-content">
+    <main id="main-content" class="relative">
       <slot />
     </main>
   </body>

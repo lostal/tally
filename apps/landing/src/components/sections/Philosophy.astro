@@ -1,75 +1,55 @@
 ---
-
+import Section from '../ui/Section.astro';
 ---
 
-<section class="bg-secondary/30 py-32">
-  <div class="container-landing">
-    <div class="mx-auto max-w-4xl space-y-12 text-center">
-      <!-- Visual placeholder (illustration of waiter with tablet) -->
-      <div class="relative mx-auto mb-12 aspect-square w-full max-w-md">
-        <div class="from-primary/5 absolute inset-0 rounded-3xl bg-linear-to-br to-transparent">
-        </div>
-        <svg
-          class="h-full w-full p-12"
-          viewBox="0 0 200 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <!-- Simple minimalist illustration: waiter with tablet -->
-          <!-- Person -->
-          <circle cx="100" cy="60" r="20" fill="var(--primary)" opacity="0.2"></circle>
-          <rect x="85" y="85" width="30" height="60" rx="5" fill="var(--primary)" opacity="0.3"
-          ></rect>
+<Section id="philosophy" className="relative overflow-hidden">
+  <div class="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+    <!-- Visual / Abstract Art -->
+    <div class="relative aspect-square w-full max-w-md mx-auto lg:max-w-none order-last lg:order-first">
+      <div class="absolute inset-0 bg-linear-to-tr from-tomato via-espresso to-blueberry opacity-20 blur-3xl rounded-full"></div>
+      <div class="relative h-full w-full rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl flex items-center justify-center overflow-hidden">
+          <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
 
-          <!-- Tablet in hand -->
-          <rect x="110" y="100" width="40" height="30" rx="3" fill="var(--primary)" opacity="0.6"
-          ></rect>
-          <rect x="115" y="105" width="30" height="20" rx="2" fill="var(--card)"></rect>
+          <!-- Abstract UI Representation -->
+          <div class="relative w-64 h-80 bg-background rounded-2xl border border-border/50 shadow-2xl skew-y-6 hover:skew-y-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div class="h-full w-full p-6 flex flex-col gap-4">
+                  <div class="w-12 h-12 rounded-full bg-(--tomato)/20 mb-4"></div>
+                  <div class="h-4 w-3/4 bg-muted/50 rounded"></div>
+                  <div class="h-4 w-1/2 bg-muted/30 rounded"></div>
+                  <div class="flex-1"></div>
+                  <div class="h-12 w-full bg-primary/10 rounded-xl"></div>
+              </div>
+          </div>
+      </div>
+    </div>
 
-          <!-- Checkmarks on tablet screen -->
-          <path
-            d="M120 112 L123 115 L128 108"
-            stroke="var(--basil)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            fill="none"></path>
-          <path
-            d="M120 118 L123 121 L128 114"
-            stroke="var(--basil)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            fill="none"></path>
-        </svg>
+    <!-- Editorial Content -->
+    <div class="space-y-12">
+      <div>
+        <h2 class="font-serif text-5xl font-medium text-balance sm:text-6xl md:text-7xl leading-[1.1] mb-8">
+          Waiter-First. <br/>
+          <span class="text-muted-foreground italic">Customer-Centric.</span>
+        </h2>
+        <p class="text-xl text-muted-foreground leading-relaxed text-balance">
+          Diseñado para el caos del servicio real. Sin WiFi, sin pausas. Sin curva de aprendizaje.
+          Tu equipo vuela, tus clientes disfrutan.
+        </p>
       </div>
 
-      <!-- Content -->
-      <h2 class="font-serif text-6xl font-bold text-balance sm:text-7xl">
-        Waiter-First,<br />Customer-Centric
-      </h2>
-
-      <p class="text-muted-foreground mx-auto max-w-[65ch] text-xl leading-relaxed sm:text-2xl">
-        Diseñado para personas reales en entornos reales. Sin WiFi, sin problemas. Sin curva de
-        aprendizaje, sin fricción. Tu equipo aprende en 5 minutos, tus clientes pagan en 30
-        segundos.
-      </p>
-
-      <!-- Stats -->
-      <div class="grid gap-8 pt-12 sm:grid-cols-3">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-border pt-8">
         <div>
-          <div class="font-serif text-5xl font-bold text-[var(--basil)] tabular-nums">5min</div>
-          <p class="text-muted-foreground mt-2">Tiempo de formación</p>
+          <div class="font-serif text-4xl font-bold text-basil tabular-nums mb-2">5m</div>
+          <p class="text-sm text-muted-foreground font-medium uppercase tracking-wide">Formación</p>
         </div>
         <div>
-          <div class="font-serif text-5xl font-bold text-[var(--blueberry)] tabular-nums">30s</div>
-          <p class="text-muted-foreground mt-2">De QR a pago completo</p>
+          <div class="font-serif text-4xl font-bold text-blueberry tabular-nums mb-2">30s</div>
+          <p class="text-sm text-muted-foreground font-medium uppercase tracking-wide">Pago QR</p>
         </div>
         <div>
-          <div class="font-serif text-5xl font-bold text-[var(--tomato)] tabular-nums">100%</div>
-          <p class="text-muted-foreground mt-2">Offline-first</p>
+          <div class="font-serif text-4xl font-bold text-tomato tabular-nums mb-2">100%</div>
+          <p class="text-sm text-muted-foreground font-medium uppercase tracking-wide">Offline</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</Section>

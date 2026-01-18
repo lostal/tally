@@ -1,62 +1,57 @@
 ---
+import Section from '../ui/Section.astro';
 import { Clock, Users, FileX } from '@lucide/astro';
 ---
 
-<section class="bg-secondary/30 py-32">
-  <div class="container-landing">
-    <!-- Section header -->
-    <div class="mb-20 max-w-3xl">
-      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
-        Los TPVs antiguos están frenando tu servicio
-      </h2>
-      <p class="text-muted-foreground text-xl text-balance">
-        Cada minuto perdido con sistemas lentos es dinero que dejas sobre la mesa.
-      </p>
+<Section id="problem" className="relative overflow-hidden">
+  <!-- Background Elements -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl aspect-square bg-linear-to-tr from-tomato via-transparent to-espresso opacity-[0.03] blur-3xl rounded-full pointer-events-none"></div>
+
+  <div class="mx-auto max-w-4xl text-center relative z-10">
+    <div class="inline-flex items-center gap-2 rounded-full bg-muted/50 px-3 py-1 text-sm text-muted-foreground backdrop-blur-sm border border-border/50 mb-8">
+      <span class="flex h-2 w-2 rounded-full bg-red-500"></span>
+      La realidad del sector
     </div>
 
-    <!-- 3 Pain Points -->
-    <div class="grid gap-12 md:grid-cols-3">
-      <!-- Problem 1: Slow systems -->
-      <div class="problem-card group space-y-6">
-        <div
-          class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--tomato)]/10 transition-colors group-hover:bg-[var(--tomato)]/20"
-        >
-          <Clock class="h-10 w-10 text-[var(--tomato)]" />
+    <h2 class="font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl md:text-6xl text-balance leading-tight mb-16">
+      "La hostelería no es difícil por la comida. <br class="hidden md:block" /> Es difícil por la <span class="italic text-transparent bg-clip-text bg-linear-to-br from-foreground to-muted-foreground">gestión caótica</span>."
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8 text-left">
+      <!-- Pain Point 1 -->
+      <div class="group p-6 rounded-2xl bg-card/30 border border-border/50 hover:bg-card hover:shadow-lg hover:shadow-tomato/5 hover:border-tomato/20 transition-all duration-300">
+        <div class="w-12 h-12 rounded-xl bg-tomato/10 flex items-center justify-center text-tomato mb-4 ring-1 ring-tomato/20 group-hover:bg-tomato/20 transition-colors">
+            <Clock class="h-7 w-7" />
         </div>
-        <h3 class="font-serif text-2xl font-semibold">Comandas que tardan una eternidad</h3>
-        <p class="text-muted-foreground leading-relaxed">
-          Tus camareros pierden 5 minutos por mesa esperando a que el TPV responda. En hora punta,
-          eso es caos.
+        <h3 class="text-lg font-medium mb-2">Tiempos muertos</h3>
+        <p class="text-muted-foreground text-sm leading-relaxed">
+          Camareros corriendo entre la sala y el TPV. Cocina descifrando tickets en papel.
         </p>
       </div>
 
-      <!-- Problem 2: No split functionality -->
-      <div class="problem-card group space-y-6">
-        <div
-          class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--blueberry)]/10 transition-colors group-hover:bg-[var(--blueberry)]/20"
-        >
-          <Users class="h-10 w-10 text-[var(--blueberry)]" />
+      <!-- Pain Point 2 -->
+      <div class="group p-6 rounded-2xl bg-card/30 border border-border/50 hover:bg-card hover:shadow-lg hover:shadow-blueberry/5 hover:border-blueberry/20 transition-all duration-300">
+         <div class="w-12 h-12 rounded-xl bg-blueberry/10 flex items-center justify-center text-blueberry mb-4 ring-1 ring-blueberry/20 group-hover:bg-blueberry/20 transition-colors">
+            <Users class="h-7 w-7" />
         </div>
-        <h3 class="font-serif text-2xl font-semibold">Split de cuenta manual = errores</h3>
-        <p class="text-muted-foreground leading-relaxed">
-          Cuando 8 personas piden dividir la cuenta, tu equipo saca la calculadora. Y cuando falla,
-          pierdes la propina.
+        <h3 class="text-lg font-medium mb-2">Errores de personal</h3>
+        <p class="text-muted-foreground text-sm leading-relaxed">
+          "¿Quién pidió esto?" Platos fríos esperando ser servidos. Propinas perdidas.
         </p>
       </div>
 
-      <!-- Problem 3: No offline mode -->
-      <div class="problem-card group space-y-6">
-        <div
-          class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--espresso)]/10 transition-colors group-hover:bg-[var(--espresso)]/20"
-        >
-          <FileX class="h-10 w-10 text-[var(--espresso)]" />
+       <!-- Pain Point 3 -->
+      <div class="group p-6 rounded-2xl bg-card/30 border border-border/50 hover:bg-card hover:shadow-lg hover:shadow-espresso/5 hover:border-espresso/20 transition-all duration-300">
+         <div class="w-12 h-12 rounded-xl bg-espresso/10 flex items-center justify-center text-espresso mb-4 ring-1 ring-espresso/20 group-hover:bg-espresso/20 transition-colors">
+            <FileX class="h-7 w-7" />
         </div>
-        <h3 class="font-serif text-2xl font-semibold">Sin WiFi = Sin servicio</h3>
-        <p class="text-muted-foreground leading-relaxed">
-          Una caída de Internet y tu restaurante se paraliza completamente. No puedes cobrar, no
-          puedes tomar comandas.
+        <h3 class="text-lg font-medium mb-2">Descontrol total</h3>
+        <p class="text-muted-foreground text-sm leading-relaxed">
+          Cierre de caja con descuadres. Sin datos reales de qué se vende y qué no.
         </p>
       </div>
     </div>
   </div>
-</section>
+
+  <div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-144.5 aspect-1155/678 bg-linear-to-tr from-tomato to-espresso opacity-10 blur-3xl rotate-30 sm:w-288.75"></div>
+</Section>

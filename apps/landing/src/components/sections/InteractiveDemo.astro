@@ -1,135 +1,103 @@
 ---
-import Card from '../ui/Card.astro';
-import CardContent from '../ui/CardContent.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
 import { MapPin, ClipboardList, ChefHat, QrCode, Users, CheckCircle } from '@lucide/astro';
 ---
 
-<section class="demo-section bg-secondary/30 py-32" id="demo">
-  <div class="container-landing">
-    <!-- Section header -->
-    <div class="mx-auto mb-16 max-w-3xl text-center">
-      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
-        Así funciona Tally, paso a paso
-      </h2>
-      <p class="text-muted-foreground text-xl text-balance">
-        Del primer click a la cuenta pagada, en tiempo real.
-      </p>
-    </div>
+<Section id="demo">
+  <div class="mx-auto mb-16 max-w-3xl text-center">
+    <h2 class="mb-6 font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl text-balance">
+      Experiencia fluida
+    </h2>
+    <p class="text-xl text-muted-foreground text-balance">
+      Desde la toma de comanda hasta el pago, todo conectado.
+    </p>
+  </div>
 
-    <!-- Progress bar -->
-    <div class="bg-muted mb-12 h-2 w-full overflow-hidden rounded-full">
-      <div
-        class="demo-progress-bar bg-primary h-full rounded-full transition-all duration-500"
-        style="width: 16.66%"
-      >
+  <div class="relative">
+    <!-- Connecting Line -->
+    <div class="absolute left-1/2 top-4 bottom-4 w-0.5 -translate-x-1/2 bg-linear-to-b from-border/0 via-border to-border/0 md:hidden"></div>
+    <div class="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 bg-linear-to-r from-border/0 via-border to-border/0 hidden md:block"></div>
+
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-8 relative z-10">
+      <!-- Step 1 -->
+      <div class="group relative flex flex-col items-center gap-4">
+         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
+            <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
+             <MapPin class="h-10 w-10 text-primary relative z-10" />
+            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">1</div>
+         </div>
+         <div class="text-center">
+            <h3 class="font-bold text-foreground">Plano Sala</h3>
+            <p class="text-xs text-muted-foreground mt-1">Gestión visual</p>
+         </div>
       </div>
-    </div>
 
-    <!-- Horizontal scroll container (mobile) / Grid (desktop) -->
-    <div class="scrollbar-hide -mx-4 overflow-x-auto px-4 pb-8 sm:overflow-visible">
-      <div
-        class="demo-horizontal-container flex min-w-max gap-6 sm:grid sm:min-w-0 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        <!-- Step 1 -->
-        <Card variant="elevated" class="demo-card w-80 shrink-0 sm:w-auto">
-          <CardContent class="py-8 text-center">
-            <div
-              class="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl"
-            >
-              <MapPin class="text-primary h-10 w-10" />
-            </div>
-            <div class="mb-2 font-serif text-xl font-semibold">1. Mapa de mesas</div>
-            <p class="text-muted-foreground">
-              El camarero ve el mapa del local en tiempo real. Selecciona la mesa.
-            </p>
-          </CardContent>
-        </Card>
+       <!-- Step 2 -->
+      <div class="group relative flex flex-col items-center gap-4">
+         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
+             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
+             <ClipboardList class="h-10 w-10 text-primary relative z-10" />
+            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">2</div>
+         </div>
+          <div class="text-center">
+            <h3 class="font-bold text-foreground">Comanda</h3>
+            <p class="text-xs text-muted-foreground mt-1">Toma rápida</p>
+         </div>
+      </div>
 
-        <!-- Step 2 -->
-        <Card variant="elevated" class="demo-card w-80 shrink-0 sm:w-auto">
-          <CardContent class="py-8 text-center">
-            <div
-              class="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl"
-            >
-              <ClipboardList class="text-primary h-10 w-10" />
-            </div>
-            <div class="mb-2 font-serif text-xl font-semibold">2. Tomar comanda</div>
-            <p class="text-muted-foreground">
-              Añade productos del menú con un tap. Todo sincroniza offline.
-            </p>
-          </CardContent>
-        </Card>
+      <!-- Step 3 -->
+      <div class="group relative flex flex-col items-center gap-4">
+         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
+             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
+             <ChefHat class="h-10 w-10 text-primary relative z-10" />
+            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">3</div>
+         </div>
+          <div class="text-center">
+            <h3 class="font-bold text-foreground">Cocina</h3>
+            <p class="text-xs text-muted-foreground mt-1">KDS instantáneo</p>
+         </div>
+      </div>
 
-        <!-- Step 3 -->
-        <Card variant="elevated" class="demo-card w-80 shrink-0 sm:w-auto">
-          <CardContent class="py-8 text-center">
-            <div
-              class="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl"
-            >
-              <ChefHat class="text-primary h-10 w-10" />
-            </div>
-            <div class="mb-2 font-serif text-xl font-semibold">3. Cocina recibe</div>
-            <p class="text-muted-foreground">
-              Comandas aparecen en pantalla de cocina al instante. Sin papeles.
-            </p>
-          </CardContent>
-        </Card>
 
-        <!-- Step 4 -->
-        <Card variant="elevated" class="demo-card w-80 shrink-0 sm:w-auto">
-          <CardContent class="py-8 text-center">
-            <div
-              class="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl"
-            >
-              <QrCode class="text-primary h-10 w-10" />
-            </div>
-            <div class="mb-2 font-serif text-xl font-semibold">4. Genera QR</div>
-            <p class="text-muted-foreground">
-              Un tap genera el QR de la cuenta. Clientes escanean desde su móvil.
-            </p>
-          </CardContent>
-        </Card>
+      <!-- Step 4 -->
+      <div class="group relative flex flex-col items-center gap-4">
+         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
+             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
+             <QrCode class="h-10 w-10 text-primary relative z-10" />
+            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">4</div>
+         </div>
+          <div class="text-center">
+            <h3 class="font-bold text-foreground">QR</h3>
+            <p class="text-xs text-muted-foreground mt-1">Cliente escanea</p>
+         </div>
+      </div>
 
-        <!-- Step 5 -->
-        <Card variant="elevated" class="demo-card w-80 shrink-0 sm:w-auto">
-          <CardContent class="py-8 text-center">
-            <div
-              class="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl"
-            >
-              <Users class="text-primary h-10 w-10" />
-            </div>
-            <div class="mb-2 font-serif text-xl font-semibold">5. Split inteligente</div>
-            <p class="text-muted-foreground">
-              Cada comensal elige qué pagó. Calcula propinas y divide automático.
-            </p>
-          </CardContent>
-        </Card>
+       <!-- Step 5 -->
+      <div class="group relative flex flex-col items-center gap-4">
+         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
+             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
+             <Users class="h-10 w-10 text-primary relative z-10" />
+            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">5</div>
+         </div>
+          <div class="text-center">
+            <h3 class="font-bold text-foreground">Split</h3>
+            <p class="text-xs text-muted-foreground mt-1">División fácil</p>
+         </div>
+      </div>
 
-        <!-- Step 6 -->
-        <Card variant="elevated" class="demo-card w-80 shrink-0 sm:w-auto">
-          <CardContent class="py-8 text-center">
-            <div
-              class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--basil)]/10"
-            >
-              <CheckCircle class="h-10 w-10 text-[var(--basil)]" />
-            </div>
-            <div class="mb-2 font-serif text-xl font-semibold">6. Listo</div>
-            <p class="text-muted-foreground">
-              Todo pagado, ticket emitido. Mesa lista para el siguiente turno.
-            </p>
-          </CardContent>
-        </Card>
+       <!-- Step 6 -->
+      <div class="group relative flex flex-col items-center gap-4">
+         <div class="relative flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-basil/50 group-hover:shadow-basil/20">
+             <div class="absolute inset-0 bg-linear-to-r from-basil/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-2xl"></div>
+             <CheckCircle class="h-10 w-10 text-basil relative z-10" />
+            <div class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-basil text-xs font-bold text-white shadow-sm ring-2 ring-background">6</div>
+         </div>
+          <div class="text-center">
+            <h3 class="font-bold text-foreground">Pago</h3>
+            <p class="text-xs text-muted-foreground mt-1">Confirmado</p>
+         </div>
       </div>
     </div>
   </div>
-</section>
-
-<style>
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>
+</Section>

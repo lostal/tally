@@ -1,137 +1,109 @@
 ---
-import Card from '../ui/Card.astro';
-import CardHeader from '../ui/CardHeader.astro';
-import CardContent from '../ui/CardContent.astro';
-import Badge from '../ui/Badge.astro';
-import { Check } from '@lucide/astro';
+import Section from '../ui/Section.astro';
+import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
 ---
 
-<section class="py-32">
-  <div class="container-landing">
-    <!-- Section header -->
-    <div class="mx-auto mb-20 max-w-3xl text-center">
-      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
-        Una solución completa para cada tipo de restaurante
-      </h2>
-      <p class="text-muted-foreground text-xl text-balance">
-        Desde cafeterías independientes hasta cadenas de restaurantes.
-      </p>
-    </div>
-
-    <!-- Bento Grid -->
-    <div class="grid gap-8 md:grid-cols-3">
-      <!-- Essential -->
-      <Card variant="elevated" class="bento-card flex flex-col">
-        <CardHeader>
-          <h3 class="mb-2 font-serif text-3xl font-bold">Essential</h3>
-          <p class="text-muted-foreground">Para empezar sin complicaciones</p>
-        </CardHeader>
-        <CardContent class="flex flex-1 flex-col">
-          <div class="mb-8">
-            <div class="text-5xl font-bold tabular-nums">€0</div>
-            <p class="text-muted-foreground mt-2">Por siempre</p>
-          </div>
-
-          <ul class="mb-8 space-y-4">
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>1 local</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Hasta 50 comandas/mes</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Split básico por QR</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Soporte por email</span>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
-
-      <!-- Pro (Featured) -->
-      <Card
-        variant="elevated"
-        class="bento-card border-primary relative flex flex-col border-2 md:-mt-4 md:mb-4"
-      >
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-          <Badge variant="tomato" size="lg">Más popular</Badge>
-        </div>
-        <CardHeader>
-          <h3 class="mb-2 font-serif text-3xl font-bold">Pro</h3>
-          <p class="text-muted-foreground">Para restaurantes en crecimiento</p>
-        </CardHeader>
-        <CardContent class="flex flex-1 flex-col">
-          <div class="mb-8">
-            <div class="text-5xl font-bold tabular-nums">€49</div>
-            <p class="text-muted-foreground mt-2">Por local/mes</p>
-          </div>
-
-          <ul class="mb-8 space-y-4">
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Locales ilimitados</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Comandas ilimitadas</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Split avanzado + propinas</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Análisis y reportes</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Soporte prioritario</span>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
-
-      <!-- Enterprise -->
-      <Card variant="elevated" class="bento-card flex flex-col">
-        <CardHeader>
-          <h3 class="mb-2 font-serif text-3xl font-bold">Enterprise</h3>
-          <p class="text-muted-foreground">Para cadenas y grupos</p>
-        </CardHeader>
-        <CardContent class="flex flex-1 flex-col">
-          <div class="mb-8">
-            <div class="text-5xl font-bold">Contacta</div>
-            <p class="text-muted-foreground mt-2">Personalizado</p>
-          </div>
-
-          <ul class="mb-8 space-y-4">
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Todo de Pro, más:</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>SLA personalizado</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Formación en sitio</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Integraciones custom</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
-              <span>Soporte 24/7</span>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
-    </div>
+<Section id="solution">
+  <div class="mx-auto mb-16 max-w-3xl text-center">
+    <h2 class="mb-6 font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl text-balance">
+      Todo lo que necesitas, <br class="hidden sm:block" /> en un solo lugar.
+    </h2>
+    <p class="text-xl text-muted-foreground text-balance">
+      Olvídate de pagar 5 herramientas distintas. Tally unifica tu operativa.
+    </p>
   </div>
-</section>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
+      <!-- Card 1: Main Dashboard Feature (Large) -->
+      <div class="md:col-span-2 group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-500">
+          <div class="absolute inset-0 bg-linear-to-br from-tomato/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+          <div class="relative z-10 flex flex-col h-full">
+               <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-lg bg-tomato/10 flex items-center justify-center text-tomato group-hover:scale-110 transition-transform">
+                      <Zap class="w-6 h-6" />
+                  </div>
+                  <h3 class="text-lg font-medium">TPV Ultrarrápido</h3>
+               </div>
+               <p class="text-muted-foreground text-sm mb-8 max-w-sm leading-relaxed">
+                   Diseñado para la velocidad. Toma pedidos, modifica platos y cobra en segundos. Interfaz optimizada para el caos del servicio.
+               </p>
+
+               <!-- Mock Visual -->
+               <div class="flex-1 w-full bg-background rounded-t-xl border-t border-x border-border/50 shadow-sm relative overflow-hidden">
+                   <div class="absolute inset-0 bg-muted/5 flex items-center justify-center">
+                       <span class="text-xs text-muted-foreground font-mono">APP INTERFACE PREVIEW</span>
+                   </div>
+                   <!-- Abstract UI representation -->
+                   <div class="p-4 grid grid-cols-3 gap-3 opacity-50">
+                       <div class="h-24 bg-muted/20 rounded"></div>
+                       <div class="h-24 bg-muted/20 rounded"></div>
+                       <div class="h-24 bg-muted/20 rounded"></div>
+                       <div class="h-24 bg-muted/20 rounded"></div>
+                       <div class="h-24 bg-muted/20 rounded"></div>
+                       <div class="h-24 bg-muted/20 rounded"></div>
+                   </div>
+               </div>
+          </div>
+      </div>
+
+       <!-- Card 2: Mobile/QR (Tall) -->
+      <div class="md:row-span-2 group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-500">
+          <div class="absolute inset-0 bg-linear-to-b from-blueberry/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+          <div class="relative z-10 flex flex-col h-full items-center text-center">
+               <div class="w-12 h-12 rounded-2xl bg-blueberry/10 flex items-center justify-center text-blueberry mb-6 group-hover:scale-110 transition-transform">
+                   <Smartphone class="w-6 h-6" />
+               </div>
+               <h3 class="text-xl font-medium mb-3">Tu carta en QR</h3>
+               <p class="text-muted-foreground text-sm mb-8 leading-relaxed">
+                   Menú digital siempre actualizado. Los clientes piden y pagan desde su móvil. Aumenta la rotación de mesas un 20%.
+               </p>
+
+               <!-- Mock Phone -->
+               <div class="w-full max-w-[200px] flex-1 bg-background rounded-t-[2.5rem] border-t-8 border-x-8 border-foreground/10 shadow-lg relative overflow-hidden mx-auto">
+                    <div class="w-1/2 h-4 bg-foreground/10 mx-auto rounded-b-xl mb-4"></div>
+                    <div class="p-4 space-y-3">
+                        <div class="h-32 bg-blueberry/5 rounded-xl"></div>
+                        <div class="h-10 bg-muted/10 rounded-lg"></div>
+                        <div class="h-10 bg-muted/10 rounded-lg"></div>
+                    </div>
+               </div>
+          </div>
+      </div>
+
+      <!-- Card 3: Analytics (Small) -->
+      <div class="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-500">
+          <div class="absolute inset-0 bg-linear-to-tr from-basil/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <div class="relative z-10">
+               <div class="flex items-center justify-between mb-4">
+                   <div class="w-10 h-10 rounded-lg bg-basil/10 flex items-center justify-center text-basil group-hover:scale-110 transition-transform">
+                      <BarChart3 class="w-6 h-6" />
+                  </div>
+                  <span class="text-2xl font-serif font-bold text-foreground">+30%</span>
+               </div>
+               <h3 class="text-lg font-medium mb-2">Rentabilidad</h3>
+               <p class="text-muted-foreground text-sm">
+                   Control de stock real y escandallos automáticos.
+               </p>
+           </div>
+      </div>
+
+      <!-- Card 4: Cloud (Small) -->
+       <div class="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/30 p-8 hover:bg-card hover:shadow-xl transition-all duration-500">
+          <div class="absolute inset-0 bg-linear-to-tr from-espresso/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <div class="relative z-10">
+               <div class="flex items-center justify-between mb-4">
+                   <div class="w-10 h-10 rounded-lg bg-espresso/10 flex items-center justify-center text-espresso group-hover:scale-110 transition-transform">
+                      <Globe class="w-6 h-6" />
+                  </div>
+                  <span class="text-xs font-mono bg-muted/50 px-2 py-1 rounded text-muted-foreground">CLOUD</span>
+               </div>
+               <h3 class="text-lg font-medium mb-2">Desde cualquier lugar</h3>
+               <p class="text-muted-foreground text-sm">
+                   Gestiona tu negocio desde el sofá o las Bahamas.
+               </p>
+           </div>
+      </div>
+  </div>
+</Section>

@@ -1,105 +1,215 @@
 ---
-import Accordion from '../ui/Accordion.astro';
-import { Utensils, ChefHat, BarChart3 } from '@lucide/astro';
+import Section from '../ui/Section.astro';
+import { Utensils, ChefHat, BarChart3, ChevronRight } from '@lucide/astro';
 ---
 
-<section class="py-32">
-  <div class="container-landing">
-    <!-- Section header -->
-    <div class="mb-20 max-w-3xl">
-      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
-        Diseñado para cada rol en tu equipo
-      </h2>
-      <p class="text-muted-foreground text-xl text-balance">
-        Interfaces específicas que tu personal aprenderá en minutos.
-      </p>
+<Section id="features" className="relative overflow-hidden">
+  <div class="mx-auto max-w-3xl md:text-center mb-20">
+    <h2
+      class="font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl md:text-6xl mb-6 text-balance"
+    >
+      Diseñado para cada rol
+    </h2>
+    <p class="text-xl text-muted-foreground text-balance">
+      Interfaces específicas que tu personal dominará en minutos.
+    </p>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <!-- Left Column: Controls -->
+    <div class="space-y-4" id="feature-controls">
+      <!-- Item 1 -->
+      <button
+        class="feature-btn group w-full text-left p-6 rounded-2xl border border-border/50 bg-card/30 hover:bg-card/80 transition-all duration-300 data-[active=true]:border-primary/50 data-[active=true]:bg-card data-[active=true]:shadow-lg"
+        data-target="feature-1"
+        data-active="true"
+      >
+        <div class="flex items-start gap-4">
+          <div class="shrink-0 mt-1">
+             <div class="w-10 h-10 rounded-lg bg-tomato/10 flex items-center justify-center text-tomato group-data-[active=true]:bg-tomato group-data-[active=true]:text-white transition-colors">
+                <Utensils class="w-5 h-5" />
+             </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-serif font-medium mb-1 group-data-[active=true]:text-primary">Camareros</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">
+              TPV rápido. Comandas en 3 taps y sincronización offline.
+            </p>
+          </div>
+          <ChevronRight class="ml-auto w-5 h-5 text-muted-foreground opacity-0 group-data-[active=true]:opacity-100 transition-opacity" />
+        </div>
+      </button>
+
+      <!-- Item 2 -->
+      <button
+        class="feature-btn group w-full text-left p-6 rounded-2xl border border-border/50 bg-card/30 hover:bg-card/80 transition-all duration-300 data-[active=true]:border-primary/50 data-[active=true]:bg-card data-[active=true]:shadow-lg"
+        data-target="feature-2"
+      >
+        <div class="flex items-start gap-4">
+          <div class="shrink-0 mt-1">
+             <div class="w-10 h-10 rounded-lg bg-blueberry/10 flex items-center justify-center text-blueberry group-data-[active=true]:bg-blueberry group-data-[active=true]:text-white transition-colors">
+                <ChefHat class="w-5 h-5" />
+             </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-serif font-medium mb-1 group-data-[active=true]:text-primary">Cocina</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">
+              KDS en tiempo real. Priorización automática y cero papeles.
+            </p>
+          </div>
+          <ChevronRight class="ml-auto w-5 h-5 text-muted-foreground opacity-0 group-data-[active=true]:opacity-100 transition-opacity" />
+        </div>
+      </button>
+
+      <!-- Item 3 -->
+      <button
+        class="feature-btn group w-full text-left p-6 rounded-2xl border border-border/50 bg-card/30 hover:bg-card/80 transition-all duration-300 data-[active=true]:border-primary/50 data-[active=true]:bg-card data-[active=true]:shadow-lg"
+        data-target="feature-3"
+      >
+        <div class="flex items-start gap-4">
+          <div class="shrink-0 mt-1">
+             <div class="w-10 h-10 rounded-lg bg-basil/10 flex items-center justify-center text-basil group-data-[active=true]:bg-basil group-data-[active=true]:text-white transition-colors">
+                <BarChart3 class="w-5 h-5" />
+             </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-serif font-medium mb-1 group-data-[active=true]:text-primary">Gestión</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">
+              Control total. Ventas en vivo, stock y rendimiento de personal.
+            </p>
+          </div>
+           <ChevronRight class="ml-auto w-5 h-5 text-muted-foreground opacity-0 group-data-[active=true]:opacity-100 transition-opacity" />
+        </div>
+      </button>
     </div>
 
-    <!-- Accordion -->
-    <div class="max-w-4xl">
-      <Accordion title="🍽️ Camareros: TPV rápido y sin fricción" open>
-        <div class="accordion-content grid items-center gap-8 md:grid-cols-2">
-          <div class="space-y-4">
-            <p class="text-lg">
-              Interfaz táctil optimizada para el ritmo del servicio. Comandas en 3 taps,
-              modificadores intuitivos, sincronización offline.
-            </p>
-            <ul class="text-muted-foreground space-y-3">
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Mapa de mesas visual</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Historial de comandas por mesa</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Generación de QR instantánea</span>
-              </li>
-            </ul>
-          </div>
-          <div class="bg-secondary/50 flex aspect-video items-center justify-center rounded-xl p-8">
-            <Utensils class="text-primary h-24 w-24 opacity-50" />
-          </div>
+    <!-- Right Column: Visuals -->
+    <div class="relative aspect-square md:aspect-video lg:aspect-square xl:aspect-4/3 rounded-3xl border border-border/50 bg-card/50 backdrop-blur-xl shadow-2xl overflow-hidden">
+        <!-- Feature 1 Visual -->
+        <div id="feature-1-visual" class="feature-visual absolute inset-0 p-8 flex flex-col transition-opacity duration-500 opacity-100">
+             <div class="absolute inset-0 bg-linear-to-br from-tomato/5 to-transparent"></div>
+             <div class="relative h-full w-full bg-background rounded-xl border border-border/50 shadow-sm overflow-hidden flex flex-col">
+                 <!-- Mock UI Header -->
+                 <div class="h-12 border-b border-border/50 flex items-center px-4 gap-2">
+                     <div class="w-3 h-3 rounded-full bg-red-400/50"></div>
+                     <div class="w-3 h-3 rounded-full bg-yellow-400/50"></div>
+                     <div class="w-3 h-3 rounded-full bg-green-400/50"></div>
+                 </div>
+                 <!-- Mock UI Body -->
+                 <div class="flex-1 p-4 grid grid-cols-3 gap-4 bg-muted/5">
+                     <div class="col-span-2 grid grid-cols-2 gap-3 content-start">
+                         <div class="h-24 rounded-lg bg-card border border-border/50 shadow-sm"></div>
+                         <div class="h-24 rounded-lg bg-card border border-border/50 shadow-sm"></div>
+                         <div class="h-24 rounded-lg bg-card border border-border/50 shadow-sm"></div>
+                         <div class="h-24 rounded-lg bg-card border border-border/50 shadow-sm"></div>
+                         <div class="h-24 rounded-lg bg-card border border-border/50 shadow-sm"></div>
+                         <div class="h-24 rounded-lg bg-card border border-border/50 shadow-sm"></div>
+                     </div>
+                     <div class="h-full rounded-lg bg-card border border-border/50 shadow-sm p-3 space-y-3">
+                         <div class="h-8 w-full bg-muted/50 rounded"></div>
+                         <div class="h-4 w-2/3 bg-muted/30 rounded"></div>
+                         <div class="flex-1"></div>
+                         <div class="h-12 w-full bg-tomato/20 rounded"></div>
+                     </div>
+                 </div>
+             </div>
         </div>
-      </Accordion>
 
-      <Accordion title="👨‍🍳 Cocina: Pantalla de comandas en tiempo real">
-        <div class="accordion-content grid items-center gap-8 md:grid-cols-2">
-          <div class="space-y-4">
-            <p class="text-lg">
-              KDS (Kitchen Display System) que muestra comandas al instante. Prioridad automática,
-              tiempos de preparación, notificaciones.
-            </p>
-            <ul class="text-muted-foreground space-y-3">
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Prioridad automática por tiempo</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Modificadores destacados</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Sin impresoras, sin papeles</span>
-              </li>
-            </ul>
-          </div>
-          <div class="bg-secondary/50 flex aspect-video items-center justify-center rounded-xl p-8">
-            <ChefHat class="text-primary h-24 w-24 opacity-50" />
-          </div>
+        <!-- Feature 2 Visual -->
+        <div id="feature-2-visual" class="feature-visual absolute inset-0 p-8 flex flex-col transition-opacity duration-500 opacity-0 pointer-events-none">
+             <div class="absolute inset-0 bg-linear-to-br from-blueberry/5 to-transparent"></div>
+             <!-- KDS Mockup -->
+              <div class="relative h-full w-full bg-background rounded-xl border border-border/50 shadow-sm overflow-hidden flex flex-col">
+                  <div class="h-12 border-b border-border/50 bg-blueberry/5 flex items-center px-4 justify-between">
+                      <span class="font-mono text-xs font-bold text-blueberry">KDS DISPLAY</span>
+                      <div class="flex gap-2">
+                          <div class="px-2 py-1 rounded bg-background border text-xs">12:30</div>
+                      </div>
+                  </div>
+                  <div class="flex-1 p-4 grid grid-cols-3 gap-4 bg-muted/10">
+                      <div class="rounded-lg bg-card border border-l-4 border-l-orange-400 p-3 space-y-2 shadow-sm">
+                          <div class="flex justify-between text-xs font-bold"><span>Mesa 4</span><span>12:05</span></div>
+                          <div class="space-y-1 text-xs">
+                              <div class="p-1 bg-muted/30 rounded">Burger Clasica</div>
+                              <div class="p-1 bg-muted/30 rounded">Patatas Fritas</div>
+                          </div>
+                      </div>
+                      <div class="rounded-lg bg-card border border-l-4 border-l-green-400 p-3 space-y-2 shadow-sm">
+                           <div class="flex justify-between text-xs font-bold"><span>Mesa 2</span><span>12:12</span></div>
+                            <div class="space-y-1 text-xs">
+                              <div class="p-1 bg-muted/30 rounded">Ensalada César</div>
+                           </div>
+                      </div>
+                      <div class="rounded-lg bg-card border border-l-4 border-l-green-400 p-3 space-y-2 shadow-sm">
+                           <div class="flex justify-between text-xs font-bold"><span>Mesa 8</span><span>12:15</span></div>
+                            <div class="space-y-1 text-xs">
+                              <div class="p-1 bg-muted/30 rounded">Pasta Carbonara</div>
+                           </div>
+                      </div>
+                  </div>
+              </div>
         </div>
-      </Accordion>
 
-      <Accordion title="📊 Gestión: Análisis y control total">
-        <div class="accordion-content grid items-center gap-8 md:grid-cols-2">
-          <div class="space-y-4">
-            <p class="text-lg">
-              Dashboard con métricas clave: ventas por hora, productos top, rendimiento por
-              camarero, alertas de stock.
-            </p>
-            <ul class="text-muted-foreground space-y-3">
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Reportes de ventas en tiempo real</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Gestión de menú y precios</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
-                <span>Configuración multi-local</span>
-              </li>
-            </ul>
-          </div>
-          <div class="bg-secondary/50 flex aspect-video items-center justify-center rounded-xl p-8">
-            <BarChart3 class="text-primary h-24 w-24 opacity-50" />
-          </div>
+        <!-- Feature 3 Visual -->
+        <div id="feature-3-visual" class="feature-visual absolute inset-0 p-8 flex flex-col transition-opacity duration-500 opacity-0 pointer-events-none">
+             <div class="absolute inset-0 bg-linear-to-br from-basil/5 to-transparent"></div>
+             <!-- Charts Mockup -->
+              <div class="relative h-full w-full bg-background rounded-xl border border-border/50 shadow-sm overflow-hidden flex flex-col p-6 space-y-4">
+                  <div class="grid grid-cols-2 gap-4">
+                      <div class="h-24 rounded-lg bg-muted/10 border border-border/50 flex flex-col justify-end p-2 relative overflow-hidden">
+                        <div class="absolute bottom-0 left-0 right-0 h-16 bg-basil/10" style="clip-path: polygon(0 100%, 0 40%, 30% 60%, 60% 30%, 100% 10%, 100% 100%)"></div>
+                        <span class="relative text-2xl font-bold font-serif">€2.4k</span>
+                        <span class="relative text-xs text-muted-foreground">Ventas hoy</span>
+                      </div>
+                       <div class="h-24 rounded-lg bg-muted/10 border border-border/50 p-2">
+                           <span class="text-2xl font-bold font-serif">84</span>
+                           <span class="block text-xs text-muted-foreground">Comandas</span>
+                       </div>
+                  </div>
+                  <div class="flex-1 rounded-lg bg-muted/10 border border-border/50 p-4 relative">
+                       <div class="absolute inset-x-4 bottom-4 top-8 flex items-end justify-between gap-1">
+                          <div class="w-full bg-basil/20 rounded-t h-[40%]"></div>
+                          <div class="w-full bg-basil/40 rounded-t h-[60%]"></div>
+                          <div class="w-full bg-basil/30 rounded-t h-[30%]"></div>
+                          <div class="w-full bg-basil/60 rounded-t h-[80%]"></div>
+                          <div class="w-full bg-basil/50 rounded-t h-[50%]"></div>
+                          <div class="w-full bg-basil/80 rounded-t h-[90%]"></div>
+                       </div>
+                  </div>
+              </div>
         </div>
-      </Accordion>
     </div>
   </div>
-</section>
+</Section>
+
+<script>
+  // Simple vanilla JS for the features tabs
+  document.addEventListener('astro:page-load', () => {
+    const featureSection = document.getElementById('features');
+    if (!featureSection) return;
+
+    const buttons = featureSection.querySelectorAll('.feature-btn');
+    const visuals = featureSection.querySelectorAll('.feature-visual');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+
+        // Update buttons
+        buttons.forEach((b) => b.setAttribute('data-active', 'false'));
+        btn.setAttribute('data-active', 'true');
+
+        // Update visuals
+        visuals.forEach((v) => {
+            if (v.id === `${targetId}-visual`) {
+                v.classList.remove('opacity-0', 'pointer-events-none');
+                v.classList.add('opacity-100');
+            } else {
+                v.classList.remove('opacity-100');
+                v.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+      });
+    });
+  });
+</script>

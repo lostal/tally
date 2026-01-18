@@ -1,0 +1,25 @@
+---
+import { cn } from "@/utils/cn";
+
+interface Props {
+  id?: string;
+  class?: string;
+  className?: string; // alias for class
+  fullWidth?: boolean;
+}
+
+const { id, class: classNameProp, className: classNameAlias, fullWidth = false } = Astro.props;
+const className = classNameProp || classNameAlias;
+---
+
+<section
+  id={id}
+  class={cn(
+    "relative py-24 sm:py-32 overflow-hidden",
+    className
+  )}
+>
+  <div class={cn("mx-auto px-4 sm:px-6 lg:px-8", fullWidth ? "w-full" : "max-w-7xl")}>
+    <slot />
+  </div>
+</section>
