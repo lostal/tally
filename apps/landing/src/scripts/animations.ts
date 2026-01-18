@@ -1,25 +1,29 @@
-import { initParallax } from './parallax';
-import { initScrollTrigger, initHorizontalScroll } from './scroll-trigger';
-import { initMagneticButton } from './magnetic-button';
+import Lenis from 'lenis';
 
 /**
- * Initialize all GSAP animations
- * Called on page load and after View Transitions
+ * Initialize animations (Only Lenis Smooth Scroll)
  */
 export function initAnimations() {
-  // Wait for DOM to be ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', initSmoothScrolling);
   } else {
-    init();
+    initSmoothScrolling();
   }
 }
 
-function init() {
-  initParallax();
-  initScrollTrigger();
-  initHorizontalScroll();
-  initMagneticButton();
+function initSmoothScrolling() {
+  const lenis = new Lenis({
+    lerp: 0.1,
+    duration: 1.2,
+    smoothWheel: true,
+  });
+
+  function raf(time: number) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
 }
 
 // Auto-initialize on script load

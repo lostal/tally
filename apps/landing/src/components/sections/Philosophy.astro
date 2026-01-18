@@ -3,51 +3,62 @@ import Section from '../ui/Section.astro';
 ---
 
 <Section id="philosophy" className="relative overflow-hidden">
-  <div class="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
     <!-- Visual / Abstract Art -->
-    <div class="relative aspect-square w-full max-w-md mx-auto lg:max-w-none order-last lg:order-first">
-      <div class="absolute inset-0 bg-linear-to-tr from-tomato via-espresso to-blueberry opacity-20 blur-3xl rounded-full"></div>
-      <div class="relative h-full w-full rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl flex items-center justify-center overflow-hidden">
-          <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
+    <div
+      class="relative order-last mx-auto aspect-square w-full max-w-md lg:order-first lg:max-w-none"
+    >
+      <div
+        class="from-tomato via-espresso to-blueberry absolute inset-0 rounded-full bg-linear-to-tr opacity-20 blur-3xl"
+      >
+      </div>
+      <div
+        class="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl"
+      >
+        <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
 
-          <!-- Abstract UI Representation - Hidden on mobile -->
-          <div class="hidden md:flex relative w-64 h-80 bg-background rounded-2xl border border-border/50 shadow-2xl skew-y-6 hover:skew-y-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
-              <div class="h-full w-full p-6 flex flex-col gap-4">
-                  <div class="w-12 h-12 rounded-full bg-(--tomato)/20 mb-4"></div>
-                  <div class="h-4 w-3/4 bg-muted/50 rounded"></div>
-                  <div class="h-4 w-1/2 bg-muted/30 rounded"></div>
-                  <div class="flex-1"></div>
-                  <div class="h-12 w-full bg-primary/10 rounded-xl"></div>
-              </div>
+        <!-- Abstract UI Representation - Hidden on mobile -->
+        <div
+          class="bg-background border-border/50 relative hidden h-80 w-64 skew-y-6 rounded-2xl border shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] hover:skew-y-0 md:flex"
+        >
+          <div class="flex h-full w-full flex-col gap-4 p-6">
+            <div class="mb-4 h-12 w-12 rounded-full bg-(--tomato)/20"></div>
+            <div class="bg-muted/50 h-4 w-3/4 rounded"></div>
+            <div class="bg-muted/30 h-4 w-1/2 rounded"></div>
+            <div class="flex-1"></div>
+            <div class="bg-primary/10 h-12 w-full rounded-xl"></div>
           </div>
+        </div>
       </div>
     </div>
 
     <!-- Editorial Content -->
     <div class="space-y-12">
       <div>
-        <h2 class="font-serif text-5xl font-medium text-balance sm:text-6xl md:text-7xl leading-[1.1] mb-8">
-          Waiter-First. <br/>
+        <h2
+          class="mb-8 font-serif text-5xl leading-[1.1] font-medium text-balance sm:text-6xl md:text-7xl"
+        >
+          Waiter-First. <br />
           <span class="text-muted-foreground italic">Customer-Centric.</span>
         </h2>
-        <p class="text-xl text-muted-foreground leading-relaxed text-balance">
+        <p class="text-muted-foreground text-xl leading-relaxed text-balance">
           Diseñado para el caos del servicio real. Sin WiFi, sin pausas. Sin curva de aprendizaje.
           Tu equipo vuela, tus clientes disfrutan.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8">
+      <div class="grid grid-cols-1 gap-8 pt-8 sm:grid-cols-3">
         <div>
-          <div class="font-serif text-4xl font-bold text-basil tabular-nums mb-2">5m</div>
-          <p class="text-sm text-muted-foreground font-medium uppercase tracking-wide">Formación</p>
+          <div class="text-basil mb-2 font-serif text-4xl font-bold tabular-nums">5m</div>
+          <p class="text-muted-foreground text-sm font-medium tracking-wide uppercase">Formación</p>
         </div>
         <div>
-          <div class="font-serif text-4xl font-bold text-blueberry tabular-nums mb-2">30s</div>
-          <p class="text-sm text-muted-foreground font-medium uppercase tracking-wide">Pago QR</p>
+          <div class="text-blueberry mb-2 font-serif text-4xl font-bold tabular-nums">30s</div>
+          <p class="text-muted-foreground text-sm font-medium tracking-wide uppercase">Pago QR</p>
         </div>
         <div>
-          <div class="font-serif text-4xl font-bold text-tomato tabular-nums mb-2">100%</div>
-          <p class="text-sm text-muted-foreground font-medium uppercase tracking-wide">Offline</p>
+          <div class="text-tomato mb-2 font-serif text-4xl font-bold tabular-nums">100%</div>
+          <p class="text-muted-foreground text-sm font-medium tracking-wide uppercase">Offline</p>
         </div>
       </div>
     </div>

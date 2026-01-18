@@ -4,52 +4,68 @@ import { Clock, Users, FileX } from '@lucide/astro';
 ---
 
 <Section id="problem" className="relative">
-
-  <div class="mx-auto max-w-4xl text-center relative z-10">
-    <div class="inline-flex items-center gap-2 rounded-full bg-muted/50 px-3 py-1 text-sm text-muted-foreground backdrop-blur-sm border border-border/50 mb-8">
+  <div class="relative z-10 mx-auto max-w-4xl text-center">
+    <div
+      class="bg-muted/50 text-muted-foreground border-border/50 mb-8 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm backdrop-blur-sm"
+    >
       <span class="flex h-2 w-2 rounded-full bg-red-500"></span>
       La realidad del sector
     </div>
 
-    <h2 class="font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl md:text-6xl text-balance leading-tight mb-16">
-      "La hostelería no es difícil por la comida. <br class="hidden md:block" /> Es difícil por la <span class="italic text-transparent bg-clip-text bg-linear-to-br from-foreground to-muted-foreground">gestión caótica</span>."
+    <h2
+      class="text-foreground mb-16 font-serif text-4xl leading-tight font-medium tracking-tight text-balance sm:text-5xl md:text-6xl"
+    >
+      "La hostelería no es difícil por la comida. <br class="hidden md:block" /> Es difícil por la <span
+        class="from-foreground to-muted-foreground bg-linear-to-br bg-clip-text text-transparent italic"
+        >gestión caótica</span
+      >."
     </h2>
 
-    <div class="grid md:grid-cols-3 gap-8 text-left">
+    <div class="grid gap-8 text-left md:grid-cols-3">
       <!-- Pain Point 1 -->
-      <div class="group p-6 rounded-2xl bg-card/30 border border-border/50 hover:bg-card hover:shadow-lg hover:shadow-tomato/5 hover:border-tomato/20 transition-all duration-300">
-        <div class="w-12 h-12 rounded-xl bg-tomato/10 flex items-center justify-center text-tomato mb-4 ring-1 ring-tomato/20 group-hover:bg-tomato/20 transition-colors">
-            <Clock class="h-7 w-7" />
+      <div
+        class="group bg-card/30 border-border/50 hover:bg-card hover:shadow-tomato/5 hover:border-tomato/20 rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg"
+      >
+        <div
+          class="bg-tomato/10 text-tomato ring-tomato/20 group-hover:bg-tomato/20 mb-4 flex h-12 w-12 items-center justify-center rounded-xl ring-1 transition-colors"
+        >
+          <Clock class="h-7 w-7" />
         </div>
-        <h3 class="text-lg font-medium mb-2">Tiempos muertos</h3>
+        <h3 class="mb-2 text-lg font-medium">Tiempos muertos</h3>
         <p class="text-muted-foreground text-sm leading-relaxed">
           Camareros corriendo entre la sala y el TPV. Cocina descifrando tickets en papel.
         </p>
       </div>
 
       <!-- Pain Point 2 -->
-      <div class="group p-6 rounded-2xl bg-card/30 border border-border/50 hover:bg-card hover:shadow-lg hover:shadow-blueberry/5 hover:border-blueberry/20 transition-all duration-300">
-         <div class="w-12 h-12 rounded-xl bg-blueberry/10 flex items-center justify-center text-blueberry mb-4 ring-1 ring-blueberry/20 group-hover:bg-blueberry/20 transition-colors">
-            <Users class="h-7 w-7" />
+      <div
+        class="group bg-card/30 border-border/50 hover:bg-card hover:shadow-blueberry/5 hover:border-blueberry/20 rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg"
+      >
+        <div
+          class="bg-blueberry/10 text-blueberry ring-blueberry/20 group-hover:bg-blueberry/20 mb-4 flex h-12 w-12 items-center justify-center rounded-xl ring-1 transition-colors"
+        >
+          <Users class="h-7 w-7" />
         </div>
-        <h3 class="text-lg font-medium mb-2">Errores de personal</h3>
+        <h3 class="mb-2 text-lg font-medium">Errores de personal</h3>
         <p class="text-muted-foreground text-sm leading-relaxed">
           "¿Quién pidió esto?" Platos fríos esperando ser servidos. Propinas perdidas.
         </p>
       </div>
 
-       <!-- Pain Point 3 -->
-      <div class="group p-6 rounded-2xl bg-card/30 border border-border/50 hover:bg-card hover:shadow-lg hover:shadow-espresso/5 hover:border-espresso/20 transition-all duration-300">
-         <div class="w-12 h-12 rounded-xl bg-espresso/10 flex items-center justify-center text-espresso mb-4 ring-1 ring-espresso/20 group-hover:bg-espresso/20 transition-colors">
-            <FileX class="h-7 w-7" />
+      <!-- Pain Point 3 -->
+      <div
+        class="group bg-card/30 border-border/50 hover:bg-card hover:shadow-espresso/5 hover:border-espresso/20 rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg"
+      >
+        <div
+          class="bg-espresso/10 text-espresso ring-espresso/20 group-hover:bg-espresso/20 mb-4 flex h-12 w-12 items-center justify-center rounded-xl ring-1 transition-colors"
+        >
+          <FileX class="h-7 w-7" />
         </div>
-        <h3 class="text-lg font-medium mb-2">Descontrol total</h3>
+        <h3 class="mb-2 text-lg font-medium">Descontrol total</h3>
         <p class="text-muted-foreground text-sm leading-relaxed">
           Cierre de caja con descuadres. Sin datos reales de qué se vende y qué no.
         </p>
       </div>
     </div>
   </div>
-
-
 </Section>

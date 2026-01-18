@@ -1,97 +1,120 @@
 ---
+
 ---
 
-<section id="final-cta" class="relative z-20 overflow-hidden pt-24 md:pt-32" style="margin-bottom: 400px;">
-
-
-
+<section
+  id="final-cta"
+  class="relative z-20 overflow-hidden pt-24 md:pt-32"
+  style="margin-bottom: 400px;"
+>
   <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div
-        id="cta-container"
-        class="relative w-full bg-foreground text-background overflow-hidden px-6 py-20 md:px-16 md:py-28 text-center mx-auto rounded-t-[40px] will-change-transform"
-        style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"
-      >
-          <!-- Background Mesh -->
-          <div class="absolute inset-0 pointer-events-none">
-              <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]"></div>
-              <div class="absolute -bottom-1/2 -left-1/2 w-full h-full bg-tomato opacity-15 blur-[100px]"></div>
-              <div class="absolute -top-1/2 -right-1/2 w-full h-full bg-blueberry opacity-15 blur-[100px]"></div>
-          </div>
-
-          <div class="relative z-10 max-w-4xl mx-auto space-y-10">
-              <h2 class="font-serif text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl text-balance text-background">
-                 Tu restaurante, <br/>
-                 <span class="text-transparent bg-clip-text bg-linear-to-r from-tomato via-white to-blueberry animate-gradient-x">siguiente nivel.</span>
-              </h2>
-              <p class="text-xl md:text-2xl text-background/80 text-balance max-w-2xl mx-auto leading-relaxed">
-                 Sin tarjeta de crédito. Sin permanencia. <br/>
-                 Únete a los restaurantes que ya están facturando más.
-              </p>
-
-              <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                  <a href="https://app.paytally.app/register" class="inline-flex items-center justify-center h-14 px-8 rounded-full text-lg bg-white text-[#1a1815] hover:bg-gray-200 font-bold transition-colors">
-                      Empezar gratis
-                  </a>
-                  <a href="mailto:hola@paytally.app" class="inline-flex items-center justify-center h-14 px-8 rounded-full text-lg border-2 border-white bg-transparent text-white hover:bg-white hover:text-[#1a1815] font-semibold transition-all">
-                      Agendar Demo
-                  </a>
-              </div>
-
-              <div class="pt-8 flex items-center justify-center gap-8 text-sm text-background/60">
-                 <div class="flex items-center gap-2">
-                     <div class="w-1.5 h-1.5 rounded-full bg-basil"></div>
-                     30 días de prueba
-                 </div>
-                  <div class="flex items-center gap-2">
-                     <div class="w-1.5 h-1.5 rounded-full bg-tomato"></div>
-                     Setup en 5 min
-                 </div>
-              </div>
-          </div>
+    <div
+      id="cta-container"
+      class="bg-foreground text-background relative mx-auto w-full overflow-hidden rounded-t-[40px] px-6 py-20 text-center will-change-transform md:px-16 md:py-28"
+      style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"
+    >
+      <!-- Background Mesh -->
+      <div class="pointer-events-none absolute inset-0">
+        <div
+          class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]"
+        >
+        </div>
+        <div class="bg-tomato absolute -bottom-1/2 -left-1/2 h-full w-full opacity-15 blur-[100px]">
+        </div>
+        <div
+          class="bg-blueberry absolute -top-1/2 -right-1/2 h-full w-full opacity-15 blur-[100px]"
+        >
+        </div>
       </div>
+
+      <div class="relative z-10 mx-auto max-w-4xl space-y-10">
+        <h2
+          class="text-background font-serif text-5xl font-bold tracking-tight text-balance sm:text-6xl md:text-7xl"
+        >
+          Tu restaurante, <br />
+          <span
+            class="from-tomato to-blueberry animate-gradient-x bg-linear-to-r via-white bg-clip-text text-transparent"
+            >siguiente nivel.</span
+          >
+        </h2>
+        <p
+          class="text-background/80 mx-auto max-w-2xl text-xl leading-relaxed text-balance md:text-2xl"
+        >
+          Sin tarjeta de crédito. Sin permanencia. <br />
+          Únete a los restaurantes que ya están facturando más.
+        </p>
+
+        <div class="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
+          <a
+            href="https://app.paytally.app/register"
+            class="inline-flex h-14 items-center justify-center rounded-full bg-white px-8 text-lg font-bold text-[#1a1815] transition-colors hover:bg-gray-200"
+          >
+            Empezar gratis
+          </a>
+          <a
+            href="mailto:hola@paytally.app"
+            class="inline-flex h-14 items-center justify-center rounded-full border-2 border-white bg-transparent px-8 text-lg font-semibold text-white transition-all hover:bg-white hover:text-[#1a1815]"
+          >
+            Agendar Demo
+          </a>
+        </div>
+
+        <div class="text-background/60 flex items-center justify-center gap-8 pt-8 text-sm">
+          <div class="flex items-center gap-2">
+            <div class="bg-basil h-1.5 w-1.5 rounded-full"></div>
+            30 días de prueba
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-tomato h-1.5 w-1.5 rounded-full"></div>
+            Setup en 5 min
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
   gsap.registerPlugin(ScrollTrigger);
 
   // Safari iOS fixes
   ScrollTrigger.config({
-    ignoreMobileResize: true // Prevent refresh when Safari's address bar hides/shows
+    ignoreMobileResize: true, // Prevent refresh when Safari's address bar hides/shows
   });
 
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const cta = document.getElementById('cta-container');
 
   if (!isMobile && cta) {
-      // Add hardware acceleration hint
-      gsap.set(cta, {
-        force3D: true,
-        willChange: "transform, width, border-radius"
-      });
+    // Add hardware acceleration hint
+    gsap.set(cta, {
+      force3D: true,
+      willChange: 'transform, width, border-radius',
+    });
 
-      gsap.fromTo(cta,
-          {
-              width: "100%",
-              borderBottomLeftRadius: "0px",
-              borderBottomRightRadius: "0px"
-          },
-          {
-              width: "95%",
-              borderBottomLeftRadius: "40px",
-              borderBottomRightRadius: "40px",
-              ease: "none",
-              force3D: true,
-              scrollTrigger: {
-                  trigger: "#final-cta",
-                  start: "bottom bottom",
-                  end: "+=400",
-                  scrub: true,
-              }
-          }
-      );
+    gsap.fromTo(
+      cta,
+      {
+        width: '100%',
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
+      },
+      {
+        width: '95%',
+        borderBottomLeftRadius: '40px',
+        borderBottomRightRadius: '40px',
+        ease: 'none',
+        force3D: true,
+        scrollTrigger: {
+          trigger: '#final-cta',
+          start: 'bottom bottom',
+          end: '+=400',
+          scrub: true,
+        },
+      }
+    );
   }
 </script>
