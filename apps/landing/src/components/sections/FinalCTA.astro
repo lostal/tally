@@ -59,10 +59,26 @@ import Button from '../ui/Button.astro';
 
   gsap.registerPlugin(ScrollTrigger);
 
+  // Safari iOS fixes
+  ScrollTrigger.config({
+    ignoreMobileResize: true // Prevent refresh when Safari's address bar hides/shows
+  });
+
+  // Enable normalizeScroll on touch devices for smoother Safari behavior
+  if ('ontouchstart' in window) {
+    ScrollTrigger.normalizeScroll(true);
+  }
+
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const cta = document.getElementById('cta-container');
 
   if (!isMobile && cta) {
+      // Add hardware acceleration hint
+      gsap.set(cta, {
+        force3D: true,
+        willChange: "transform, width, border-radius"
+      });
+
       gsap.fromTo(cta,
           {
               width: "100%",
@@ -74,6 +90,7 @@ import Button from '../ui/Button.astro';
               borderBottomLeftRadius: "40px",
               borderBottomRightRadius: "40px",
               ease: "none",
+              force3D: true,
               scrollTrigger: {
                   trigger: "#final-cta",
                   start: "bottom bottom",

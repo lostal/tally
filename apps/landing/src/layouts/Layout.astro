@@ -72,7 +72,7 @@ const structuredData = {
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
@@ -118,27 +118,28 @@ const structuredData = {
       Saltar al contenido principal
     </a>
 
-    <!-- Global Background Effect -->
+    <!-- Global Background Effect - Fixed layer, isolated from content for Safari compatibility -->
     <div class="fixed inset-0 z-[-1] pointer-events-none">
        <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02] mix-blend-overlay"></div>
+       <!-- Grid with bottom fade using mask-image (Safari-safe) -->
+       <div
+         class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+         style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%); mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);"
+       ></div>
        <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 opacity-20 blur-[100px]"></div>
     </div>
 
     <Navbar />
 
     <main id="main-content" class="relative z-20 bg-background">
-      <!-- Grid Pattern Inside Main (fades at bottom) -->
-      <div class="absolute inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[600px] bg-gradient-to-t from-background to-transparent"></div>
-      </div>
-      <div class="relative z-10">
-        <slot />
-      </div>
+      <slot />
     </main>
 
     <!-- Fixed Footer: Revealed from bottom as content scrolls away -->
-    <footer class="fixed bottom-0 left-0 right-0 z-10 py-12 bg-background" style="height: 400px;">
+    <footer
+      class="fixed bottom-0 left-0 right-0 z-10 py-12 bg-background"
+      style="height: 400px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 3rem);"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        <div class="w-[90%] mx-auto">
            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
