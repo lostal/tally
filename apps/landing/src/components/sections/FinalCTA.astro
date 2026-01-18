@@ -64,11 +64,6 @@ import Button from '../ui/Button.astro';
     ignoreMobileResize: true // Prevent refresh when Safari's address bar hides/shows
   });
 
-  // Enable normalizeScroll on touch devices for smoother Safari behavior
-  if ('ontouchstart' in window) {
-    ScrollTrigger.normalizeScroll(true);
-  }
-
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const cta = document.getElementById('cta-container');
 
