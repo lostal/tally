@@ -129,7 +129,7 @@ const structuredData = {
     <main id="main-content" class="relative z-20 bg-background">
       <!-- Grid Pattern with mask fade at bottom -->
       <div
-        class="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+        class="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"
         style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 90%); mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 90%);"
       ></div>
       <div class="relative z-10">
@@ -138,10 +138,7 @@ const structuredData = {
     </main>
 
     <!-- Fixed Footer: Revealed from bottom as content scrolls away -->
-    <footer
-      class="fixed bottom-0 left-0 right-0 z-10 py-12 bg-background"
-      style="height: 400px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 3rem);"
-    >
+    <footer class="fixed bottom-0 left-0 right-0 z-10 py-12 bg-background" style="height: 400px;">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        <div class="w-[90%] mx-auto">
            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
