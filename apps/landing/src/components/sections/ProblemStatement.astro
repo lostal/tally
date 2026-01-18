@@ -1,0 +1,62 @@
+---
+import { Clock, Users, FileX } from '@lucide/astro';
+---
+
+<section class="bg-secondary/30 py-32">
+  <div class="container-landing">
+    <!-- Section header -->
+    <div class="mb-20 max-w-3xl">
+      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
+        Los TPVs antiguos están frenando tu servicio
+      </h2>
+      <p class="text-muted-foreground text-xl text-balance">
+        Cada minuto perdido con sistemas lentos es dinero que dejas sobre la mesa.
+      </p>
+    </div>
+
+    <!-- 3 Pain Points -->
+    <div class="grid gap-12 md:grid-cols-3">
+      <!-- Problem 1: Slow systems -->
+      <div class="problem-card group space-y-6">
+        <div
+          class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--tomato)]/10 transition-colors group-hover:bg-[var(--tomato)]/20"
+        >
+          <Clock class="h-10 w-10 text-[var(--tomato)]" />
+        </div>
+        <h3 class="font-serif text-2xl font-semibold">Comandas que tardan una eternidad</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Tus camareros pierden 5 minutos por mesa esperando a que el TPV responda. En hora punta,
+          eso es caos.
+        </p>
+      </div>
+
+      <!-- Problem 2: No split functionality -->
+      <div class="problem-card group space-y-6">
+        <div
+          class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--blueberry)]/10 transition-colors group-hover:bg-[var(--blueberry)]/20"
+        >
+          <Users class="h-10 w-10 text-[var(--blueberry)]" />
+        </div>
+        <h3 class="font-serif text-2xl font-semibold">Split de cuenta manual = errores</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Cuando 8 personas piden dividir la cuenta, tu equipo saca la calculadora. Y cuando falla,
+          pierdes la propina.
+        </p>
+      </div>
+
+      <!-- Problem 3: No offline mode -->
+      <div class="problem-card group space-y-6">
+        <div
+          class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--espresso)]/10 transition-colors group-hover:bg-[var(--espresso)]/20"
+        >
+          <FileX class="h-10 w-10 text-[var(--espresso)]" />
+        </div>
+        <h3 class="font-serif text-2xl font-semibold">Sin WiFi = Sin servicio</h3>
+        <p class="text-muted-foreground leading-relaxed">
+          Una caída de Internet y tu restaurante se paraliza completamente. No puedes cobrar, no
+          puedes tomar comandas.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

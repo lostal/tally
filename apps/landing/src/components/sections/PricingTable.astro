@@ -1,0 +1,194 @@
+---
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+import { Check, X } from '@lucide/astro';
+---
+
+<section class="bg-secondary/30 py-32" id="pricing">
+  <div class="container-landing">
+    <!-- Section header -->
+    <div class="mx-auto mb-12 max-w-3xl text-center">
+      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
+        Precios simples y transparentes
+      </h2>
+      <p class="text-muted-foreground text-xl text-balance">
+        Sin costes ocultos. Sin sorpresas. Cancela cuando quieras.
+      </p>
+    </div>
+
+    <!-- Toggle Annual/Monthly -->
+    <div class="mb-16 flex items-center justify-center gap-4">
+      <span class="text-muted-foreground">Mensual</span>
+      <button
+        id="pricing-toggle"
+        class="bg-muted hover:bg-muted/80 focus:ring-ring relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
+        role="switch"
+        aria-checked="false"
+      >
+        <span
+          id="toggle-indicator"
+          class="bg-primary inline-block h-6 w-6 translate-x-1 transform rounded-full transition-transform"
+        ></span>
+      </button>
+      <span class="text-foreground font-medium">
+        Anual <Badge variant="basil" size="sm" class="ml-2">-20%</Badge>
+      </span>
+    </div>
+
+    <!-- Pricing Table -->
+    <div class="overflow-x-auto">
+      <table
+        class="bg-card border-border mx-auto w-full max-w-5xl overflow-hidden rounded-xl border"
+      >
+        <thead>
+          <tr class="border-border bg-secondary/50 border-b">
+            <th class="p-6 text-left font-serif text-xl font-bold">Características</th>
+            <th class="p-6 text-center">
+              <div class="mb-2 font-serif text-2xl font-bold">Essential</div>
+              <div class="text-3xl font-bold tabular-nums">€0</div>
+              <div class="text-muted-foreground mt-1 text-sm">Por siempre</div>
+            </th>
+            <th class="bg-primary/5 relative p-6 text-center">
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+                <Badge variant="tomato">Más popular</Badge>
+              </div>
+              <div class="mb-2 font-serif text-2xl font-bold">Pro</div>
+              <div class="text-3xl font-bold tabular-nums">
+                <span id="pro-price">€49</span>
+              </div>
+              <div class="text-muted-foreground mt-1 text-sm">Por local/mes</div>
+            </th>
+            <th class="p-6 text-center">
+              <div class="mb-2 font-serif text-2xl font-bold">Enterprise</div>
+              <div class="text-2xl font-bold">Contacta</div>
+              <div class="text-muted-foreground mt-1 text-sm">Personalizado</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-border divide-y">
+          <!-- Feature rows -->
+          <tr>
+            <td class="p-4 pl-6">Locales</td>
+            <td class="p-4 text-center">1</td>
+            <td class="bg-primary/5 p-4 text-center">Ilimitados</td>
+            <td class="p-4 text-center">Ilimitados</td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">Comandas/mes</td>
+            <td class="p-4 text-center">50</td>
+            <td class="bg-primary/5 p-4 text-center">Ilimitadas</td>
+            <td class="p-4 text-center">Ilimitadas</td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">Split de cuenta por QR</td>
+            <td class="p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+            <td class="bg-primary/5 p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+            <td class="p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">Propinas personalizables</td>
+            <td class="p-4 text-center">
+              <X class="text-muted-foreground mx-auto h-5 w-5" />
+            </td>
+            <td class="bg-primary/5 p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+            <td class="p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">Análisis y reportes</td>
+            <td class="p-4 text-center">
+              <X class="text-muted-foreground mx-auto h-5 w-5" />
+            </td>
+            <td class="bg-primary/5 p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+            <td class="p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">Soporte</td>
+            <td class="p-4 text-center text-sm">Email</td>
+            <td class="bg-primary/5 p-4 text-center text-sm">Prioritario</td>
+            <td class="p-4 text-center text-sm">24/7</td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">SLA Personalizado</td>
+            <td class="p-4 text-center">
+              <X class="text-muted-foreground mx-auto h-5 w-5" />
+            </td>
+            <td class="bg-primary/5 p-4 text-center">
+              <X class="text-muted-foreground mx-auto h-5 w-5" />
+            </td>
+            <td class="p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+          </tr>
+          <tr>
+            <td class="p-4 pl-6">Formación en sitio</td>
+            <td class="p-4 text-center">
+              <X class="text-muted-foreground mx-auto h-5 w-5" />
+            </td>
+            <td class="bg-primary/5 p-4 text-center">
+              <X class="text-muted-foreground mx-auto h-5 w-5" />
+            </td>
+            <td class="p-4 text-center">
+              <Check class="mx-auto h-5 w-5 text-[var(--basil)]" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border-b-0 p-4 pl-6"></td>
+            <td class="border-b-0 p-6 text-center">
+              <Button variant="outline" href="https://app.paytally.app/register" class="w-full">
+                Empezar
+              </Button>
+            </td>
+            <td class="bg-primary/5 border-b-0 p-6 text-center">
+              <Button href="https://app.paytally.app/register" class="w-full">
+                Prueba 30 días gratis
+              </Button>
+            </td>
+            <td class="border-b-0 p-6 text-center">
+              <Button variant="outline" href="mailto:sales@paytally.app" class="w-full">
+                Contactar
+              </Button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  const toggle = document.getElementById('pricing-toggle');
+  const indicator = document.getElementById('toggle-indicator');
+  const proPrice = document.getElementById('pro-price');
+  let isAnnual = false;
+
+  toggle?.addEventListener('click', () => {
+    isAnnual = !isAnnual;
+    toggle.setAttribute('aria-checked', String(isAnnual));
+
+    // Toggle animation
+    if (isAnnual) {
+      indicator?.classList.remove('translate-x-1');
+      indicator?.classList.add('translate-x-7');
+      // Price morph (annual: 49 * 12 * 0.8 / 12 = €39.2)
+      if (proPrice) proPrice.textContent = '€39';
+    } else {
+      indicator?.classList.remove('translate-x-7');
+      indicator?.classList.add('translate-x-1');
+      if (proPrice) proPrice.textContent = '€49';
+    }
+  });
+</script>

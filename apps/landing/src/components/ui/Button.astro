@@ -1,0 +1,43 @@
+---
+interface Props {
+  variant?: 'default' | 'outline' | 'ghost' | 'secondary';
+  size?: 'default' | 'sm' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  size = 'default',
+  href,
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const baseStyles =
+  'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 rounded-lg touch-target disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
+
+const variants = {
+  default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md',
+  outline:
+    'border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground',
+  ghost: 'text-primary hover:bg-secondary hover:text-secondary-foreground',
+  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm',
+};
+
+const sizes = {
+  default: 'px-6 py-3 text-base',
+  sm: 'px-4 py-2 text-sm',
+  lg: 'px-8 py-4 text-lg',
+};
+
+const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+
+const Component = href ? 'a' : 'button';
+---
+
+<Component {...rest} class={classes} href={href} type={!href ? type : undefined}>
+  <slot />
+</Component>

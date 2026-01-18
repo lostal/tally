@@ -25,4 +25,11 @@ export default defineConfig({
     port: 4321,
     host: true,
   },
+
+  // Image optimization
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+    },
+  },
 });

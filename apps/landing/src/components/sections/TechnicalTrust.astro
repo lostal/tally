@@ -1,0 +1,108 @@
+---
+import { WifiOff, FileCheck, Lock, Zap } from '@lucide/astro';
+---
+
+<section class="py-32">
+  <div class="container-landing">
+    <!-- Section header -->
+    <div class="mx-auto mb-20 max-w-3xl text-center">
+      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
+        Tecnología en la que puedes confiar
+      </h2>
+      <p class="text-muted-foreground text-xl text-balance">
+        Construido con los estándares más altos de la industria.
+      </p>
+    </div>
+
+    <!-- Grid 2x2 -->
+    <div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+      <!-- Offline-First -->
+      <div
+        class="trust-card group border-border relative overflow-hidden rounded-2xl border bg-linear-to-br from-[var(--basil)]/10 to-transparent p-8 transition-colors hover:border-[var(--basil)]"
+      >
+        <div class="relative z-10">
+          <div
+            class="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-[var(--basil)]/20 transition-transform group-hover:scale-110"
+          >
+            <WifiOff class="h-8 w-8 text-[var(--basil)]" />
+          </div>
+          <h3 class="mb-3 font-serif text-2xl font-bold">Offline-First</h3>
+          <p class="text-muted-foreground leading-relaxed">
+            Sincronización local con IndexedDB. Tu restaurante funciona aunque se caiga Internet.
+            Cuando vuelve la conexión, todo se sincroniza automáticamente.
+          </p>
+        </div>
+        <div
+          class="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-[var(--basil)] opacity-5 blur-2xl"
+        >
+        </div>
+      </div>
+
+      <!-- Verifactu Ready -->
+      <div
+        class="trust-card group border-border relative overflow-hidden rounded-2xl border bg-linear-to-br from-[var(--blueberry)]/10 to-transparent p-8 transition-colors hover:border-[var(--blueberry)]"
+      >
+        <div class="relative z-10">
+          <div
+            class="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-[var(--blueberry)]/20 transition-transform group-hover:scale-110"
+          >
+            <FileCheck class="h-8 w-8 text-[var(--blueberry)]" />
+          </div>
+          <h3 class="mb-3 font-serif text-2xl font-bold">Verifactu Ready</h3>
+          <p class="text-muted-foreground leading-relaxed">
+            100% conforme con la normativa de facturación electrónica de la AEAT. Certificación y
+            sellado de tiempo incluidos.
+          </p>
+        </div>
+        <div
+          class="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-[var(--blueberry)] opacity-5 blur-2xl"
+        >
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div
+        class="trust-card group border-border relative overflow-hidden rounded-2xl border bg-linear-to-br from-[var(--espresso)]/10 to-transparent p-8 transition-colors hover:border-[var(--espresso)]"
+      >
+        <div class="relative z-10">
+          <div
+            class="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-[var(--espresso)]/20 transition-transform group-hover:scale-110"
+          >
+            <Lock class="h-8 w-8 text-[var(--espresso)]" />
+          </div>
+          <h3 class="mb-3 font-serif text-2xl font-bold">Seguridad Bancaria</h3>
+          <p class="text-muted-foreground leading-relaxed">
+            Row-Level Security (RLS) en cada tabla. Aislamiento completo entre restaurantes. Tus
+            datos están protegidos a nivel de base de datos.
+          </p>
+        </div>
+        <div
+          class="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-[var(--espresso)] opacity-5 blur-2xl"
+        >
+        </div>
+      </div>
+
+      <!-- Performance -->
+      <div
+        class="trust-card group border-border relative overflow-hidden rounded-2xl border bg-linear-to-br from-[var(--tomato)]/10 to-transparent p-8 transition-colors hover:border-[var(--tomato)]"
+      >
+        <div class="relative z-10">
+          <div
+            class="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-[var(--tomato)]/20 transition-transform group-hover:scale-110"
+          >
+            <Zap class="h-8 w-8 text-[var(--tomato)]" />
+          </div>
+          <h3 class="mb-3 font-serif text-2xl font-bold">Optimistic Updates</h3>
+          <p class="text-muted-foreground leading-relaxed">
+            Respuesta instantánea en cada interacción. La UI actualiza antes que el servidor
+            responda. Sensación de app nativa.
+          </p>
+        </div>
+        <div
+          class="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-[var(--tomato)] opacity-5 blur-2xl"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

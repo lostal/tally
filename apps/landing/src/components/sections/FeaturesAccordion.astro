@@ -1,0 +1,105 @@
+---
+import Accordion from '../ui/Accordion.astro';
+import { Utensils, ChefHat, BarChart3 } from '@lucide/astro';
+---
+
+<section class="py-32">
+  <div class="container-landing">
+    <!-- Section header -->
+    <div class="mb-20 max-w-3xl">
+      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
+        Diseñado para cada rol en tu equipo
+      </h2>
+      <p class="text-muted-foreground text-xl text-balance">
+        Interfaces específicas que tu personal aprenderá en minutos.
+      </p>
+    </div>
+
+    <!-- Accordion -->
+    <div class="max-w-4xl">
+      <Accordion title="🍽️ Camareros: TPV rápido y sin fricción" open>
+        <div class="accordion-content grid items-center gap-8 md:grid-cols-2">
+          <div class="space-y-4">
+            <p class="text-lg">
+              Interfaz táctil optimizada para el ritmo del servicio. Comandas en 3 taps,
+              modificadores intuitivos, sincronización offline.
+            </p>
+            <ul class="text-muted-foreground space-y-3">
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Mapa de mesas visual</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Historial de comandas por mesa</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Generación de QR instantánea</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-secondary/50 flex aspect-video items-center justify-center rounded-xl p-8">
+            <Utensils class="text-primary h-24 w-24 opacity-50" />
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="👨‍🍳 Cocina: Pantalla de comandas en tiempo real">
+        <div class="accordion-content grid items-center gap-8 md:grid-cols-2">
+          <div class="space-y-4">
+            <p class="text-lg">
+              KDS (Kitchen Display System) que muestra comandas al instante. Prioridad automática,
+              tiempos de preparación, notificaciones.
+            </p>
+            <ul class="text-muted-foreground space-y-3">
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Prioridad automática por tiempo</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Modificadores destacados</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Sin impresoras, sin papeles</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-secondary/50 flex aspect-video items-center justify-center rounded-xl p-8">
+            <ChefHat class="text-primary h-24 w-24 opacity-50" />
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="📊 Gestión: Análisis y control total">
+        <div class="accordion-content grid items-center gap-8 md:grid-cols-2">
+          <div class="space-y-4">
+            <p class="text-lg">
+              Dashboard con métricas clave: ventas por hora, productos top, rendimiento por
+              camarero, alertas de stock.
+            </p>
+            <ul class="text-muted-foreground space-y-3">
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Reportes de ventas en tiempo real</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Gestión de menú y precios</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                <span>Configuración multi-local</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-secondary/50 flex aspect-video items-center justify-center rounded-xl p-8">
+            <BarChart3 class="text-primary h-24 w-24 opacity-50" />
+          </div>
+        </div>
+      </Accordion>
+    </div>
+  </div>
+</section>

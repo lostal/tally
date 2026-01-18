@@ -1,0 +1,172 @@
+---
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+import CardContent from '../ui/CardContent.astro';
+import { ArrowRight, Book, MessageCircle } from '@lucide/astro';
+---
+
+<section class="relative overflow-hidden py-32">
+  <!-- Background gradient -->
+  <div class="from-primary/5 to-secondary/20 absolute inset-0 bg-linear-to-br via-transparent">
+  </div>
+  <div
+    class="absolute top-1/4 right-1/4 h-96 w-96 rounded-full bg-[var(--blueberry)] opacity-10 blur-3xl"
+  >
+  </div>
+  <div
+    class="absolute bottom-1/4 left-1/4 h-96 w-96 rounded-full bg-[var(--tomato)] opacity-10 blur-3xl"
+  >
+  </div>
+
+  <div class="container-landing relative z-10">
+    <!-- Bento Grid -->
+    <div class="grid gap-8 lg:grid-cols-3">
+      <!-- Main CTA (2/3 width) -->
+      <Card variant="elevated" class="bg-primary text-primary-foreground border-0 lg:col-span-2">
+        <CardContent class="flex min-h-[400px] flex-col justify-between p-12">
+          <div>
+            <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
+              Empieza tu prueba gratuita hoy
+            </h2>
+            <p class="text-primary-foreground/80 mb-8 max-w-2xl text-xl text-balance">
+              Sin tarjeta de crédito. Sin instalación. Sin riesgo. Configura tu restaurante en menos
+              de 10 minutos.
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <Button
+              size="lg"
+              variant="secondary"
+              href="https://app.paytally.app/register"
+              class="group"
+              id="magnetic-cta"
+            >
+              <span>Crear cuenta gratis</span>
+              <ArrowRight class="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button
+              size="lg"
+              variant="ghost"
+              href="#demo"
+              class="text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              Ver demo →
+            </Button>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="text-primary-foreground/70 flex flex-wrap items-center gap-6 pt-8 text-sm">
+            <div class="flex items-center gap-2">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>30 días de prueba</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>Sin permanencia</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>Soporte en español</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Secondary Resources (1/3 width) -->
+      <div class="flex flex-col gap-8">
+        <!-- Documentation -->
+        <Card variant="elevated" class="flex-1">
+          <CardContent class="flex h-full flex-col justify-between p-8">
+            <div>
+              <div
+                class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--blueberry)]/10"
+              >
+                <Book class="h-6 w-6 text-[var(--blueberry)]" />
+              </div>
+              <h3 class="mb-2 font-serif text-xl font-bold">Documentación</h3>
+              <p class="text-muted-foreground text-sm">
+                Guías paso a paso para sacar el máximo partido a Tally.
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              href="https://docs.paytally.app"
+              class="mt-4 justify-start px-0 text-sm"
+            >
+              Leer docs →
+            </Button>
+          </CardContent>
+        </Card>
+
+        <!-- Contact -->
+        <Card variant="elevated" class="flex-1">
+          <CardContent class="flex h-full flex-col justify-between p-8">
+            <div>
+              <div
+                class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--basil)]/10"
+              >
+                <MessageCircle class="h-6 w-6 text-[var(--basil)]" />
+              </div>
+              <h3 class="mb-2 font-serif text-xl font-bold">¿Tienes dudas?</h3>
+              <p class="text-muted-foreground text-sm">
+                Habla con nuestro equipo. Respondemos en menos de 2 horas.
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              href="mailto:hola@paytally.app"
+              class="mt-4 justify-start px-0 text-sm"
+            >
+              Contactar →
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-border mt-24 border-t pt-12">
+      <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div class="text-center md:text-left">
+          <div class="mb-2 font-serif text-2xl font-bold">Tally</div>
+          <p class="text-muted-foreground text-sm">El Sistema Operativo para tu restaurante</p>
+        </div>
+
+        <div class="flex gap-8 text-sm">
+          <a href="/privacy" class="text-muted-foreground hover:text-foreground transition-colors">
+            Privacidad
+          </a>
+          <a href="/terms" class="text-muted-foreground hover:text-foreground transition-colors">
+            Términos
+          </a>
+          <a
+            href="mailto:hola@paytally.app"
+            class="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Contacto
+          </a>
+        </div>
+      </div>
+
+      <div class="text-muted-foreground mt-8 text-center text-sm">
+        © 2026 Tally. Todos los derechos reservados.
+      </div>
+    </footer>
+  </div>
+</section>

@@ -1,0 +1,137 @@
+---
+import Card from '../ui/Card.astro';
+import CardHeader from '../ui/CardHeader.astro';
+import CardContent from '../ui/CardContent.astro';
+import Badge from '../ui/Badge.astro';
+import { Check } from '@lucide/astro';
+---
+
+<section class="py-32">
+  <div class="container-landing">
+    <!-- Section header -->
+    <div class="mx-auto mb-20 max-w-3xl text-center">
+      <h2 class="mb-6 font-serif text-5xl font-bold text-balance sm:text-6xl">
+        Una solución completa para cada tipo de restaurante
+      </h2>
+      <p class="text-muted-foreground text-xl text-balance">
+        Desde cafeterías independientes hasta cadenas de restaurantes.
+      </p>
+    </div>
+
+    <!-- Bento Grid -->
+    <div class="grid gap-8 md:grid-cols-3">
+      <!-- Essential -->
+      <Card variant="elevated" class="bento-card flex flex-col">
+        <CardHeader>
+          <h3 class="mb-2 font-serif text-3xl font-bold">Essential</h3>
+          <p class="text-muted-foreground">Para empezar sin complicaciones</p>
+        </CardHeader>
+        <CardContent class="flex flex-1 flex-col">
+          <div class="mb-8">
+            <div class="text-5xl font-bold tabular-nums">€0</div>
+            <p class="text-muted-foreground mt-2">Por siempre</p>
+          </div>
+
+          <ul class="mb-8 space-y-4">
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>1 local</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Hasta 50 comandas/mes</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Split básico por QR</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Soporte por email</span>
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <!-- Pro (Featured) -->
+      <Card
+        variant="elevated"
+        class="bento-card border-primary relative flex flex-col border-2 md:-mt-4 md:mb-4"
+      >
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+          <Badge variant="tomato" size="lg">Más popular</Badge>
+        </div>
+        <CardHeader>
+          <h3 class="mb-2 font-serif text-3xl font-bold">Pro</h3>
+          <p class="text-muted-foreground">Para restaurantes en crecimiento</p>
+        </CardHeader>
+        <CardContent class="flex flex-1 flex-col">
+          <div class="mb-8">
+            <div class="text-5xl font-bold tabular-nums">€49</div>
+            <p class="text-muted-foreground mt-2">Por local/mes</p>
+          </div>
+
+          <ul class="mb-8 space-y-4">
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Locales ilimitados</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Comandas ilimitadas</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Split avanzado + propinas</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Análisis y reportes</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Soporte prioritario</span>
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <!-- Enterprise -->
+      <Card variant="elevated" class="bento-card flex flex-col">
+        <CardHeader>
+          <h3 class="mb-2 font-serif text-3xl font-bold">Enterprise</h3>
+          <p class="text-muted-foreground">Para cadenas y grupos</p>
+        </CardHeader>
+        <CardContent class="flex flex-1 flex-col">
+          <div class="mb-8">
+            <div class="text-5xl font-bold">Contacta</div>
+            <p class="text-muted-foreground mt-2">Personalizado</p>
+          </div>
+
+          <ul class="mb-8 space-y-4">
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Todo de Pro, más:</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>SLA personalizado</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Formación en sitio</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Integraciones custom</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-[var(--basil)]" />
+              <span>Soporte 24/7</span>
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>

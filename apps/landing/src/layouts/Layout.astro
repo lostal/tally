@@ -1,0 +1,124 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/lora';
+import '../styles/globals.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'Tally - El Sistema Operativo para tu Restaurante',
+  description = 'Software completo para restaurantes: TPV, comandas digitales, split de cuenta por QR, y gestión integral. Offline-first, conforme con Verifactu. Prueba gratuita.',
+  ogImage = '/og-image.jpg',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+
+// JSON-LD Structured Data
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Tally',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web, iOS, Android',
+  description:
+    'Software completo para restaurantes con TPV, comandas digitales, split de cuenta por QR, y gestión integral.',
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'EUR',
+    lowPrice: '0',
+    highPrice: '199',
+    priceSpecification: [
+      {
+        '@type': 'UnitPriceSpecification',
+        price: '0',
+        priceCurrency: 'EUR',
+        name: 'Essential',
+      },
+      {
+        '@type': 'UnitPriceSpecification',
+        price: '49',
+        priceCurrency: 'EUR',
+        name: 'Pro',
+      },
+      {
+        '@type': 'UnitPriceSpecification',
+        price: '199',
+        priceCurrency: 'EUR',
+        name: 'Enterprise',
+      },
+    ],
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    ratingCount: '120',
+  },
+  creator: {
+    '@type': 'Organization',
+    name: 'Tally',
+    url: 'https://paytally.app',
+  },
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content="Tally" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageURL} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- View Transitions -->
+    <ViewTransitions />
+
+    <!-- GSAP Animations -->
+    <script>
+      import '../scripts/animations';
+    </script>
+  </head>
+  <body>
+    <!-- Skip to main content for accessibility -->
+    <a
+      href="#main-content"
+      class="focus:bg-primary focus:text-primary-foreground sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:px-4 focus:py-2"
+    >
+      Saltar al contenido principal
+    </a>
+
+    <main id="main-content">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+---
+interface Props {
+  variant?: 'tomato' | 'basil' | 'blueberry' | 'espresso' | 'default';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { variant = 'default', size = 'md', class: className = '', ...rest } = Astro.props;
+
+const baseStyles =
+  'inline-flex items-center justify-center rounded-full font-medium transition-colors';
+
+const variants = {
+  default: 'bg-secondary text-secondary-foreground',
+  tomato: 'bg-[var(--tomato)] text-white',
+  basil: 'bg-[var(--basil)] text-white',
+  blueberry: 'bg-[var(--blueberry)] text-white',
+  espresso: 'bg-[var(--espresso)] text-white',
+};
+
+const sizes = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-3 py-1 text-sm',
+  lg: 'px-4 py-1.5 text-base',
+};
+
+const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+---
+
+<span {...rest} class={classes}>
+  <slot />
+</span>
