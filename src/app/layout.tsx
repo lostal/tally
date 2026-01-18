@@ -23,21 +23,68 @@ const fontSerif = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: 'tally - sistema de pagos para restaurantes',
-    template: '%s | tally',
+    default: 'Tally. El sistema operativo para tu restaurante',
+    template: '%s | Tally',
   },
-  description: 'Sistema de pagos para restaurantes. Cobra más rápido, rota más mesas, gana más.',
+  description:
+    'Software completo para restaurantes: TPV, comandas digitales, split de cuenta por QR, y gestión integral. Offline-first, conforme con Verifactu. Cobra más rápido, rota más mesas, gana más.',
   keywords: [
-    'restaurante',
-    'pago',
+    'tpv restaurante',
+    'software restaurante',
+    'pos hostelería',
     'dividir cuenta',
-    'código QR',
+    'split cuenta',
+    'código qr restaurante',
     'pago móvil',
-    'pos',
-    'hostelería',
+    'comandas digitales',
+    'verifactu',
+    'gestión restaurante',
+    'facturación restaurante',
+    'sistema restaurante',
   ],
-  authors: [{ name: 'tally' }],
-  creator: 'tally',
+  authors: [{ name: 'PayTally S.L.' }],
+  creator: 'PayTally S.L.',
+  publisher: 'PayTally S.L.',
+  metadataBase: new URL('https://paytally.app'),
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_ES',
+    url: 'https://paytally.app',
+    siteName: 'Tally',
+    title: 'Tally. El sistema operativo para tu restaurante',
+    description:
+      'Software completo para restaurantes: TPV, comandas digitales, split de cuenta por QR, y gestión integral. Offline-first, conforme con Verifactu.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Tally - Sistema operativo para restaurantes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tally. El sistema operativo para tu restaurante',
+    description:
+      'Software completo para restaurantes: TPV, comandas digitales, split de cuenta por QR, y gestión integral.',
+    images: ['/og-image.jpg'],
+    creator: '@paytally',
+  },
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
@@ -49,7 +96,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'tally',
+    title: 'Tally',
   },
 };
 
@@ -83,7 +130,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${fontSans.variable} ${fontSerif.variable}`}
       suppressHydrationWarning
     >

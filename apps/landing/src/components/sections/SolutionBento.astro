@@ -1,6 +1,6 @@
 ---
 import Section from '../ui/Section.astro';
-import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
+import { Smartphone, ChartBar, Globe, Zap } from '@lucide/astro';
 ---
 
 <Section id="solution">
@@ -16,7 +16,10 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
     </p>
   </div>
 
-  <div class="grid auto-rows-[minmax(200px,auto)] grid-cols-1 gap-6 md:grid-cols-3" data-stagger="100">
+  <div
+    class="grid auto-rows-[minmax(200px,auto)] grid-cols-1 gap-6 md:grid-cols-3"
+    data-stagger="100"
+  >
     <!-- Card 1: Main Dashboard Feature (Large) -->
     <div
       class="group border-border/50 bg-card/30 hover:bg-card relative overflow-hidden rounded-3xl border p-8 transition-all duration-500 hover:shadow-xl md:col-span-2"
@@ -51,7 +54,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
           <div class="grid h-full grid-cols-3 gap-2 p-3">
             <!-- Product cards with images/colors -->
             <div
-              class="bg-gradient-to-br from-orange-500/10 to-orange-500/5 group/item relative overflow-hidden rounded-lg border border-orange-500/20 p-3 transition-all hover:scale-105"
+              class="group/item relative overflow-hidden rounded-lg border border-orange-500/20 bg-linear-to-br from-orange-500/10 to-orange-500/5 p-3 transition-all hover:scale-105"
             >
               <div class="mb-2 flex h-16 items-center justify-center rounded bg-orange-500/10">
                 <span class="text-2xl">🍔</span>
@@ -63,7 +66,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
             </div>
 
             <div
-              class="bg-gradient-to-br from-green-500/10 to-green-500/5 relative overflow-hidden rounded-lg border border-green-500/20 p-3 transition-all hover:scale-105"
+              class="relative overflow-hidden rounded-lg border border-green-500/20 bg-linear-to-br from-green-500/10 to-green-500/5 p-3 transition-all hover:scale-105"
             >
               <div class="mb-2 flex h-16 items-center justify-center rounded bg-green-500/10">
                 <span class="text-2xl">🥗</span>
@@ -75,7 +78,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
             </div>
 
             <div
-              class="bg-gradient-to-br from-red-500/10 to-red-500/5 relative overflow-hidden rounded-lg border border-red-500/20 p-3 transition-all hover:scale-105"
+              class="relative overflow-hidden rounded-lg border border-red-500/20 bg-linear-to-br from-red-500/10 to-red-500/5 p-3 transition-all hover:scale-105"
             >
               <div class="mb-2 flex h-16 items-center justify-center rounded bg-red-500/10">
                 <span class="text-2xl">🍕</span>
@@ -87,7 +90,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
             </div>
 
             <div
-              class="bg-gradient-to-br from-blue-500/10 to-blue-500/5 relative overflow-hidden rounded-lg border border-blue-500/20 p-3 transition-all hover:scale-105"
+              class="relative overflow-hidden rounded-lg border border-blue-500/20 bg-linear-to-br from-blue-500/10 to-blue-500/5 p-3 transition-all hover:scale-105"
             >
               <div class="mb-2 flex h-16 items-center justify-center rounded bg-blue-500/10">
                 <span class="text-2xl">🍹</span>
@@ -99,7 +102,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
             </div>
 
             <div
-              class="bg-gradient-to-br from-purple-500/10 to-purple-500/5 relative overflow-hidden rounded-lg border border-purple-500/20 p-3 transition-all hover:scale-105"
+              class="relative overflow-hidden rounded-lg border border-purple-500/20 bg-linear-to-br from-purple-500/10 to-purple-500/5 p-3 transition-all hover:scale-105"
             >
               <div class="mb-2 flex h-16 items-center justify-center rounded bg-purple-500/10">
                 <span class="text-2xl">🍰</span>
@@ -111,7 +114,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
             </div>
 
             <div
-              class="bg-gradient-to-br from-yellow-500/10 to-yellow-500/5 relative overflow-hidden rounded-lg border border-yellow-500/20 p-3 transition-all hover:scale-105"
+              class="relative overflow-hidden rounded-lg border border-yellow-500/20 bg-linear-to-br from-yellow-500/10 to-yellow-500/5 p-3 transition-all hover:scale-105"
             >
               <div class="mb-2 flex h-16 items-center justify-center rounded bg-yellow-500/10">
                 <span class="text-2xl">☕</span>
@@ -125,7 +128,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
 
           <!-- Floating "Fast" indicator -->
           <div
-            class="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-tomato/20 px-2 py-1 text-xs font-bold text-tomato backdrop-blur-sm"
+            class="bg-tomato/20 text-tomato absolute top-2 right-2 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold backdrop-blur-sm"
           >
             <Zap class="h-3 w-3" />
             <span>Fast</span>
@@ -160,7 +163,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
 
         <!-- Mock Phone -->
         <div
-          class="bg-background border-foreground/10 relative mx-auto w-full max-w-[200px] flex-1 overflow-hidden rounded-t-[2.5rem] border-x-8 border-t-8 shadow-lg"
+          class="bg-background border-foreground/10 relative mx-auto w-full max-w-50 flex-1 overflow-hidden rounded-t-[2.5rem] border-x-8 border-t-8 shadow-lg"
         >
           <div class="bg-foreground/10 mx-auto mb-4 h-4 w-1/2 rounded-b-xl"></div>
           <div class="space-y-3 p-4">
@@ -188,7 +191,7 @@ import { Smartphone, BarChart3, Globe, Zap, ShieldCheck } from '@lucide/astro';
           <div
             class="bg-basil/10 text-basil flex h-10 w-10 items-center justify-center rounded-lg transition-transform group-hover:scale-110"
           >
-            <BarChart3 class="h-6 w-6" />
+            <ChartBar class="h-6 w-6" />
           </div>
           <span class="text-foreground font-serif text-2xl font-bold">+30%</span>
         </div>

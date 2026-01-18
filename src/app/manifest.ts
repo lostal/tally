@@ -12,15 +12,18 @@ import { MetadataRoute } from 'next';
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'tally',
-    short_name: 'tally',
-    description: 'Sistema de pagos para restaurantes. Cobra más rápido, rota más mesas.',
+    name: 'Tally. El sistema operativo para tu restaurante',
+    short_name: 'Tally',
+    description:
+      'Software completo para restaurantes: TPV, comandas digitales, split de cuenta por QR, y gestión integral. Offline-first, conforme con Verifactu.',
     start_url: '/',
     display: 'standalone',
     background_color: '#2d2a26',
     theme_color: '#2d2a26',
     orientation: 'portrait',
     categories: ['business', 'finance', 'food'],
+    lang: 'es',
+    dir: 'ltr',
     icons: [
       {
         src: '/app-icon.svg',

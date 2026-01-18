@@ -136,8 +136,8 @@ export function initRippleEffect() {
   const rippleElements = document.querySelectorAll('[data-ripple]');
 
   rippleElements.forEach((element) => {
-    element.addEventListener('click', function (e) {
-      const el = this as HTMLElement;
+    element.addEventListener('click', function (this: HTMLElement, e: Event) {
+      const el = this;
       const rect = el.getBoundingClientRect();
       const ripple = document.createElement('span');
 
