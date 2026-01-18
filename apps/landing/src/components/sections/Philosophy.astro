@@ -10,8 +10,8 @@ import Section from '../ui/Section.astro';
       <div class="relative h-full w-full rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl flex items-center justify-center overflow-hidden">
           <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
 
-          <!-- Abstract UI Representation -->
-          <div class="relative w-64 h-80 bg-background rounded-2xl border border-border/50 shadow-2xl skew-y-6 hover:skew-y-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
+          <!-- Abstract UI Representation - Hidden on mobile -->
+          <div class="hidden md:flex relative w-64 h-80 bg-background rounded-2xl border border-border/50 shadow-2xl skew-y-6 hover:skew-y-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
               <div class="h-full w-full p-6 flex flex-col gap-4">
                   <div class="w-12 h-12 rounded-full bg-(--tomato)/20 mb-4"></div>
                   <div class="h-4 w-3/4 bg-muted/50 rounded"></div>

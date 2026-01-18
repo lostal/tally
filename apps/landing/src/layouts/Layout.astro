@@ -109,7 +109,7 @@ const structuredData = {
       import '../scripts/animations';
     </script>
   </head>
-  <body class="bg-background text-foreground antialiased selection:bg-primary/10 selection:text-primary">
+  <body class="bg-background text-foreground antialiased selection:bg-tomato/20 selection:text-foreground">
     <!-- Skip to main content for accessibility -->
     <a
       href="#main-content"
@@ -127,10 +127,10 @@ const structuredData = {
     <Navbar />
 
     <main id="main-content" class="relative z-20 bg-background">
-      <!-- Grid Pattern with mask fade at bottom -->
+      <!-- Grid Pattern with mask fade at bottom (fades near FinalCTA section) -->
       <div
         class="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"
-        style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 90%); mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 90%);"
+        style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 95%, transparent 100%); mask-image: linear-gradient(to bottom, black 0%, black 95%, transparent 100%);"
       ></div>
       <div class="relative z-10">
         <slot />
