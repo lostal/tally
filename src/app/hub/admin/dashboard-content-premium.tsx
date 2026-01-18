@@ -252,28 +252,28 @@ export function DashboardContentPremium({ restaurant, stats }: DashboardContentP
 
         <div className="space-y-3">
           <QuickLinkCard
-            href="/admin/menu"
+            href="/hub/admin/menu"
             icon={UtensilsCrossed}
             label="Gestionar menú"
             description="Añade, edita o elimina productos"
             index={0}
           />
           <QuickLinkCard
-            href="/admin/cash"
+            href="/hub/admin/cash"
             icon={Wallet}
             label="Control de Caja"
             description="Entradas, salidas y cierre Z"
             index={1}
           />
           <QuickLinkCard
-            href="/admin/tables"
+            href="/hub/admin/tables"
             icon={Table2}
             label="Ver mesas"
             description="Gestiona el estado de las mesas"
             index={2}
           />
           <QuickLinkCard
-            href="/admin/settings"
+            href="/hub/admin/settings"
             icon={Settings}
             label="Configuración"
             description="Personaliza tu restaurante"

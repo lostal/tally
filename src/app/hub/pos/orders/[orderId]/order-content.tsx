@@ -164,12 +164,12 @@ export function OrderContent({ order, orderItems, categories, products }: OrderC
       body: JSON.stringify({ status: 'paying' }),
     });
 
-    router.push('/pos');
+    router.push('/hub/pos');
     router.refresh();
   };
 
   const handleBack = () => {
-    router.push('/pos');
+    router.push('/hub/pos');
   };
 
   const handleVoidOrder = async () => {

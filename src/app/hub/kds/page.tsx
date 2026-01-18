@@ -16,7 +16,7 @@ export default async function KDSPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/pos/login');
+    redirect('/hub/pos/login');
   }
 
   // Get restaurant from user
@@ -27,7 +27,7 @@ export default async function KDSPage() {
     .single();
 
   if (!userData?.restaurant_id) {
-    redirect('/pos/login');
+    redirect('/hub/pos/login');
   }
 
   const restaurantId = userData.restaurant_id;

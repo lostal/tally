@@ -65,7 +65,7 @@ export default function POSLoginPage() {
         return;
       }
 
-      router.push('/pos');
+      router.push('/hub/pos');
       router.refresh();
     } catch {
       setError('Error al iniciar sesión');
@@ -94,7 +94,7 @@ export default function POSLoginPage() {
       {/* Demo mode button */}
       <motion.button
         type="button"
-        onClick={() => router.push('/pos')}
+        onClick={() => router.push('/hub/pos')}
         className="text-muted-foreground hover:text-foreground w-full py-3 text-sm transition-colors"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

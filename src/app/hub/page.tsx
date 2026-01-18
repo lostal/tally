@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
 export default function HubRootRedirect() {
-  redirect('/admin');
+  redirect('/hub/admin');
 }

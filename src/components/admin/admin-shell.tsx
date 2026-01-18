@@ -23,10 +23,10 @@ interface AdminShellProps {
 }
 
 const NAV_ITEMS = [
-  { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/admin/menu', icon: UtensilsCrossed, label: 'Menú' },
-  { href: '/admin/tables', icon: Table2, label: 'Mesas' },
-  { href: '/admin/settings', icon: Settings, label: 'Ajustes' },
+  { href: '/hub/admin', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/hub/admin/menu', icon: UtensilsCrossed, label: 'Menú' },
+  { href: '/hub/admin/tables', icon: Table2, label: 'Mesas' },
+  { href: '/hub/admin/settings', icon: Settings, label: 'Ajustes' },
 ];
 
 /**
@@ -39,14 +39,14 @@ export function AdminShell({ children }: AdminShellProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   // Don't show layout on login page
-  if (pathname === '/admin/login') {
+  if (pathname === '/hub/admin/login') {
     return <>{children}</>;
   }
 
   const handleLogout = async () => {
     const supabase = getClient();
     await supabase.auth.signOut();
-    router.push('/admin/login');
+    router.push('/hub/admin/login');
     router.refresh();
   };
 
@@ -87,7 +87,8 @@ export function AdminShell({ children }: AdminShellProps) {
         <nav className="space-y-1 p-4">
           {NAV_ITEMS.map((item) => {
             const isActive =
-              pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+              pathname === item.href ||
+              (item.href !== '/hub/admin' && pathname.startsWith(item.href));
             const Icon = item.icon;
 
             return (

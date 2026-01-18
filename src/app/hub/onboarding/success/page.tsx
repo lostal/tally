@@ -28,7 +28,7 @@ export default function OnboardingSuccessPage() {
 
         {/* Action */}
         <div className="pt-4">
-          <Link href="/admin">
+          <Link href="/hub/admin">
             <Button size="lg" className="group h-14 w-full rounded-xl text-base">
               Ir al Dashboard
               <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />

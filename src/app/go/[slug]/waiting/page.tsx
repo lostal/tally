@@ -35,7 +35,7 @@ export default function WaitingPage() {
 
   const handleCountdownComplete = () => {
     setCurrentStep('payment');
-    router.push(`/${slug}/payment`);
+    router.push(`/go/${slug}/payment`);
   };
 
   React.useEffect(() => {

@@ -42,7 +42,7 @@ export default function PaymentSuccessPage() {
 
   const handleDone = () => {
     reset();
-    router.push(`/${slug}`);
+    router.push(`/go/${slug}`);
   };
 
   // Fallback if no items (direct navigation)

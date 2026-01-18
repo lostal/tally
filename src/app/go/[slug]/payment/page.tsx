@@ -62,7 +62,7 @@ export default function PaymentPage() {
 
     // Redirect to success
     setTimeout(() => {
-      router.push(`/${slug}/payment/success`);
+      router.push(`/go/${slug}/payment/success`);
     }, 500);
   };
 

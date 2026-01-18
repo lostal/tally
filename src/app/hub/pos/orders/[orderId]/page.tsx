@@ -21,7 +21,7 @@ export default async function OrderPage({ params }: OrderPageParams) {
     .single();
 
   if (orderError || !order) {
-    redirect('/pos');
+    redirect('/hub/pos');
   }
 
   // Get order items with products

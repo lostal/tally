@@ -13,7 +13,7 @@ export default async function SettingsPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    redirect('/admin/login');
+    redirect('/hub/admin/login');
   }
 
   const { data: restaurant } = await supabase.from('restaurants').select('*').limit(1).single();

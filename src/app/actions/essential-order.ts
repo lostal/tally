@@ -19,6 +19,9 @@ interface CreateEssentialOrderParams {
  * 3. If not, creates one (hidden, unit price 0).
  * 4. Creates an Order.
  * 5. Creates an OrderItem with the dynamic amount.
+ * 6. Creates a Session for payment flow.
+ * 7. Creates a host Participant.
+ * 8. Marks order as 'paying' to enable QR payment.
  */
 export async function createEssentialOrder({
   restaurantId,
@@ -119,7 +122,44 @@ export async function createEssentialOrder({
 
     if (itemError) throw itemError;
 
-    return { success: true, orderId: order.id };
+    // 5. Create Session for payment flow
+    const { data: session, error: sessionError } = await supabase
+      .from('sessions')
+      .insert({
+        restaurant_id: restaurantId,
+        table_id: tableId,
+        status: 'active',
+      })
+      .select('id')
+      .single();
+
+    if (sessionError || !session) {
+      throw new Error(`Failed to create session: ${sessionError?.message}`);
+    }
+
+    // 6. Create host participant (POS user)
+    const { error: participantError } = await supabase.from('participants').insert({
+      session_id: session.id,
+      name: 'Camarero',
+      is_host: true,
+      is_active: true,
+    });
+
+    if (participantError) {
+      throw new Error(`Failed to create participant: ${participantError.message}`);
+    }
+
+    // 7. Mark order as 'paying' to enable QR payment flow
+    const { error: updateError } = await supabase
+      .from('orders')
+      .update({ status: 'paying' })
+      .eq('id', order.id);
+
+    if (updateError) {
+      throw new Error(`Failed to update order status: ${updateError.message}`);
+    }
+
+    return { success: true, orderId: order.id, sessionId: session.id };
   } catch (error) {
     logger.error('createEssentialOrder Error:', error);
     // Explicitly cast error to any to access message safely or generic string

@@ -9,7 +9,7 @@ export default async function KDSLayout({ children }: { children: React.ReactNod
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/pos/login');
+    redirect('/hub/pos/login');
   }
 
   return <div className="bg-background min-h-dvh">{children}</div>;

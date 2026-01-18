@@ -96,7 +96,7 @@ export default function SuccessPagePremium() {
 
   const handleDone = () => {
     reset();
-    router.push(`/${slug}`);
+    router.push(`/go/${slug}`);
   };
 
   // Hide confetti after animation

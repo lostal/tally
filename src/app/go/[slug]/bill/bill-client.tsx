@@ -94,7 +94,7 @@ export function BillPageClient({
 
   const handleProceed = () => {
     setCurrentStep('payment');
-    router.push(`/${slug}/payment?table=${tableNumber}`);
+    router.push(`/go/${slug}/payment?table=${tableNumber}`);
   };
 
   React.useEffect(() => {

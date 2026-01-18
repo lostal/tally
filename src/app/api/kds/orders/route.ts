@@ -30,7 +30,12 @@ export async function GET(request: NextRequest) {
           id,
           quantity,
           status,
-          product:products(name)
+          product:products(
+            name,
+            category:categories(
+              category_type
+            )
+          )
         )
       `
       )
@@ -53,7 +58,10 @@ export async function GET(request: NextRequest) {
           id: string;
           quantity: number;
           status: string;
-          product: { name: string } | { name: string }[] | null;
+          product: {
+            name: string;
+            category: { category_type: string } | { category_type: string }[] | null;
+          } | null;
         }>) || [];
 
       return {
@@ -63,13 +71,18 @@ export async function GET(request: NextRequest) {
         created_at: order.created_at,
         items: items.map((item) => {
           const productData = item.product;
-          const productName = Array.isArray(productData) ? productData[0]?.name : productData?.name;
+          const productName = productData?.name || 'Item';
+          const categoryData = productData?.category;
+          const categoryType = Array.isArray(categoryData)
+            ? categoryData[0]?.category_type
+            : categoryData?.category_type;
 
           return {
             id: item.id,
-            productName: productName || 'Item',
+            productName: productName,
             quantity: item.quantity,
             status: item.status,
+            categoryType: categoryType || 'food',
           };
         }),
       };

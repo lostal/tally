@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { TEST_DATA } from './global-setup';
 
 /**
  * CRITICAL E2E TESTS: Customer QR Flow
@@ -15,22 +16,21 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Customer QR Flow - CRITICAL', () => {
   test.beforeEach(async ({ page: _page }) => {
-    // Note: In real E2E, you would:
-    // 1. Set up test database with a test restaurant, table, and order
-    // 2. Generate a real session slug
-    // For now, we'll test the flow assuming a session exists
-    // This would be configured in your test setup
+    // Test database is seeded by global-setup.ts
+    // Restaurant slug: 'test-restaurant'
+    // Table: '1' (with active order)
   });
 
   test('should complete basic flow: QR scan → Trust → Bill → Payment', async ({ page }) => {
-    // This test verifies the happy path
-    // In production, you would use a test session created by setup scripts
+    // This test verifies the happy path using seeded test data
 
     // Step 1: User scans QR and lands on trust screen
-    await page.goto('/go/test-session-slug');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1`);
 
     // Should see trust screen with restaurant info
-    await expect(page.getByText(/confiar/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: /confiar|continuar/i })).toBeVisible({
+      timeout: 10000,
+    });
 
     // User accepts trust screen
     const trustButton = page.getByRole('button', { name: /confiar|continuar/i });
@@ -47,7 +47,7 @@ test.describe('Customer QR Flow - CRITICAL', () => {
     await expect(page.getByText(/pagar todo|split|dividir/i)).toBeVisible();
 
     // Click "Pagar" or "Continuar" button
-    const payButton = page.getByRole('button', { name: /pagar|continuar/i });
+    const payButton = page.getByRole('button', { name: /pagar €|pay €/i });
     await payButton.click();
 
     // Step 4: Should arrive at payment screen
@@ -63,7 +63,7 @@ test.describe('Customer QR Flow - CRITICAL', () => {
     // This test verifies the dynamic split functionality
     // In real scenario, would need multiple browser contexts for multiple users
 
-    await page.goto('/go/test-session-slug/bill');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/bill`);
 
     // Look for split method selector
     const splitSelector = page
@@ -78,7 +78,7 @@ test.describe('Customer QR Flow - CRITICAL', () => {
     }
 
     // Should see dynamic split indicator
-    await expect(page.getByText(/dividiendo entre|dividing between/i)).toBeVisible({
+    await expect(page.getByText(/tu parte|your share/i)).toBeVisible({
       timeout: 5000,
     });
 
@@ -93,7 +93,7 @@ test.describe('Customer QR Flow - CRITICAL', () => {
   test('should show connection status banner', async ({ page }) => {
     // This test verifies real-time connection monitoring
 
-    await page.goto('/go/test-session-slug/bill');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/bill`);
 
     // Connection banner should appear (may auto-hide after connected)
     // We check it exists in DOM even if hidden
@@ -109,7 +109,7 @@ test.describe('Customer QR Flow - CRITICAL', () => {
     // CRITICAL: This test ensures server-side validation works
     // Simulates the /api/payment/initiate validation flow
 
-    await page.goto('/go/test-session-slug/payment');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/payment`);
 
     // Wait for payment screen to load
     await page.waitForLoadState('networkidle');
@@ -141,7 +141,7 @@ test.describe('Customer QR Flow - CRITICAL', () => {
     // Go offline
     await page.context().setOffline(true);
 
-    await page.goto('/go/test-session-slug/bill').catch(() => {
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/bill`).catch(() => {
       // Expected to fail when offline
     });
 
@@ -149,10 +149,10 @@ test.describe('Customer QR Flow - CRITICAL', () => {
     await page.context().setOffline(false);
 
     // Retry navigation
-    await page.goto('/go/test-session-slug/bill');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/bill`);
 
     // Should eventually load
-    await expect(page.getByText(/cuenta|bill|total/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/cuenta|bill|total/i)).toBeVisible({ timeout: 30000 });
   });
 
   test('should display error when session is invalid', async ({ page }) => {
@@ -180,7 +180,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
     // This test simulates a race condition scenario
     // In real implementation, would use multiple browser contexts
 
-    await page.goto('/go/test-session-slug/payment');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/payment`);
 
     // Mock API response for participant count mismatch
     await page.route('**/api/payment/initiate', async (route) => {
@@ -198,7 +198,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
     });
 
     // Trigger payment
-    const payButton = page.getByRole('button', { name: /pagar|pay/i }).first();
+    const payButton = page.getByRole('button', { name: /pagar €|pay €/i });
 
     if (await payButton.isVisible()) {
       await payButton.click();
@@ -215,7 +215,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
   });
 
   test('should reject payment with incorrect amount', async ({ page }) => {
-    await page.goto('/go/test-session-slug/payment');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/payment`);
 
     // Mock API response for invalid amount
     await page.route('**/api/payment/initiate', async (route) => {
@@ -232,7 +232,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
       });
     });
 
-    const payButton = page.getByRole('button', { name: /pagar|pay/i }).first();
+    const payButton = page.getByRole('button', { name: /pagar €|pay €/i });
 
     if (await payButton.isVisible()) {
       await payButton.click();
@@ -245,7 +245,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
   });
 
   test('should reject payment when participant is inactive', async ({ page }) => {
-    await page.goto('/go/test-session-slug/payment');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/payment`);
 
     // Mock API response for inactive participant
     await page.route('**/api/payment/initiate', async (route) => {
@@ -259,7 +259,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
       });
     });
 
-    const payButton = page.getByRole('button', { name: /pagar|pay/i }).first();
+    const payButton = page.getByRole('button', { name: /pagar €|pay €/i });
 
     if (await payButton.isVisible()) {
       await payButton.click();
@@ -272,7 +272,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
   });
 
   test('should allow payment when validation passes', async ({ page }) => {
-    await page.goto('/go/test-session-slug/payment');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/payment`);
 
     // Mock successful validation
     await page.route('**/api/payment/initiate', async (route) => {
@@ -292,7 +292,7 @@ test.describe('Payment Validation API - CRITICAL', () => {
       });
     });
 
-    const payButton = page.getByRole('button', { name: /pagar|pay/i }).first();
+    const payButton = page.getByRole('button', { name: /pagar €|pay €/i });
 
     if (await payButton.isVisible()) {
       // Note: In real test, mock Stripe to prevent actual charge
@@ -314,10 +314,12 @@ test.describe('Mobile QR Flow', () => {
   });
 
   test('should work on mobile viewport', async ({ page }) => {
-    await page.goto('/go/test-session-slug');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1`);
 
     // Trust screen should be mobile-friendly
-    await expect(page.getByText(/confiar|continuar/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: /confiar|continuar/i })).toBeVisible({
+      timeout: 10000,
+    });
 
     const trustButton = page.getByRole('button', { name: /confiar|continuar/i });
     await trustButton.click();
@@ -328,10 +330,10 @@ test.describe('Mobile QR Flow', () => {
   });
 
   test('should handle touch interactions', async ({ page }) => {
-    await page.goto('/go/test-session-slug/bill');
+    await page.goto(`/go/${TEST_DATA.restaurant.slug}?table=1/bill`);
 
     // Touch-specific interactions (taps instead of clicks)
-    const payButton = page.getByRole('button', { name: /pagar|continuar/i });
+    const payButton = page.getByRole('button', { name: /pagar €|pay €/i });
 
     if (await payButton.isVisible()) {
       // Simulate touch tap

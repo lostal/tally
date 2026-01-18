@@ -15,7 +15,7 @@ export default async function AdminDashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    redirect('/admin/login');
+    redirect('/hub/admin/login');
   }
 
   // Get user's restaurant

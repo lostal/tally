@@ -32,12 +32,15 @@ export async function POST(request: Request) {
     const supabase = createAdminClient();
 
     // 1. Find restaurant by slug
+
     const { data: restaurant, error: restError } = await supabase
       .from('restaurants')
       .select('id')
       .eq('slug', slug)
       .eq('is_active', true)
       .single();
+
+    if (restError) console.error('[API] Restaurant error:', restError);
 
     if (restError || !restaurant) {
       return NextResponse.json(

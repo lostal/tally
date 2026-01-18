@@ -55,7 +55,7 @@ export function TrustPageClient({
     }
 
     setCurrentStep('bill');
-    router.push(`/${slug}/bill?table=${tableNumber}`);
+    router.push(`/go/${slug}/bill?table=${tableNumber}`);
   };
 
   React.useEffect(() => {

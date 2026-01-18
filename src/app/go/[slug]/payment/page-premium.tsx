@@ -209,7 +209,7 @@ export default function PaymentPagePremium() {
     setCurrentStep('success');
 
     setTimeout(() => {
-      router.push(`/${slug}/payment/success?table=${tableNumber}`);
+      router.push(`/go/${slug}/payment/success?table=${tableNumber}`);
     }, 800);
   };
 

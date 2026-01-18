@@ -16,9 +16,9 @@ interface PosShellProps {
 }
 
 const NAV_ITEMS = [
-  { href: '/pos', icon: Table2, label: 'Mesas' },
-  { href: '/pos/orders', icon: ClipboardList, label: 'Pedidos' },
-  { href: '/pos/menu', icon: ClipboardList, label: 'Menu' },
+  { href: '/hub/pos', icon: Table2, label: 'Mesas' },
+  { href: '/hub/pos/orders', icon: ClipboardList, label: 'Pedidos' },
+  { href: '/hub/pos/menu', icon: ClipboardList, label: 'Menu' },
 ];
 
 /**
@@ -30,14 +30,14 @@ export function PosShell({ children, plan = 'essential' }: PosShellProps) {
   const router = useRouter();
 
   // Don't show layout on login page
-  if (pathname === '/pos/login') {
+  if (pathname === '/hub/pos/login') {
     return <>{children}</>;
   }
 
   const handleLogout = async () => {
     const supabase = getClient();
     await supabase.auth.signOut();
-    router.push('/pos/login');
+    router.push('/hub/pos/login');
     router.refresh();
   };
 
@@ -63,7 +63,8 @@ export function PosShell({ children, plan = 'essential' }: PosShellProps) {
             {NAV_ITEMS.map((item) => {
               // Simple active check for now
               const isActive =
-                pathname === item.href || (item.href !== '/pos' && pathname.startsWith(item.href));
+                pathname === item.href ||
+                (item.href !== '/hub/pos' && pathname.startsWith(item.href));
 
               // Skip menu if not implemented yet properly in navigation array
               if (item.label === 'Menu') return null;

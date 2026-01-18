@@ -61,7 +61,7 @@ export function DashboardContent({ restaurant, stats }: DashboardContentProps) {
 
         <div className="space-y-2">
           <Link
-            href="/admin/menu"
+            href="/hub/admin/menu"
             className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
             <div className="flex items-center gap-4">
@@ -72,7 +72,7 @@ export function DashboardContent({ restaurant, stats }: DashboardContentProps) {
           </Link>
 
           <Link
-            href="/admin/cash"
+            href="/hub/admin/cash"
             className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
             <div className="flex items-center gap-4">
@@ -83,7 +83,7 @@ export function DashboardContent({ restaurant, stats }: DashboardContentProps) {
           </Link>
 
           <Link
-            href="/admin/tables"
+            href="/hub/admin/tables"
             className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
             <div className="flex items-center gap-4">
@@ -94,7 +94,7 @@ export function DashboardContent({ restaurant, stats }: DashboardContentProps) {
           </Link>
 
           <Link
-            href="/admin/settings"
+            href="/hub/admin/settings"
             className="group border-border hover:border-primary flex items-center justify-between rounded-2xl border-2 p-6 transition-colors"
           >
             <div className="flex items-center gap-4">
