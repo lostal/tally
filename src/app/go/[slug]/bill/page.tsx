@@ -1,4 +1,3 @@
-```typescript
 import { notFound } from 'next/navigation';
 import {
   getActiveOrderForTable,
@@ -35,6 +34,10 @@ export default async function BillPage({ params, searchParams }: PageProps) {
   }
 
   const { restaurant, table } = data;
+
+  if (!table) {
+    notFound();
+  }
 
   // Fetch active order for this table
   const order = await getActiveOrderForTable(table.id);

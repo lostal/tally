@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { CashContent } from './cash-content';
 import type { ZReport } from '@/types/cash';
 
@@ -92,7 +92,7 @@ export default async function CashPage() {
       .eq('register_id', (register as RegisterRow).id)
       .order('created_at', { ascending: false });
 
-    transactions = (txData ?? []) as TransactionRow[];
+    transactions = (txData ?? []) as unknown as TransactionRow[];
   }
 
   // Get recent closed registers (last 7 days) for history
@@ -118,9 +118,9 @@ export default async function CashPage() {
 
   return (
     <CashContent
-      currentRegister={register as RegisterRow | null}
+      currentRegister={register as unknown as RegisterRow | null}
       transactions={transactions}
-      recentRegisters={(recentRegisters ?? []) as RegisterRow[]}
+      recentRegisters={(recentRegisters ?? []) as unknown as RegisterRow[]}
     />
   );
 }

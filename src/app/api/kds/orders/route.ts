@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { logApiError, serverError } from '@/lib/api/validation';
 import { verifyApiAuthWithRole } from '@/lib/auth/rbac';
 
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
       const tableNumber = Array.isArray(tableData) ? tableData[0]?.number : tableData?.number;
 
       const items =
-        (order.items as Array<{
+        (order.items as unknown as Array<{
           id: string;
           quantity: number;
           status: string;

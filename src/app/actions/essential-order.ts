@@ -1,6 +1,6 @@
 'use server';
 
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { logger } from '@/lib/logger';
 
 interface CreateEssentialOrderParams {

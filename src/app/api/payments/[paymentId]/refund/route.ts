@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { validateBody, notFound, forbidden } from '@/lib/api/validation';
 import { verifyApiAuthWithRole } from '@/lib/auth/rbac';
 import { createAuditLog, getClientIp, AuditActions, ResourceTypes } from '@/lib/auth/audit';
@@ -59,7 +59,9 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   }
 
   // Verify restaurant ownership
-  const session = payment.payment_session as { order: { restaurant_id: string } | null } | null;
+  const session = payment.payment_session as unknown as {
+    order: { restaurant_id: string } | null;
+  } | null;
   const order = session?.order;
   if (order?.restaurant_id !== restaurantId) {
     return forbidden('Access denied to this payment');

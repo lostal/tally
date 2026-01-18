@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { validateBody, notFound } from '@/lib/api/validation';
 import { verifyApiAuthWithRole } from '@/lib/auth/rbac';
 import { createAuditLog, getClientIp, ResourceTypes } from '@/lib/auth/audit';

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { verifyApiAuth } from '@/lib/supabase/middleware';
 import { unauthorized } from '@/lib/api/validation';
 

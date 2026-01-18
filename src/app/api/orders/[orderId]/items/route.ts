@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { logApiError, serverError } from '@/lib/api/validation';
 import { verifyApiAuthWithRole } from '@/lib/auth/rbac';
 

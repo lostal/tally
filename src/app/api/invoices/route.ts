@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { createAdminClient } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase/server';
 import { validateBody, serverError, logApiError } from '@/lib/api/validation';
 import { calculateOrderTotals } from '@/lib/fiscal';
 import type { Json } from '@/types/database';
