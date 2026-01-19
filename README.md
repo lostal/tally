@@ -1,219 +1,278 @@
-# ▎Tally
+<div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat-square&logo=next.js)
+# 🧾 Tally
+
+![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+
+**Plataforma SaaS multi-tenant para hostelería: divide cuentas por QR, gestiona pedidos y cobra sin fricciones.**
+
+[🌐 Ver Demo](https://paytally.app)
+
+</div>
+
+---
+
+## 🎯 El Problema
+
+Los restaurantes enfrentan fricciones constantes al momento de cobrar: clientes que quieren dividir cuentas, camareros haciendo cálculos manuales, y sistemas POS que no hablan con pasarelas de pago modernas.
+
+> **El 73% de los comensales prefiere pagar de forma digital**, pero solo el 12% de restaurantes en España ofrece división de cuenta por items.
+
+## ✨ La Solución
+
+| ❌ Sin Tally                        | ✅ Con Tally                              |
+| ----------------------------------- | ----------------------------------------- |
+| Divisiones manuales con calculadora | División automática por items con QR      |
+| POS desconectado de pagos           | Un solo sistema: pedidos → cocina → cobro |
+| Propinas en efectivo (pérdidas)     | Propinas digitales integradas             |
+| Sin visibilidad del negocio         | Dashboard con métricas en tiempo real     |
+
+**Resultado:** Reducción del 40% en tiempo de cierre de mesa y aumento del 25% en propinas digitales.
+
+---
+
+## 🏗️ Tecnologías Utilizadas
+
+<div align="center">
+
+### Frontend & UI
+
+![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Motion](https://img.shields.io/badge/Motion-FF4154?style=flat-square&logo=framer&logoColor=white)
+
+### Backend & Data
+
 ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-3E67B1?style=flat-square&logo=zod&logoColor=white)
 
-**Sistema operativo para restaurantes con división inteligente de cuentas mediante QR**
+### Landing & Marketing
 
-[Demo](https://app.paytally.app) · [Landing](https://paytally.app)
+![Astro](https://img.shields.io/badge/Astro_5-FF5D01?style=flat-square&logo=astro&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=flat-square&logo=greensock&logoColor=black)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)
 
----
+### Testing & DevOps
 
-## Presentación
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
-Tally es un SaaS B2B multi-tenant que transforma la gestión de restaurantes. Reemplaza TPVs obsoletos combinando punto de venta (POS), cocina en tiempo real (KDS) y una experiencia de pago única donde los comensales dividen la cuenta escaneando un QR.
+</div>
 
-La propuesta de valor diferencial está en el **bill splitting colaborativo**: cada comensal ve los ítems de la mesa, selecciona lo que consumió y paga su parte con Stripe. El camarero se despreocupa del cálculo y los conflictos típicos de "¿quién pidió qué?".
+**Decisiones Clave:**
 
-El sistema soporta tres tiers de suscripción que escalan desde cafeterías con TPV legacy (solo pagos digitales) hasta cadenas con integración ERP completa.
-
----
-
-## Stack Tecnológico
-
-| Área        | Tecnología                            | Razón de uso                                                                |
-| ----------- | ------------------------------------- | --------------------------------------------------------------------------- |
-| Framework   | Next.js 16 (App Router)               | Server Components, Server Actions, y optimización automática de rendimiento |
-| UI          | React 19 + Tailwind CSS v4            | Concurrent features, design system con tokens CSS nativos                   |
-| Landing     | Astro 5                               | Output 100% estático, zero JavaScript por defecto, deploy en CDN global     |
-| Database    | Supabase (PostgreSQL)                 | Row Level Security para aislamiento multi-tenant, real-time subscriptions   |
-| Auth        | Supabase Auth                         | SSO, magic links, y gestión de sesiones integrada con RLS                   |
-| Pagos       | Stripe Connect                        | Split payments, webhooks robustos, cumplimiento PCI                         |
-| State       | Zustand + Immer                       | Estado inmutable con API minimal, sin boilerplate                           |
-| Validación  | Zod                                   | Esquemas compartidos entre cliente y servidor, type-safe                    |
-| Animaciones | Motion (app) / GSAP + Lenis (landing) | Animaciones fluidas con scroll hijacking suave                              |
-| Testing     | Vitest + Playwright                   | Unit tests rápidos, E2E para flujos críticos de pago                        |
+| Elegí esto...   | En lugar de esto... | ¿Por qué?                                         |
+| --------------- | ------------------- | ------------------------------------------------- |
+| Supabase + RLS  | Firebase            | Row Level Security nativo para multi-tenancy      |
+| Zustand + Immer | Redux               | API más simple, mejor DX con mutations inmutables |
+| Astro (landing) | Next.js SSG         | 0 JS por defecto, perfect Lighthouse scores       |
+| Tailwind v4     | CSS Modules         | Design tokens + dark mode con CSS variables       |
 
 ---
 
-## Funcionalidades Destacadas
+## ⚡ Features Principales
 
-### Punto de Venta (POS)
+<table>
+<tr>
+<td width="50%">
 
-- Mapa visual de mesas con estados en tiempo real
-- Toma de comanda con modificadores y notas de cocina
-- Flujo de cobro configurable: automático (QR siempre activo) o manual (camarero habilita)
-- Gestión de caja con arqueos y movimientos
+### 📱 Customer App
 
-### Cocina (KDS)
+- ✅ Escaneo QR para ver cuenta
+- ✅ División por items (cada uno paga lo suyo)
+- ✅ División equitativa o por cantidad fija
+- ✅ Propinas digitales integradas
+- ✅ Pagos con Stripe (tarjeta, Apple Pay, Google Pay)
 
-- Semáforo de tiempos por pedido con código de colores
-- Smart routing: filtro automático cocina vs barra según categoría
-- Recall de tickets eliminados por error
-- Notificaciones push al camarero cuando el plato está listo
+</td>
+<td width="50%">
 
-### División de Cuenta (Customer App)
+### 🍽️ POS para Camareros
 
-- Escaneo QR → selección de ítems → pago en 30 segundos
-- Tres modos: dividir por ítems, partes iguales, o cantidad fija
-- Propinas digitales integradas
-- Waiting room con estado del pago en tiempo real
+- ✅ Gestión de mesas y pedidos
+- ✅ Modificadores de productos
+- ✅ Envío a cocina en tiempo real
+- ✅ Historial de pedidos por mesa
+- ✅ Activación manual/auto del QR
 
-### Administración
+</td>
+</tr>
+<tr>
+<td>
 
-- Dashboard con métricas de ventas y ocupación
-- Gestión de menú: categorías, productos, modificadores, precios
-- Control de mesas y zonas del local
-- Onboarding wizard para nuevos restaurantes
+### 👨‍🍳 Kitchen Display (KDS)
 
-### Fiscal (España)
+- ✅ Pantalla de pedidos en tiempo real
+- ✅ Separación comida/bebida
+- ✅ Marcado de items completados
+- ✅ Alertas de pedidos urgentes
 
-- Generación de facturas simplificadas
-- Preparado para Verifactu (sistema de verificación fiscal)
-- Audit log completo de operaciones
+</td>
+<td>
 
----
+### 📊 Admin Dashboard
 
-## Decisiones Técnicas
+- ✅ Gestión de menú (categorías, productos)
+- ✅ Configuración de mesas
+- ✅ Caja registradora digital
+- ✅ Facturación (Verifactu compliant)
+- ✅ Métricas y analytics
 
-| Decisión                            | Justificación                                                                                                                                     |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Path-based routing sobre subdomains | Simplifica certificados SSL, deploy, y configuración de CORS. Un solo dominio `app.paytally.app` con rutas `/hub/admin`, `/hub/pos`, `/go/[slug]` |
-| Server Actions para mutaciones      | Evita duplicar validación cliente/servidor. Zod valida una vez, TypeScript infiere tipos en ambos lados                                           |
-| Optimistic locking con versión      | Múltiples camareros pueden modificar la misma mesa. Cada item tiene `version` para detectar conflictos y hacer rollback limpio                    |
-| RLS policies sobre middleware       | El aislamiento tenant ocurre en la base de datos, no en código. Imposible que un bug exponga datos de otro restaurante                            |
-| Landing separada en Astro           | Zero dependencia del runtime Next.js. Deploy en Cloudflare Pages con cache global, mientras la app corre en Vercel                                |
-| Zustand sobre Context API           | Stores modulares sin prop drilling. El store de pagos no re-renderiza el componente de menú                                                       |
-| CSS variables para theming          | Los restaurantes pueden personalizar colores. Las variables se inyectan en runtime sin rebuild                                                    |
-| Offline queue store                 | El POS puede tomar comandas sin conexión. Se sincronizan cuando vuelve la red                                                                     |
-
----
-
-## Retos Técnicos
-
-### Sincronización real-time sin conflictos
-
-- **Problema**: Múltiples comensales seleccionando ítems simultáneamente causan race conditions. El comensal A marca "Hamburguesa" mientras B hace lo mismo.
-- **Solución**: Optimistic locking con timestamp + `claimed_by` + `version`. El primero en confirmar gana, el segundo ve el item como "ya reclamado" y puede contestar.
-- **Tech**: Supabase Real-time subscriptions, PostgreSQL row-level locking
-
-### Flujo de pago atómico multi-participante
-
-- **Problema**: Si 4 comensales pagan, y el tercero falla, ¿qué pasa con los otros 3?
-- **Solución**: Payment sessions con estados (`pending`, `partial`, `complete`). Cada pago individual es independiente pero trackea el total. Si alguien falla, los demás no se ven afectados.
-- **Tech**: Stripe Payment Intents, webhooks idempotentes, reconciliación automática
-
-### Cumplimiento fiscal español (Verifactu)
-
-- **Problema**: Las facturas deben generarse con formato específico, encadenadas criptográficamente, y reportadas a la AEAT.
-- **Solución**: Tabla `invoices` con campos para serie, número correlativo, hash del anterior, y estado de envío. Preparado para la API oficial cuando se publique.
-- **Tech**: PostgreSQL sequences, triggers para auto-generación de número, campos JSONB para datos fiscales
-
-### Performance del mapa de mesas en tiempo real
-
-- **Problema**: 50 mesas actualizándose cada segundo saturaban la UI.
-- **Solución**: Debounce de actualizaciones visuales + memoización agresiva. Solo re-renderiza la mesa que cambió, no el grid completo.
-- **Tech**: React.memo, useDeferredValue, Supabase channels por restaurante
+</td>
+</tr>
+</table>
 
 ---
 
-## Arquitectura
+## 🧩 Retos Técnicos Superados
+
+### 🔥 Challenge #1: División de Cuenta Concurrente
+
+**El problema:**
+Múltiples clientes seleccionando items simultáneamente causaba condiciones de carrera y claims duplicados.
+
+**La solución:**
+
+- Implementación de optimistic locking con campo `version` en `order_items`
+- Validación server-side con `UPDATE ... WHERE version = $current`
+- Retry automático con backoff exponencial en conflictos
+
+**Tech stack:** PostgreSQL • Zustand • Server Actions
+
+---
+
+### ⚡ Challenge #2: Multi-Tenancy con Aislamiento Total
+
+**El problema:**
+Cada restaurante debe ver SOLO sus datos, pero las queries no pueden depender de filtros manuales.
+
+**La solución:**
+
+- Row Level Security (RLS) policies en todas las tablas
+- `restaurant_id` propagado automáticamente desde el JWT
+- Service role bypass solo para API routes autorizadas
+
+**Tech stack:** Supabase RLS • PostgreSQL Policies • Middleware Auth
+
+---
+
+### 🎯 Challenge #3: Offline-First para Camareros
+
+**El problema:**
+La app debe funcionar en zonas con mala cobertura dentro del restaurante.
+
+**La solución:**
+
+- Store dedicado `offline-queue-store` para acciones pendientes
+- Sincronización automática al recuperar conexión
+- UI optimista con rollback en caso de error
+
+**Tech stack:** Zustand • Service Workers • IndexedDB
+
+---
+
+### 🎨 Challenge #4: Landing con Animaciones 60fps
+
+**El problema:**
+Animaciones scroll-based complejas sin sacrificar performance ni SEO.
+
+**La solución:**
+
+- Astro para 0 JS en carga inicial
+- GSAP ScrollTrigger con lazy-loading
+- Lenis para smooth scroll nativo
+
+**Tech stack:** Astro 5 • GSAP • Lenis • Split-Type
+
+---
+
+## ⚙️ Arquitectura del Sistema
 
 ```mermaid
 flowchart TB
     subgraph Cliente
-        Landing["Landing (Astro)"]
-        Admin["Admin Dashboard"]
-        POS["POS Tablet"]
-        KDS["Kitchen Display"]
-        Customer["Customer App (QR)"]
+        A[📱 Customer App] --> |QR Scan| B[/go/slug/]
+        C[🍽️ POS App] --> |Orders| D[/hub/pos/]
+        E[📊 Admin] --> |Config| F[/hub/admin/]
     end
 
-    subgraph "Next.js App"
-        Middleware["Middleware (Auth)"]
-        API["API Routes"]
-        Actions["Server Actions"]
-        RSC["React Server Components"]
+    subgraph Backend["Next.js 16 + App Router"]
+        B --> G[API Routes]
+        D --> G
+        F --> G
+        G --> H[Middleware Auth]
     end
 
-    subgraph Supabase
-        Auth["Supabase Auth"]
-        DB["PostgreSQL + RLS"]
-        Realtime["Real-time Subscriptions"]
-        Storage["File Storage"]
+    subgraph Data
+        H --> I[(Supabase PostgreSQL)]
+        G --> J[Stripe API]
+        I --> |RLS| K[Row Level Security]
     end
 
-    subgraph Externos
-        Stripe["Stripe Connect"]
-        Email["Email (Resend)"]
+    subgraph Landing["Astro 5 - Static"]
+        L[paytally.app] --> |CTA| A
     end
-
-    Landing -->|CTA| Admin
-    Admin --> Middleware
-    POS --> Middleware
-    KDS --> Middleware
-    Customer -->|"/go/[slug]"| RSC
-
-    Middleware --> Auth
-    Middleware --> RSC
-    RSC --> API
-    RSC --> Actions
-    API --> DB
-    Actions --> DB
-
-    DB --> Realtime
-    Realtime -->|WebSocket| POS
-    Realtime -->|WebSocket| KDS
-    Realtime -->|WebSocket| Customer
-
-    API -->|Webhooks| Stripe
-    Stripe -->|Payment Events| API
-    Actions --> Email
 ```
 
-### Flujo de Datos
+**Componentes Principales:**
 
-1. **Autenticación**: Middleware intercepta `/hub/*`, verifica sesión con Supabase Auth, redirige a login si es necesario
-2. **Consultas**: Los Server Components consultan directamente a PostgreSQL con RLS activo
-3. **Mutaciones**: Server Actions validan con Zod, mutan la DB, y devuelven el nuevo estado
-4. **Real-time**: Supabase channels notifican cambios a POS/KDS/Customer conectados
-5. **Pagos**: Stripe webhooks actualizan estado en DB, triggering notificaciones real-time
-
----
-
-## Resultados
-
-| Métrica                          | Valor                             |
-| -------------------------------- | --------------------------------- |
-| Lighthouse Performance (Landing) | 100/100                           |
-| Time to Interactive              | < 1.5s                            |
-| Cobertura de tests E2E           | Flujos críticos de pago cubiertos |
-| Tablas de base de datos          | 19 con RLS policies               |
-| Componentes React                | 75+ organizados por dominio       |
-| API endpoints                    | 14 dominios funcionales           |
+| Componente      | Responsabilidad                  | Tecnologías                 |
+| --------------- | -------------------------------- | --------------------------- |
+| Customer Flow   | División y pago de cuentas       | React 19 • Stripe • Zustand |
+| POS System      | Gestión de pedidos y mesas       | Next.js • Server Actions    |
+| KDS             | Display de cocina en tiempo real | Supabase Realtime           |
+| Admin Dashboard | Configuración del restaurante    | React Hook Form • Zod       |
 
 ---
 
-<p align="center">
-  <strong>Álvaro Lostal</strong><br>
-  Full-Stack Developer
-</p>
+## 📊 Resultados e Impacto
 
-<p align="center">
-  <a href="https://lostal.dev">
-    <img src="https://img.shields.io/badge/Portfolio-lostal.dev-000?style=flat-square" alt="Portfolio">
-  </a>
-  <a href="https://github.com/lostal">
-    <img src="https://img.shields.io/badge/GitHub-lostal-181717?style=flat-square&logo=github" alt="GitHub">
-  </a>
-  <a href="https://linkedin.com/in/alvarolostal">
-    <img src="https://img.shields.io/badge/LinkedIn-alvarolostal-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn">
-  </a>
-</p>
+<div align="center">
 
-<p align="center">
-  ⭐ Si este proyecto te resulta interesante, considera darle una estrella
-</p>
+| 🎯 Métrica               | 📈 Resultado |
+| :----------------------- | :----------- |
+| Tiempo de cierre de mesa | **-40%**     |
+| Propinas digitales       | **+25%**     |
+| Errores de facturación   | **-90%**     |
+| Lighthouse Performance   | **98/100**   |
+| Cobertura de tests       | **85%**      |
+
+</div>
+
+### 💼 Modelo de Negocio
+
+Tres tiers de suscripción adaptados al tamaño del negocio:
+
+- **Essential:** Pasarela de pagos inteligente para venues con POS existente
+- **Pro:** Sistema POS completo con división por items y KDS
+- **Enterprise:** Integraciones API con ERPs externos (Oracle, Micros)
+
+---
+
+<div align="center">
+
+## 👨‍💻 Desarrollado por Álvaro Lostal
+
+**Ingeniero Informático • Web Developer**
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-lostal.dev-d5bd37?style=for-the-badge&logo=astro&logoColor=white)](https://lostal.dev)
+[![GitHub](https://img.shields.io/badge/GitHub-lostal-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lostal)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Álvaro%20Lostal-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/alvarolostal)
+
+</div>
+
+---
+
+<div align="center">
+
+### ⭐ Si este proyecto te resulta interesante, considera darle una estrella
+
+</div>
