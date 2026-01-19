@@ -13,14 +13,14 @@ export function initScrollAnimations() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
-          // Optional: unobserve after first trigger for performance
-          // observer.unobserve(entry.target);
+          // Unobserve after trigger to improve performance
+          observer.unobserve(entry.target);
         }
       });
     },
     {
-      threshold: 0.1, // Trigger when 10% of element is visible
-      rootMargin: '0px 0px -50px 0px', // Trigger slightly before element enters viewport
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px',
     }
   );
 
@@ -36,6 +36,9 @@ export function initScrollAnimations() {
  * Animates numbers from 0 to target value
  */
 export function initCountUpAnimations() {
+  const elements = document.querySelectorAll('[data-count]');
+  if (elements.length === 0) return;
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -54,7 +57,7 @@ export function initCountUpAnimations() {
     { threshold: 0.5 }
   );
 
-  document.querySelectorAll('[data-count]').forEach((el) => observer.observe(el));
+  elements.forEach((el) => observer.observe(el));
 
   return observer;
 }
@@ -76,10 +79,13 @@ function animateCountUp(element: HTMLElement, target: number, duration: number, 
 }
 
 /**
- * Parallax scroll effect
+ * Parallax scroll effect (Desktop only)
  * Moves elements at different speeds based on scroll position
  */
 export function initParallaxEffects() {
+  // Skip on touch devices to improve performance
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
   const parallaxElements = document.querySelectorAll('[data-parallax]');
   if (parallaxElements.length === 0) return;
 

@@ -11,7 +11,7 @@
  */
 export function initMagneticButtons() {
   // Only enable on non-touch devices
-  if ('ontouchstart' in window) return;
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
   const magneticElements = document.querySelectorAll('[data-magnetic]');
 
@@ -52,35 +52,6 @@ export function initMagneticButtons() {
   });
 }
 
-/**
- * Smooth cursor follower
- * Creates a custom cursor that follows mouse with lag
- */
-export function initCursorFollower() {
-  const cursor = document.querySelector('[data-cursor]') as HTMLElement;
-  if (!cursor) return;
-
-  let mouseX = 0;
-  let mouseY = 0;
-  let cursorX = 0;
-  let cursorY = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  function animateCursor() {
-    const speed = 0.15;
-    cursorX += (mouseX - cursorX) * speed;
-    cursorY += (mouseY - cursorY) * speed;
-
-    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-    requestAnimationFrame(animateCursor);
-  }
-
-  animateCursor();
-}
 
 /**
  * Tilt effect on cards
@@ -88,7 +59,7 @@ export function initCursorFollower() {
  */
 export function initTiltEffect() {
   // Only enable on non-touch devices
-  if ('ontouchstart' in window) return;
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
   const tiltElements = document.querySelectorAll('[data-tilt]');
 
@@ -161,55 +132,15 @@ export function initRippleEffect() {
   });
 }
 
-/**
- * Text reveal animation
- * Reveals text character by character or word by word
- */
-export function initTextReveal() {
-  const textElements = document.querySelectorAll('[data-text-reveal]');
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
-          const el = entry.target as HTMLElement;
-          const mode = el.getAttribute('data-text-reveal') || 'word'; // 'word' or 'char'
-          const text = el.textContent || '';
-
-          if (mode === 'word') {
-            const words = text.split(' ');
-            el.innerHTML = words
-              .map(
-                (word, i) =>
-                  `<span class="inline-block opacity-0 animate-fade-in-up" style="animation-delay: ${i * 50}ms">${word}</span>`
-              )
-              .join(' ');
-          } else {
-            const chars = text.split('');
-            el.innerHTML = chars
-              .map(
-                (char, i) =>
-                  `<span class="inline-block opacity-0 animate-fade-in-up" style="animation-delay: ${i * 20}ms">${char === ' ' ? '&nbsp;' : char}</span>`
-              )
-              .join('');
-          }
-
-          el.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  textElements.forEach((el) => observer.observe(el));
-}
 
 /**
- * Smooth scale on scroll
+ * Smooth scale on scroll (Desktop only)
  * Elements scale up/down based on scroll position
  */
 export function initScrollScale() {
+  // Skip on touch devices to improve performance
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
   const scaleElements = document.querySelectorAll('[data-scroll-scale]');
   if (scaleElements.length === 0) return;
 
@@ -241,9 +172,7 @@ export function initAllMicroAnimations() {
   initMagneticButtons();
   initTiltEffect();
   initRippleEffect();
-  initTextReveal();
   initScrollScale();
-  // initCursorFollower(); // Optional, uncomment if you add a cursor element
 }
 
 // Initialize on DOM ready

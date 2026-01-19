@@ -11,10 +11,10 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  // Prefetching for instant navigation
+  // Prefetching optimized for performance
   prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'viewport',
+    prefetchAll: false,
+    defaultStrategy: 'hover',
   },
 
   // Build output

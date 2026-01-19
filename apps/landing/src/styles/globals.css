@@ -319,15 +319,19 @@
     }
   }
 
-  /* Magnetic elements - smooth transition */
-  [data-magnetic] {
-    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  /* Magnetic elements - smooth transition (Desktop only) */
+  @media (hover: hover) and (pointer: fine) {
+    [data-magnetic] {
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
   }
 
-  /* Tilt elements - smooth transition */
-  [data-tilt] {
-    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    transform-style: preserve-3d;
+  /* Tilt elements - smooth transition (Desktop only) */
+  @media (hover: hover) and (pointer: fine) {
+    [data-tilt] {
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      transform-style: preserve-3d;
+    }
   }
 }
 

@@ -1,9 +1,15 @@
 import Lenis from 'lenis';
 
 /**
- * Initialize animations (Only Lenis Smooth Scroll)
+ * Initialize Lenis Smooth Scroll (Desktop only)
+ * Disabled on touch devices to prevent conflicts with native scrolling
  */
 export function initAnimations() {
+  // Skip on touch devices
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    return;
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initSmoothScrolling);
   } else {
