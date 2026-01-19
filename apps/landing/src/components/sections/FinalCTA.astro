@@ -10,7 +10,7 @@
   <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div
       id="cta-container"
-      class="bg-foreground text-background relative mx-auto w-full overflow-hidden rounded-t-[40px] px-6 py-20 text-center will-change-transform md:px-16 md:py-28"
+      class="bg-foreground text-background relative mx-auto w-full overflow-hidden rounded-t-[40px] px-6 py-20 text-center md:px-16 md:py-28"
       style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"
     >
       <!-- Background Mesh -->
@@ -75,46 +75,39 @@
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  // Skip GSAP entirely on touch devices
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    // Mobile: no animations
+  } else {
+    // Desktop only: dynamic import to avoid loading GSAP on mobile
+    import('gsap').then(({ gsap }) => {
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+        gsap.registerPlugin(ScrollTrigger);
 
-  gsap.registerPlugin(ScrollTrigger);
+        const cta = document.getElementById('cta-container');
+        if (!cta) return;
 
-  // Safari iOS fixes
-  ScrollTrigger.config({
-    ignoreMobileResize: true, // Prevent refresh when Safari's address bar hides/shows
-  });
-
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const cta = document.getElementById('cta-container');
-
-  if (!isMobile && cta) {
-    // Add hardware acceleration hint
-    gsap.set(cta, {
-      force3D: true,
-      willChange: 'transform, width, border-radius',
+        gsap.fromTo(
+          cta,
+          {
+            width: '100%',
+            borderBottomLeftRadius: '0px',
+            borderBottomRightRadius: '0px',
+          },
+          {
+            width: '95%',
+            borderBottomLeftRadius: '40px',
+            borderBottomRightRadius: '40px',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#final-cta',
+              start: 'bottom bottom',
+              end: '+=400',
+              scrub: true,
+            },
+          }
+        );
+      });
     });
-
-    gsap.fromTo(
-      cta,
-      {
-        width: '100%',
-        borderBottomLeftRadius: '0px',
-        borderBottomRightRadius: '0px',
-      },
-      {
-        width: '95%',
-        borderBottomLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        ease: 'none',
-        force3D: true,
-        scrollTrigger: {
-          trigger: '#final-cta',
-          start: 'bottom bottom',
-          end: '+=400',
-          scrub: true,
-        },
-      }
-    );
   }
 </script>

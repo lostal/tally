@@ -1,443 +1,219 @@
-# 💸 Tally - Sistema Operativo para Restaurantes
+# ▎Tally
 
-<div align="center">
+![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
+![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white)
 
-![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+**Sistema operativo para restaurantes con división inteligente de cuentas mediante QR**
 
-**SaaS multi-tenant para la industria de hostelería** con división de cuentas QR, POS completo, KDS y cumplimiento fiscal español.
-
-[Inicio Rápido](#-inicio-rápido) • [Documentación](#-documentación) • [Deploy](#-deploy)
-
-</div>
+[Demo](https://app.paytally.app) · [Landing](https://paytally.app)
 
 ---
 
-## 📋 Descripción
+## Presentación
 
-Tally es un **Sistema Operativo integral para restaurantes** que moderniza toda la operación:
+Tally es un SaaS B2B multi-tenant que transforma la gestión de restaurantes. Reemplaza TPVs obsoletos combinando punto de venta (POS), cocina en tiempo real (KDS) y una experiencia de pago única donde los comensales dividen la cuenta escaneando un QR.
 
-- **Plan Essential**: Capa de cobro digital que se integra con cualquier TPV antiguo
-- **Plan Pro**: Reemplazo completo (Sala + Cocina + Caja)
-- **Plan Enterprise**: Sincronización con ERPs corporativos
+La propuesta de valor diferencial está en el **bill splitting colaborativo**: cada comensal ve los ítems de la mesa, selecciona lo que consumió y paga su parte con Stripe. El camarero se despreocupa del cálculo y los conflictos típicos de "¿quién pidió qué?".
 
-### Filosofía: "Waiter-First, Customer-Centric"
-
-Buscamos la excelencia operativa sin barreras artificiales. Cada plan ofrece la mejor UX posible para su nivel.
+El sistema soporta tres tiers de suscripción que escalan desde cafeterías con TPV legacy (solo pagos digitales) hasta cadenas con integración ERP completa.
 
 ---
 
-## ✨ Características por Plan
+## Stack Tecnológico
 
-### 📱 Aplicación del Cliente (`/go/[slug]`) - Universal
-
-Disponible en **todos los planes** vía QR:
-
-- **3 modalidades de pago**:
-  - 🎯 **Split Dinámico**: División automática según personas activas en tiempo real
-  - 💶 **Cantidad Exacta**: Input manual con botones rápidos
-  - 🍕 **Por Item**: Selección individual de consumiciones (Solo Pro/Enterprise)
-- **Propinas opcionales** (configurables por restaurante)
-- **Branding personalizado** (logo y colores del restaurante)
-- **Sincronización en tiempo real** entre comensales
-- **Recibos fiscales** con Veri\*factu compliance
-
-### 🔑 Plan Essential - Capa de Cobros
-
-**Objetivo**: Modernizar el cobro sin cambiar el TPV existente
-
-- ✅ Mapa visual de mesas
-- ✅ Calculadora de importe manual
-- ✅ Generación de QR en mesa
-- ✅ Split dinámico y cantidad exacta
-- ❌ Pago por item (desactivado - Tally no conoce productos)
-- ❌ KDS (desactivado)
-- ❌ Gestión de stock (desactivado)
-
-### 🚀 Plan Pro - Sistema Completo
-
-**Objetivo**: Reemplazo total del software del restaurante
-
-- ✅ **POS Completo**:
-  - Mapa de mesas con estados (libre, ocupada, esperando comida, pagando)
-  - Toma de comanda con productos
-  - Modificadores (simples y con precio)
-  - Stock rápido (86'ing)
-  - Flujo de cobro configurable (auto/manual)
-
-- ✅ **KDS (Kitchen Display System)**:
-  - 🚦 Semáforo de tiempos: 🟢 <10min | 🟡 10-20min | 🔴 >20min
-  - 🍴 Smart Routing: Filtros Cocina/Barra
-  - ↩️ Recall: Recuperar tickets borrados por error
-  - Real-time sync con Supabase
-
-- ✅ **Gestión de Caja**:
-  - Apertura/cierre de caja
-  - Registro de entradas/salidas
-  - Z-Report completo (desglose efectivo/tarjeta/propinas)
-
-- ✅ **RBAC (Control de Acceso)**:
-  - Roles: Owner, Manager, Waiter
-  - Managers autorizan Voids y Refunds
-  - Audit logging completo
-
-### 🏢 Plan Enterprise - Integrador
-
-**Objetivo**: Para grandes cadenas con ERP central
-
-- ✅ Todo de Plan Pro +
-- 🔄 Sincronización bidireccional con ERPs (Oracle, SAP, Micros)
-- 📊 Reporting centralizado multi-local
+| Área        | Tecnología                            | Razón de uso                                                                |
+| ----------- | ------------------------------------- | --------------------------------------------------------------------------- |
+| Framework   | Next.js 16 (App Router)               | Server Components, Server Actions, y optimización automática de rendimiento |
+| UI          | React 19 + Tailwind CSS v4            | Concurrent features, design system con tokens CSS nativos                   |
+| Landing     | Astro 5                               | Output 100% estático, zero JavaScript por defecto, deploy en CDN global     |
+| Database    | Supabase (PostgreSQL)                 | Row Level Security para aislamiento multi-tenant, real-time subscriptions   |
+| Auth        | Supabase Auth                         | SSO, magic links, y gestión de sesiones integrada con RLS                   |
+| Pagos       | Stripe Connect                        | Split payments, webhooks robustos, cumplimiento PCI                         |
+| State       | Zustand + Immer                       | Estado inmutable con API minimal, sin boilerplate                           |
+| Validación  | Zod                                   | Esquemas compartidos entre cliente y servidor, type-safe                    |
+| Animaciones | Motion (app) / GSAP + Lenis (landing) | Animaciones fluidas con scroll hijacking suave                              |
+| Testing     | Vitest + Playwright                   | Unit tests rápidos, E2E para flujos críticos de pago                        |
 
 ---
 
-## 🏗️ Stack Tecnológico
+## Funcionalidades Destacadas
 
-### Frontend
+### Punto de Venta (POS)
 
-- **Framework**: Next.js 15 (App Router)
-- **UI**: React 19 + TypeScript
-- **Styling**: Tailwind CSS v4
-- **Animations**: Motion (Framer Motion)
-- **Forms**: React Hook Form + Zod
-- **State**: Zustand + Immer
+- Mapa visual de mesas con estados en tiempo real
+- Toma de comanda con modificadores y notas de cocina
+- Flujo de cobro configurable: automático (QR siempre activo) o manual (camarero habilita)
+- Gestión de caja con arqueos y movimientos
 
-### Backend
+### Cocina (KDS)
 
-- **Database**: Supabase (PostgreSQL + Real-time)
-- **Auth**: Supabase Auth
-- **Storage**: Supabase Storage
-- **API**: Next.js API Routes + Server Actions
+- Semáforo de tiempos por pedido con código de colores
+- Smart routing: filtro automático cocina vs barra según categoría
+- Recall de tickets eliminados por error
+- Notificaciones push al camarero cuando el plato está listo
 
-### Pagos
+### División de Cuenta (Customer App)
 
-- **Processor**: Stripe
-- **Compliance**: Veri\*factu (España)
+- Escaneo QR → selección de ítems → pago en 30 segundos
+- Tres modos: dividir por ítems, partes iguales, o cantidad fija
+- Propinas digitales integradas
+- Waiting room con estado del pago en tiempo real
 
-### Testing
+### Administración
 
-- **Unit**: Vitest
-- **E2E**: Playwright
-- **Linting**: ESLint + Prettier
-- **Type Safety**: TypeScript strict mode
+- Dashboard con métricas de ventas y ocupación
+- Gestión de menú: categorías, productos, modificadores, precios
+- Control de mesas y zonas del local
+- Onboarding wizard para nuevos restaurantes
 
----
+### Fiscal (España)
 
-## 🚀 Inicio Rápido
-
-### Opción 1: Guía Rápida (15 min)
-
-```bash
-# 1. Clonar e instalar
-git clone <url-repo>
-cd tally
-pnpm install
-
-# 2. Configurar Supabase y env vars
-# Sigue: QUICK_START.md (guía paso a paso)
-
-# 3. Iniciar desarrollo
-pnpm dev
-```
-
-📖 **Ver guía completa**: [`QUICK_START.md`](./QUICK_START.md)
-
-### Opción 2: Setup Detallado
-
-Para configuración detallada de Supabase desde cero:
-
-📖 **Ver guía detallada**: [`docs/SUPABASE_SETUP.md`](./docs/SUPABASE_SETUP.md)
+- Generación de facturas simplificadas
+- Preparado para Verifactu (sistema de verificación fiscal)
+- Audit log completo de operaciones
 
 ---
 
-## 📚 Documentación
+## Decisiones Técnicas
 
-### Guías de Inicio
-
-- [`QUICK_START.md`](./QUICK_START.md) - Setup rápido (15 min)
-- [`docs/SUPABASE_SETUP.md`](./docs/SUPABASE_SETUP.md) - Configuración detallada de Supabase
-- [`CLAUDE.md`](./CLAUDE.md) - Guía para Claude Code (AI assistant)
-
-### Arquitectura
-
-- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) - Arquitectura del sistema
-- [`docs/ROUTING.md`](./docs/ROUTING.md) - Estrategia de routing
-- [`docs/SESSION_ARCHITECTURE.md`](./docs/SESSION_ARCHITECTURE.md) - Arquitectura de sesiones
-- [`docs/DATABASE_SCHEMA.md`](./docs/DATABASE_SCHEMA.md) - Schema de base de datos
-
-### Features
-
-- [`docs/API.md`](./docs/API.md) - Documentación de API
-- [`docs/USER_FLOWS.md`](./docs/USER_FLOWS.md) - Flujos de usuario
-- [`docs/DESIGN_SYSTEM.md`](./docs/DESIGN_SYSTEM.md) - Sistema de diseño
-- [`docs/LANDING.md`](./docs/LANDING.md) - Landing page (Astro)
-
-### Testing y Deploy
-
-- [`docs/TESTING.md`](./docs/TESTING.md) - Guía de testing
-- [`LAUNCH_CHECKLIST.md`](./LAUNCH_CHECKLIST.md) - Checklist de lanzamiento
+| Decisión                            | Justificación                                                                                                                                     |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Path-based routing sobre subdomains | Simplifica certificados SSL, deploy, y configuración de CORS. Un solo dominio `app.paytally.app` con rutas `/hub/admin`, `/hub/pos`, `/go/[slug]` |
+| Server Actions para mutaciones      | Evita duplicar validación cliente/servidor. Zod valida una vez, TypeScript infiere tipos en ambos lados                                           |
+| Optimistic locking con versión      | Múltiples camareros pueden modificar la misma mesa. Cada item tiene `version` para detectar conflictos y hacer rollback limpio                    |
+| RLS policies sobre middleware       | El aislamiento tenant ocurre en la base de datos, no en código. Imposible que un bug exponga datos de otro restaurante                            |
+| Landing separada en Astro           | Zero dependencia del runtime Next.js. Deploy en Cloudflare Pages con cache global, mientras la app corre en Vercel                                |
+| Zustand sobre Context API           | Stores modulares sin prop drilling. El store de pagos no re-renderiza el componente de menú                                                       |
+| CSS variables para theming          | Los restaurantes pueden personalizar colores. Las variables se inyectan en runtime sin rebuild                                                    |
+| Offline queue store                 | El POS puede tomar comandas sin conexión. Se sincronizan cuando vuelve la red                                                                     |
 
 ---
 
-## 🛠️ Comandos
+## Retos Técnicos
 
-### Desarrollo
+### Sincronización real-time sin conflictos
 
-```bash
-# Next.js app (puerto 3000)
-pnpm dev
+- **Problema**: Múltiples comensales seleccionando ítems simultáneamente causan race conditions. El comensal A marca "Hamburguesa" mientras B hace lo mismo.
+- **Solución**: Optimistic locking con timestamp + `claimed_by` + `version`. El primero en confirmar gana, el segundo ve el item como "ya reclamado" y puede contestar.
+- **Tech**: Supabase Real-time subscriptions, PostgreSQL row-level locking
 
-# Astro landing (puerto 4321)
-pnpm dev:landing
+### Flujo de pago atómico multi-participante
 
-# Ambos simultáneamente
-pnpm dev:all
-```
+- **Problema**: Si 4 comensales pagan, y el tercero falla, ¿qué pasa con los otros 3?
+- **Solución**: Payment sessions con estados (`pending`, `partial`, `complete`). Cada pago individual es independiente pero trackea el total. Si alguien falla, los demás no se ven afectados.
+- **Tech**: Stripe Payment Intents, webhooks idempotentes, reconciliación automática
 
-### Build & Preview
+### Cumplimiento fiscal español (Verifactu)
 
-```bash
-# Build Next.js
-pnpm build
-pnpm start
+- **Problema**: Las facturas deben generarse con formato específico, encadenadas criptográficamente, y reportadas a la AEAT.
+- **Solución**: Tabla `invoices` con campos para serie, número correlativo, hash del anterior, y estado de envío. Preparado para la API oficial cuando se publique.
+- **Tech**: PostgreSQL sequences, triggers para auto-generación de número, campos JSONB para datos fiscales
 
-# Build Astro landing
-pnpm build:landing
-pnpm preview:landing
+### Performance del mapa de mesas en tiempo real
 
-# Build ambos
-pnpm build:all
-```
-
-### Quality
-
-```bash
-# Linting
-pnpm lint                # Next.js
-pnpm lint:landing        # Astro
-pnpm lint:all            # Ambos
-
-# Type checking
-pnpm type-check          # Next.js
-pnpm type-check:landing  # Astro
-pnpm type-check:all      # Ambos
-
-# Format
-pnpm format              # Next.js
-pnpm format:landing      # Astro
-pnpm format:all          # Ambos
-```
-
-### Testing
-
-```bash
-# Unit tests (Vitest)
-pnpm test                # Watch mode
-pnpm test --run          # Run once
-pnpm test:coverage       # Con coverage
-
-# E2E tests (Playwright)
-pnpm test:e2e            # Requiere setup
-```
-
-### Database (Supabase Local)
-
-```bash
-pnpm supabase:start      # Iniciar local
-pnpm supabase:stop       # Detener
-pnpm supabase:reset      # Reset + migraciones
-```
+- **Problema**: 50 mesas actualizándose cada segundo saturaban la UI.
+- **Solución**: Debounce de actualizaciones visuales + memoización agresiva. Solo re-renderiza la mesa que cambió, no el grid completo.
+- **Tech**: React.memo, useDeferredValue, Supabase channels por restaurante
 
 ---
 
-## 🏃 Deploy
+## Arquitectura
 
-### Producción
+```mermaid
+flowchart TB
+    subgraph Cliente
+        Landing["Landing (Astro)"]
+        Admin["Admin Dashboard"]
+        POS["POS Tablet"]
+        KDS["Kitchen Display"]
+        Customer["Customer App (QR)"]
+    end
 
-- **Next.js App**: Vercel (auto-deploy desde `main`)
-  - URL: `https://app.paytally.app`
-  - Config: `vercel.json`
+    subgraph "Next.js App"
+        Middleware["Middleware (Auth)"]
+        API["API Routes"]
+        Actions["Server Actions"]
+        RSC["React Server Components"]
+    end
 
-- **Astro Landing**: Cloudflare Pages
-  - URL: `https://paytally.app`
-  - Static site con global CDN
+    subgraph Supabase
+        Auth["Supabase Auth"]
+        DB["PostgreSQL + RLS"]
+        Realtime["Real-time Subscriptions"]
+        Storage["File Storage"]
+    end
 
-### Pre-Deploy Checklist
+    subgraph Externos
+        Stripe["Stripe Connect"]
+        Email["Email (Resend)"]
+    end
 
-1. ✅ Aplicar migraciones en Supabase producción
-2. ✅ Configurar env vars en Vercel
-3. ✅ Tests unitarios pasan (127/127)
-4. ✅ Type-check limpio
-5. ✅ Smoke test manual en staging
+    Landing -->|CTA| Admin
+    Admin --> Middleware
+    POS --> Middleware
+    KDS --> Middleware
+    Customer -->|"/go/[slug]"| RSC
 
-📖 **Guía completa**: [`LAUNCH_CHECKLIST.md`](./LAUNCH_CHECKLIST.md)
+    Middleware --> Auth
+    Middleware --> RSC
+    RSC --> API
+    RSC --> Actions
+    API --> DB
+    Actions --> DB
+
+    DB --> Realtime
+    Realtime -->|WebSocket| POS
+    Realtime -->|WebSocket| KDS
+    Realtime -->|WebSocket| Customer
+
+    API -->|Webhooks| Stripe
+    Stripe -->|Payment Events| API
+    Actions --> Email
+```
+
+### Flujo de Datos
+
+1. **Autenticación**: Middleware intercepta `/hub/*`, verifica sesión con Supabase Auth, redirige a login si es necesario
+2. **Consultas**: Los Server Components consultan directamente a PostgreSQL con RLS activo
+3. **Mutaciones**: Server Actions validan con Zod, mutan la DB, y devuelven el nuevo estado
+4. **Real-time**: Supabase channels notifican cambios a POS/KDS/Customer conectados
+5. **Pagos**: Stripe webhooks actualizan estado en DB, triggering notificaciones real-time
 
 ---
 
-## 🧪 Estado de Testing
+## Resultados
 
-### ✅ Unit Tests: 100% PASSING
-
-```
-✓ 127 tests passed (4.5s)
-✓ Split calculations (29 tests)
-✓ Fiscal calculations (48 tests)
-✓ Currency handling (zero rounding errors)
-✓ Veri*factu compliance
-✓ Component tests
-```
-
-### ✅ Type Safety: CLEAN
-
-```
-✓ tsc --noEmit (0 errors)
-```
-
-### ⚠️ E2E Tests: Infraestructura Lista
-
-Tests implementados, requiere Supabase local para automatización.
-Manual testing recomendado para lanzamiento v1.0.
-
-📖 **Ver detalles**: [`docs/TESTING.md`](./docs/TESTING.md)
+| Métrica                          | Valor                             |
+| -------------------------------- | --------------------------------- |
+| Lighthouse Performance (Landing) | 100/100                           |
+| Time to Interactive              | < 1.5s                            |
+| Cobertura de tests E2E           | Flujos críticos de pago cubiertos |
+| Tablas de base de datos          | 19 con RLS policies               |
+| Componentes React                | 75+ organizados por dominio       |
+| API endpoints                    | 14 dominios funcionales           |
 
 ---
 
-## 📦 Estructura del Proyecto
+<p align="center">
+  <strong>Álvaro Lostal</strong><br>
+  Full-Stack Developer
+</p>
 
-```
-tally/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── go/[slug]/          # Customer flow (QR → Bill → Payment)
-│   │   ├── hub/admin/          # Admin dashboard
-│   │   ├── hub/pos/            # Point of Sale
-│   │   ├── hub/kds/            # Kitchen Display
-│   │   ├── hub/onboarding/     # Onboarding wizard
-│   │   ├── api/                # API Routes
-│   │   └── actions/            # Server Actions
-│   ├── components/             # React components
-│   │   ├── ui/                 # shadcn/ui primitives
-│   │   ├── bill/               # Bill splitting
-│   │   ├── payment/            # Payment flow
-│   │   └── pos/                # POS components
-│   ├── lib/                    # Utilities
-│   │   ├── supabase/           # Supabase clients
-│   │   ├── api/                # API helpers + Zod validation
-│   │   ├── fiscal/             # Veri*factu compliance
-│   │   └── hooks/              # Custom React hooks
-│   ├── stores/                 # Zustand stores
-│   └── types/                  # TypeScript types
-├── apps/landing/               # Astro marketing site
-├── supabase/
-│   └── migrations/             # Database migrations (001-011)
-├── e2e/                        # Playwright E2E tests
-├── docs/                       # Documentation
-└── public/                     # Static assets
-```
+<p align="center">
+  <a href="https://lostal.dev">
+    <img src="https://img.shields.io/badge/Portfolio-lostal.dev-000?style=flat-square" alt="Portfolio">
+  </a>
+  <a href="https://github.com/lostal">
+    <img src="https://img.shields.io/badge/GitHub-lostal-181717?style=flat-square&logo=github" alt="GitHub">
+  </a>
+  <a href="https://linkedin.com/in/alvarolostal">
+    <img src="https://img.shields.io/badge/LinkedIn-alvarolostal-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn">
+  </a>
+</p>
 
----
-
-## 🔐 Cumplimiento Legal (España)
-
-### Veri\*factu Compliance
-
-- ✅ **Inmutabilidad**: Hashes encadenados (hash N incluye hash N-1)
-- ✅ **Universalidad**: Aplica a todos los planes
-- ✅ **Trazabilidad**: Audit logs completos
-- ✅ **API lista**: Preparada para envío a Hacienda
-
-### Funciones DB Implementadas
-
-```sql
-generate_invoice_hash()         -- Generación de hash encadenado
-generate_invoice_qr_data()      -- QR fiscal
-calculate_tax_breakdown()       -- Desglose IVA (21%, 10%, 4%, 0%)
-```
-
----
-
-## 🤝 Contribuir
-
-Contributions are welcome! Please read our contributing guidelines first.
-
-1. Fork el repo
-2. Crea una branch: `git checkout -b feature/amazing-feature`
-3. Commit cambios: `git commit -m 'feat: add amazing feature'`
-4. Push a branch: `git push origin feature/amazing-feature`
-5. Abre un Pull Request
-
-### Commit Convention
-
-Usamos [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-feat: add new feature
-fix: bug fix
-docs: documentation changes
-style: formatting, missing semicolons, etc.
-refactor: code restructure without changing behavior
-test: adding tests
-chore: maintenance tasks
-```
-
----
-
-## 📄 Licencia
-
-[Especificar licencia aquí]
-
----
-
-## 🆘 Soporte
-
-- 📖 **Documentación**: [`docs/`](./docs)
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/tu-org/tally/issues)
-- 💬 **Discusiones**: [GitHub Discussions](https://github.com/tu-org/tally/discussions)
-
----
-
-## 🎯 Roadmap
-
-### v1.0 (Actual) ✅
-
-- [x] Plan Essential (Keypad + QR)
-- [x] Plan Pro (POS + KDS + Cash)
-- [x] KDS Traffic Lights
-- [x] KDS Smart Routing
-- [x] KDS Recall Function
-- [x] Veri\*factu compliance
-- [x] RBAC con audit logging
-
-### v1.1 (Próximo - 2 semanas)
-
-- [ ] E2E tests automatizados (Supabase local)
-- [ ] Payment flow UI toggle (auto/manual mode)
-- [ ] Visual table map (drag-and-drop)
-- [ ] Stripe edge case handling
-
-### v1.2 (1 mes)
-
-- [ ] Analytics dashboard
-- [ ] Kitchen timing analytics
-- [ ] Staff performance metrics
-- [ ] Multi-restaurant support (owner con múltiples locales)
-
-### v2.0 (Futuro)
-
-- [ ] Plan Enterprise con ERP sync
-- [ ] Mobile app (React Native)
-- [ ] Advanced reporting
-- [ ] API pública para integraciones
-
----
-
-<div align="center">
-
-**Hecho con ❤️ para la industria de hostelería**
-
-[Sitio Web](https://paytally.app) • [Demo](https://app.paytally.app) • [Documentación](./docs)
-
-</div>
+<p align="center">
+  ⭐ Si este proyecto te resulta interesante, considera darle una estrella
+</p>
