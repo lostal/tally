@@ -252,6 +252,19 @@
     }
   }
 
+  /* WebKit performance fix: disable blur completely on iOS/Safari */
+  @supports (-webkit-touch-callout: none) {
+    .liquid-glass {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background-color: rgba(250, 250, 248, 0.95);
+    }
+
+    .dark .liquid-glass {
+      background-color: rgba(26, 24, 21, 0.95);
+    }
+  }
+
   /* Scroll reveal animations */
   [data-animate] {
     opacity: 0;

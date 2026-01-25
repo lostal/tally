@@ -9,25 +9,28 @@ import Section from '../ui/Section.astro';
       class="relative order-last mx-auto aspect-square w-full max-w-md lg:order-first lg:max-w-none"
       data-animate="scale"
     >
-      <!-- Animated gradient background -->
+      <!-- Animated gradient background - NO BLUR for WebKit performance -->
       <div
-        class="from-tomato via-espresso to-blueberry absolute inset-0 rounded-full bg-linear-to-tr opacity-20 blur-3xl"
+        class="from-tomato via-espresso to-blueberry absolute inset-0 rounded-full bg-linear-to-tr opacity-15"
       >
       </div>
 
       <!-- Main visual container -->
       <div class="relative h-full w-full">
-        <!-- Middle glass container -->
+        <!-- Middle glass container - NO BLUR for WebKit performance -->
         <div
-          class="absolute inset-8 flex items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-2xl"
+          class="absolute inset-8 flex items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl"
         >
-          <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay hidden md:block"></div>
+          <div
+            class="absolute inset-0 hidden bg-[url('/noise.svg')] opacity-20 mix-blend-overlay md:block"
+          >
+          </div>
 
           <!-- Three stacked cards with stagger animation -->
           <div class="relative h-full w-full p-8" data-stagger="150">
             <!-- Card 1 - Background -->
             <div
-              class="bg-card/80 border-border/50 absolute top-12 right-8 left-8 h-48 rounded-2xl border shadow-xl backdrop-blur-sm transition-transform hover:scale-105"
+              class="bg-card/80 border-border/50 absolute top-12 right-8 left-8 h-48 rounded-2xl border shadow-xl transition-transform hover:scale-105"
               style="transform: rotate(-6deg);"
               data-stagger-item
             >
@@ -42,7 +45,7 @@ import Section from '../ui/Section.astro';
 
             <!-- Card 2 - Middle -->
             <div
-              class="bg-card border-border/50 absolute top-16 right-12 left-12 h-48 rounded-2xl border shadow-xl backdrop-blur-sm transition-transform hover:scale-105"
+              class="bg-card border-border/50 absolute top-16 right-12 left-12 h-48 rounded-2xl border shadow-xl transition-transform hover:scale-105"
               style="transform: rotate(3deg);"
               data-stagger-item
             >
@@ -57,7 +60,7 @@ import Section from '../ui/Section.astro';
 
             <!-- Card 3 - Front (Interactive) -->
             <div
-              class="bg-card border-primary/20 absolute top-20 right-16 left-16 h-48 rounded-2xl border shadow-2xl backdrop-blur-sm transition-all hover:scale-105 hover:shadow-[0_0_40px_-10px_var(--primary)]"
+              class="bg-card border-primary/20 absolute top-20 right-16 left-16 h-48 rounded-2xl border shadow-2xl transition-all hover:scale-105 hover:shadow-[0_0_40px_-10px_var(--primary)]"
               data-stagger-item
             >
               <div class="flex h-full flex-col justify-between p-5">

@@ -145,11 +145,14 @@ const structuredData = {
       Saltar al contenido principal
     </a>
 
-    <!-- Global Background Effect -->
+    <!-- Global Background Effect - NO BLUR for WebKit performance -->
     <div class="pointer-events-none fixed inset-0 z-[-1]">
-      <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.015] mix-blend-overlay hidden md:block"></div>
       <div
-        class="bg-primary/10 absolute top-0 right-0 left-0 -z-10 m-auto h-77.5 w-77.5 rounded-full opacity-30 blur-[120px]"
+        class="absolute inset-0 hidden bg-[url('/noise.svg')] opacity-[0.015] mix-blend-overlay md:block"
+      >
+      </div>
+      <div
+        class="bg-primary/10 absolute top-0 right-0 left-0 -z-10 m-auto h-77.5 w-77.5 rounded-full opacity-30"
       >
       </div>
     </div>

@@ -13,18 +13,14 @@
       class="bg-foreground text-background relative mx-auto w-full overflow-hidden rounded-t-[40px] px-6 py-20 text-center md:px-16 md:py-28"
       style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"
     >
-      <!-- Background Mesh -->
+      <!-- Background Mesh - NO BLUR for WebKit performance -->
       <div class="pointer-events-none absolute inset-0">
         <div
           class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]"
         >
         </div>
-        <div class="bg-tomato absolute -bottom-1/2 -left-1/2 h-full w-full opacity-15 blur-[100px]">
-        </div>
-        <div
-          class="bg-blueberry absolute -top-1/2 -right-1/2 h-full w-full opacity-15 blur-[100px]"
-        >
-        </div>
+        <div class="bg-tomato absolute -bottom-1/2 -left-1/2 h-full w-full opacity-10"></div>
+        <div class="bg-blueberry absolute -top-1/2 -right-1/2 h-full w-full opacity-10"></div>
       </div>
 
       <div class="relative z-10 mx-auto max-w-4xl space-y-10">

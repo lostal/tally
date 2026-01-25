@@ -52,7 +52,6 @@ export function initMagneticButtons() {
   });
 }
 
-
 /**
  * Tilt effect on cards
  * Cards tilt slightly based on mouse position
@@ -131,7 +130,6 @@ export function initRippleEffect() {
     });
   });
 }
-
 
 /**
  * Smooth scale on scroll (Desktop only)

@@ -62,7 +62,7 @@ import { ArrowRight, Check } from '@lucide/astro';
       <div class="relative hidden lg:block" data-animate="scale">
         <!-- iPhone Frame -->
         <div
-          class="relative z-10 mx-auto h-[600px] w-[300px] rounded-[2.5rem] border-[14px] border-gray-800 bg-gray-800 shadow-2xl"
+          class="relative z-10 mx-auto h-[600px] w-[300px] rounded-[2.5rem] border-14 border-gray-800 bg-gray-800 shadow-2xl"
         >
           <div class="absolute top-[72px] -left-[17px] h-[32px] w-[3px] rounded-l-lg bg-gray-800">
           </div>
@@ -126,9 +126,9 @@ import { ArrowRight, Check } from '@lucide/astro';
           </div>
         </div>
 
-        <!-- Glow/Shadow behind -->
+        <!-- Glow/Shadow behind - NO BLUR for WebKit performance -->
         <div
-          class="bg-primary/20 absolute top-1/2 left-1/2 -z-10 h-[500px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
+          class="bg-primary/15 absolute top-1/2 left-1/2 -z-10 h-[500px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         >
         </div>
       </div>
