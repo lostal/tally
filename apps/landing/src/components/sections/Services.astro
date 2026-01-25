@@ -1,0 +1,45 @@
+---
+const services = [
+  {
+    step: '01',
+    name: 'Diseño',
+    description:
+      'Creamos interfaces intuitivas y atractivas que hacen que gestionar tu restaurante sea simple y eficiente.',
+  },
+  {
+    step: '02',
+    name: 'Desarrollo',
+    description:
+      'Tecnología robusta y moderna que escala con tu negocio, desde un local hasta una cadena completa.',
+  },
+  {
+    step: '03',
+    name: 'Soporte',
+    description:
+      'Acompañamiento continuo para que tu equipo aproveche al máximo todas las funcionalidades de Tally.',
+  },
+];
+---
+
+<section class="py-16 sm:py-20">
+  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex flex-col gap-12 sm:gap-16">
+      <h2 class="text-foreground text-3xl font-medium tracking-tight sm:text-4xl">
+        Cómo trabajamos
+      </h2>
+      <div class="grid gap-8 lg:grid-cols-3">
+        {
+          services.map((service) => (
+            <div class="flex flex-col gap-12 rounded-3xl bg-neutral-100/50 px-6 py-8 backdrop-blur-sm dark:bg-neutral-900/50">
+              <p class="text-brand-primary text-sm font-medium">{service.step}</p>
+              <div class="flex flex-col gap-4">
+                <h3 class="text-foreground text-xl font-medium">{service.name}</h3>
+                <p class="text-foreground/80 text-base sm:text-lg">{service.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

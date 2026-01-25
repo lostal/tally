@@ -1,0 +1,116 @@
+---
+const pricing = [
+  {
+    name: 'Starter',
+    description: 'Perfecto para comenzar a digitalizar tu restaurante.',
+    periodicity: '/mes',
+    price: '29€',
+    action: 'Empezar ahora',
+    features: ['1 Local', 'Hasta 5 dispositivos', 'Dashboard básico', 'Soporte por email'],
+  },
+  {
+    name: 'Professional',
+    description: 'Para restaurantes que quieren escalar su operación.',
+    isFlagged: true,
+    periodicity: '/mes',
+    price: '79€',
+    action: 'Prueba gratis',
+    features: [
+      'Hasta 3 locales',
+      'Dispositivos ilimitados',
+      'Analytics avanzado',
+      'Soporte prioritario',
+      'Integraciones',
+    ],
+  },
+  {
+    name: 'Enterprise',
+    description: 'Solución completa para cadenas y grupos de restaurantes.',
+    periodicity: '',
+    price: 'A medida',
+    action: 'Contactar',
+    features: [
+      'Locales ilimitados',
+      'White label',
+      'API personalizada',
+      'Gestor dedicado',
+      'SLA garantizado',
+      'Formación in-situ',
+    ],
+  },
+];
+---
+
+<section class="py-16 sm:py-20">
+  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex flex-col gap-12 sm:gap-16">
+      <div class="flex flex-col gap-4 text-center">
+        <h2 class="text-foreground text-3xl font-medium tracking-tight sm:text-4xl">
+          Precios transparentes
+        </h2>
+        <p class="text-foreground/80 mx-auto max-w-2xl text-lg">
+          Elige el plan que mejor se adapte a tu negocio. Sin costes ocultos.
+        </p>
+      </div>
+      <div class="grid gap-8 lg:grid-cols-3">
+        {
+          pricing.map((plan) => (
+            <div
+              class:list={[
+                'flex flex-col gap-8 rounded-3xl px-6 py-8',
+                plan.isFlagged
+                  ? 'bg-brand-primary/10 dark:bg-brand-primary/20 ring-brand-primary ring-2'
+                  : 'bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50',
+              ]}
+            >
+              {plan.isFlagged && (
+                <span class="bg-brand-primary self-start rounded-full px-3 py-1 text-xs font-medium text-white">
+                  Más popular
+                </span>
+              )}
+              <div class="flex flex-col gap-2">
+                <h3 class="text-foreground text-2xl font-medium">{plan.name}</h3>
+                <p class="text-foreground/70 text-sm">{plan.description}</p>
+              </div>
+              <div class="flex items-baseline gap-1">
+                <span class="text-foreground text-4xl font-medium tracking-tight">
+                  {plan.price}
+                </span>
+                {plan.periodicity && (
+                  <span class="text-muted-foreground text-sm">{plan.periodicity}</span>
+                )}
+              </div>
+              <a
+                href="/register"
+                class:list={[
+                  'inline-flex items-center justify-center rounded-full border px-5 py-3 text-base font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2',
+                  plan.isFlagged
+                    ? 'bg-brand-primary hover:bg-brand-primary/90 focus-visible:outline-brand-primary border-transparent text-white'
+                    : 'text-foreground border-neutral-300 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800',
+                ]}
+              >
+                {plan.action}
+              </a>
+              <ul class="flex flex-col gap-3">
+                {plan.features.map((feature) => (
+                  <li class="flex items-start gap-3">
+                    <svg
+                      class="text-brand-primary h-5 w-5 shrink-0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z" />
+                    </svg>
+                    <span class="text-foreground text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -219,6 +219,9 @@ importers:
       astro:
         specifier: ^5.1.0
         version: 5.16.9(@types/node@25.0.5)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2)
+      devices.css:
+        specifier: ^0.2.0
+        version: 0.2.0
       gsap:
         specifier: ^3.12.0
         version: 3.14.2
@@ -2636,6 +2639,9 @@ packages:
 
   devalue@5.6.2:
     resolution: {integrity: sha512-nPRkjWzzDQlsejL1WVifk5rvcFi/y1onBRxjaFMjZeR9mFpqu2gmAZ9xUB9/IEanEP/vBtGeGganC/GO1fmufg==}
+
+  devices.css@0.2.0:
+    resolution: {integrity: sha512-CE59M+4PuH87+A4clpC1xA/lkfCSGFWfeFx5sNadDdy1kXUqJ28SdTp+tBlwkHfI7G+h/Wf4Ddt9QGPLLlky3Q==}
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
@@ -7633,6 +7639,8 @@ snapshots:
       base-64: 1.0.0
 
   devalue@5.6.2: {}
+
+  devices.css@0.2.0: {}
 
   devlop@1.1.0:
     dependencies:

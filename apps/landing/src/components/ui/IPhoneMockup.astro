@@ -1,0 +1,64 @@
+---
+// IPhoneMockup.astro - Usando devices.css iPhone 14 Pro profesional
+interface Props {
+  imageUrl?: string;
+  alt?: string;
+  class?: string;
+  variant?: 'device-purple' | 'device-silver' | 'device-black' | 'device-gold';
+}
+
+const {
+  imageUrl,
+  alt = 'Tally app screenshot',
+  class: className = '',
+  variant = 'device-purple',
+} = Astro.props;
+---
+
+<div class:list={['device device-iphone-14-pro', variant, className]}>
+  <div class="device-frame">
+    {
+      imageUrl ? (
+        <img class="device-screen" src={imageUrl} alt={alt} loading="lazy" />
+      ) : (
+        <div class="device-screen">
+          <slot />
+        </div>
+      )
+    }
+  </div>
+  <div class="device-stripe"></div>
+  <div class="device-header"></div>
+  <div class="device-sensors"></div>
+  <div class="device-btns"></div>
+  <div class="device-power"></div>
+  <div class="device-home"></div>
+</div>
+
+<style>
+  /* Fix: contenido no debe sobresalir del mockup */
+  :global(.device-screen) {
+    overflow: hidden !important;
+    border-radius: 49px !important;
+  }
+
+  /* Ajustes responsive para el mockup */
+  @media (max-width: 640px) {
+    .device-iphone-14-pro {
+      transform: scale(0.65);
+      margin: -100px auto;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .device-iphone-14-pro {
+      transform: scale(0.75);
+      margin: -50px auto;
+    }
+  }
+
+  /* Smooth transitions for animations */
+  .device-iphone-14-pro {
+    transform-origin: center center;
+  }
+</style>

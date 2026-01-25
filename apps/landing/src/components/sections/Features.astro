@@ -1,0 +1,75 @@
+---
+const features = [
+  {
+    id: 'feature-1',
+    name: 'Gestión de Comandas Digital',
+    description:
+      'Sistema completo de punto de venta que digitaliza tu operación, desde la toma de pedidos hasta el cierre de caja.',
+  },
+  {
+    id: 'feature-2',
+    name: 'División de Cuenta Inteligente',
+    description:
+      'Tus clientes pueden dividir la cuenta como quieran desde su móvil, sin esperas ni confusiones.',
+  },
+  {
+    id: 'feature-3',
+    name: 'Pagos QR Instantáneos',
+    description:
+      'Cobros rápidos y seguros escaneando un código QR. Compatible con todas las formas de pago.',
+  },
+  {
+    id: 'feature-4',
+    name: 'Analytics en Tiempo Real',
+    description:
+      'Dashboards completos con métricas de ventas, productos más vendidos, horarios pico y mucho más.',
+  },
+  {
+    id: 'feature-5',
+    name: 'Control de Stock',
+    description:
+      'Gestiona tu inventario automáticamente y recibe alertas cuando los productos estén por agotarse.',
+  },
+  {
+    id: 'feature-6',
+    name: 'Facturación Electrónica',
+    description:
+      'Cumple con la normativa fiscal automáticamente. Genera y envía facturas directamente a tus clientes.',
+  },
+];
+---
+
+<section class="py-16 sm:py-20">
+  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-3 lg:gap-8">
+      <h2 class="text-foreground text-3xl font-medium tracking-tight sm:text-4xl">
+        Funcionalidades
+      </h2>
+      <div class="lg:col-span-2">
+        <div class="flex flex-col gap-3">
+          {
+            features.map((feature) => (
+              <details class="group rounded-3xl px-4 transition hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50">
+                <summary class="text-foreground flex cursor-pointer list-none items-center justify-between border-b border-neutral-200/50 py-6 text-lg font-medium group-open:border-transparent dark:border-neutral-800/50">
+                  <span>{feature.name}</span>
+                  <svg
+                    class="h-5 w-5 transition-transform group-open:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" />
+                  </svg>
+                </summary>
+                <div class="pr-6 pb-6">
+                  <p class="text-foreground/80 text-base">{feature.description}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

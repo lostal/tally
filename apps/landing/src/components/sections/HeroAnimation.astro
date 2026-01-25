@@ -1,0 +1,89 @@
+---
+// Simple fade-in animations usando Intersection Observer nativo
+// Más performante que GSAP para scroll reveals simples
+---
+
+<script>
+  // Configurar Intersection Observer para animaciones on-scroll
+  function initScrollAnimations() {
+    // Seleccionar todos los elementos con data-animate
+    const animatedElements = document.querySelectorAll('[data-animate]');
+
+    if (!animatedElements.length) return;
+
+    // Configuración del observer: trigger cuando 20% del elemento es visible
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px 0px -50px 0px', // Trigger un poco antes de entrar al viewport
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Añadir clase 'visible' cuando el elemento entra en viewport
+          entry.target.classList.add('visible');
+
+          // Una vez visible, dejar de observar (la animación solo ocurre una vez)
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observar todos los elementos animables
+    animatedElements.forEach((el) => observer.observe(el));
+  }
+
+  // Init on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollAnimations);
+  } else {
+    initScrollAnimations();
+  }
+</script>
+
+<style is:global>
+  /* Animaciones CSS puras (más performantes que JS) */
+  [data-animate] {
+    opacity: 0;
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  [data-animate='fade-up'] {
+    transform: translateY(30px);
+  }
+
+  [data-animate='scale'] {
+    transform: scale(0.95);
+  }
+
+  /* Estado visible */
+  [data-animate].visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Stagger para elementos secuenciales */
+  [data-stagger-item]:nth-child(1) {
+    transition-delay: 0ms;
+  }
+  [data-stagger-item]:nth-child(2) {
+    transition-delay: 100ms;
+  }
+  [data-stagger-item]:nth-child(3) {
+    transition-delay: 200ms;
+  }
+  [data-stagger-item]:nth-child(4) {
+    transition-delay: 300ms;
+  }
+
+  /* Performance: solo transform y opacity (compositing layer) */
+  [data-animate] {
+    will-change: opacity, transform;
+  }
+
+  [data-animate].visible {
+    will-change: auto; /* Liberar will-change después de animar */
+  }
+</style>
