@@ -119,6 +119,11 @@
     scroll-behavior: smooth;
   }
 
+  /* Add scroll margin for anchor links */
+  [id] {
+    scroll-margin-top: 2rem;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -225,45 +230,7 @@
     animation: ring-pulse 2s ease-in-out infinite;
   }
 
-  /* Liquid glass effect - Premium glassmorphism */
-  .liquid-glass {
-    backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(250, 250, 248, 0.7);
-    border: 1px solid rgba(224, 221, 217, 0.2);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.04),
-      0 1px 2px rgba(0, 0, 0, 0.02),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  }
 
-  .dark .liquid-glass {
-    background-color: rgba(26, 24, 21, 0.8);
-    border: 1px solid rgba(61, 58, 54, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  }
-
-  @supports not (backdrop-filter: blur(12px)) {
-    .liquid-glass {
-      background-color: rgb(250, 250, 248);
-    }
-
-    .dark .liquid-glass {
-      background-color: rgb(26, 24, 21);
-    }
-  }
-
-  /* WebKit performance fix: disable blur completely on iOS/Safari */
-  @supports (-webkit-touch-callout: none) {
-    .liquid-glass {
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      background-color: rgba(250, 250, 248, 0.95);
-    }
-
-    .dark .liquid-glass {
-      background-color: rgba(26, 24, 21, 0.95);
-    }
-  }
 
   /* Scroll reveal animations */
   [data-animate] {

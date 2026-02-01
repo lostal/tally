@@ -4,6 +4,9 @@ import Lenis from 'lenis';
  * Initialize Lenis Smooth Scroll (Desktop only)
  * Disabled on touch devices to prevent conflicts with native scrolling
  */
+
+let lenis: Lenis | null = null;
+
 export function initAnimations() {
   // Skip on touch devices
   if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
@@ -18,14 +21,19 @@ export function initAnimations() {
 }
 
 function initSmoothScrolling() {
-  const lenis = new Lenis({
+  // Destroy previous instance if exists
+  if (lenis) {
+    lenis.destroy();
+  }
+
+  lenis = new Lenis({
     lerp: 0.1,
     duration: 1.2,
     smoothWheel: true,
   });
 
   function raf(time: number) {
-    lenis.raf(time);
+    lenis?.raf(time);
     requestAnimationFrame(raf);
   }
 
