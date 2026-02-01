@@ -59,12 +59,12 @@ const pricing = [
               class:list={[
                 'flex flex-col gap-8 rounded-3xl px-6 py-8',
                 plan.isFlagged
-                  ? 'bg-brand-primary/10 dark:bg-brand-primary/20 ring-brand-primary ring-2'
+                  ? 'bg-primary/10 dark:bg-primary/20 ring-primary ring-2'
                   : 'bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50',
               ]}
             >
               {plan.isFlagged && (
-                <span class="bg-brand-primary self-start rounded-full px-3 py-1 text-xs font-medium text-white">
+                <span class="bg-primary self-start rounded-full px-3 py-1 text-xs font-medium text-primary-foreground">
                   Más popular
                 </span>
               )}
@@ -85,7 +85,7 @@ const pricing = [
                 class:list={[
                   'inline-flex items-center justify-center rounded-full border px-5 py-3 text-base font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2',
                   plan.isFlagged
-                    ? 'bg-brand-primary hover:bg-brand-primary/90 focus-visible:outline-brand-primary border-transparent text-white'
+                    ? 'bg-primary hover:bg-primary/90 focus-visible:outline-primary text-primary-foreground border-transparent'
                     : 'text-foreground border-neutral-300 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800',
                 ]}
               >
@@ -95,7 +95,7 @@ const pricing = [
                 {plan.features.map((feature) => (
                   <li class="flex items-start gap-3">
                     <svg
-                      class="text-brand-primary h-5 w-5 shrink-0"
+                      class="text-primary h-5 w-5 shrink-0"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
