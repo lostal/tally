@@ -41,7 +41,7 @@ const features = [
 
 <section class="py-16 sm:py-20">
   <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="grid gap-12 lg:grid-cols-3 lg:gap-8">
+    <div class="grid gap-12 sm:gap-16 lg:grid-cols-3">
       <h2 class="text-foreground text-3xl font-medium tracking-tight sm:text-4xl">
         Funcionalidades
       </h2>
@@ -49,7 +49,7 @@ const features = [
         <div class="flex flex-col gap-3">
           {
             features.map((feature) => (
-              <details class="group rounded-3xl px-4 transition hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50">
+              <details class="group rounded-3xl px-6 transition hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50">
                 <summary class="text-foreground flex cursor-pointer list-none items-center justify-between border-b border-neutral-200/50 py-6 text-lg font-medium group-open:border-transparent dark:border-neutral-800/50">
                   <span>{feature.name}</span>
                   <svg

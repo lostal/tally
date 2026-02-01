@@ -6,7 +6,7 @@
   <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div
       id="cta-container"
-      class="bg-foreground dark:bg-neutral-900 text-background dark:text-foreground relative mx-auto w-full overflow-hidden rounded-[40px] px-6 py-20 text-center md:px-16 md:py-28"
+      class="bg-foreground text-background dark:text-foreground relative mx-auto w-full overflow-hidden rounded-[40px] px-6 py-20 text-center md:px-16 md:py-28 dark:bg-neutral-900"
       style="transform: translateZ(0); mask-image: radial-gradient(white, black);"
     >
       <!-- Background Mesh - NO BLUR for WebKit performance -->
@@ -15,9 +15,13 @@
           class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]"
         >
         </div>
-        <div class="bg-tomato absolute -bottom-1/2 -left-1/2 h-full w-full opacity-10 dark:opacity-5 blur-[100px]">
+        <div
+          class="bg-tomato absolute -bottom-1/2 -left-1/2 h-full w-full opacity-10 blur-[100px] dark:opacity-5"
+        >
         </div>
-        <div class="bg-blueberry absolute -top-1/2 -right-1/2 h-full w-full opacity-10 dark:opacity-5 blur-[100px]">
+        <div
+          class="bg-blueberry absolute -top-1/2 -right-1/2 h-full w-full opacity-10 blur-[100px] dark:opacity-5"
+        >
         </div>
       </div>
 
@@ -41,13 +45,13 @@
         <div class="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
           <a
             href="https://app.paytally.app/register"
-            class="inline-flex h-14 items-center justify-center rounded-full bg-background dark:bg-foreground px-8 text-lg font-bold text-foreground dark:text-background transition-colors hover:bg-background/90"
+            class="bg-background dark:bg-foreground text-foreground dark:text-background hover:bg-background/90 inline-flex h-14 items-center justify-center rounded-full px-8 text-lg font-bold transition-colors"
           >
             Empezar gratis
           </a>
           <a
             href="mailto:hola@paytally.app"
-            class="inline-flex h-14 items-center justify-center rounded-full border-2 border-background dark:border-foreground bg-transparent px-8 text-lg font-semibold text-background dark:text-foreground transition-all hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background"
+            class="border-background dark:border-foreground text-background dark:text-foreground hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background inline-flex h-14 items-center justify-center rounded-full border-2 bg-transparent px-8 text-lg font-semibold transition-all"
           >
             Agendar Demo
           </a>
