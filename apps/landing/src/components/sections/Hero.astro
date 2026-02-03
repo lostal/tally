@@ -3,14 +3,15 @@ import Button from '../ui/Button.astro';
 import GridBackground from '../ui/GridBackground.astro';
 import IPhoneMockup from '../ui/IPhoneMockup.astro';
 import HeroAnimation from './HeroAnimation.astro';
+import DemoFlow from '../demo/DemoFlow.astro';
 import { ArrowRight, Check } from '@lucide/astro';
 ---
 
-<section class="hero-trigger relative flex min-h-screen items-center overflow-x-hidden pt-24">
+<section class="hero-trigger relative flex min-h-dvh items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 lg:px-8">
   <!-- Grid Background -->
   <GridBackground />
 
-  <div class="container-landing relative z-10 py-16 sm:py-20">
+  <div class="relative z-10 mx-auto w-full max-w-7xl">
     <div class="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
       <!-- Text Content -->
       <div class="space-y-8" data-animate="fade-up">
@@ -60,46 +61,10 @@ import { ArrowRight, Check } from '@lucide/astro';
         </div>
       </div>
 
-      <!-- iPhone Mockup - Responsive para desktop y móvil -->
+      <!-- iPhone Mockup - Interactive Demo -->
       <div class="hero-mockup flex justify-center" data-animate="fade-up">
         <IPhoneMockup>
-          <!-- QR Demo Content -->
-          <div
-            class="flex h-full w-full flex-col items-center justify-center bg-neutral-50 p-6 text-center dark:bg-neutral-900"
-          >
-            <div
-              class="bg-brand-primary/10 text-brand-primary mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect width="5" height="5" x="3" y="3" rx="1"></rect>
-                <rect width="5" height="5" x="16" y="3" rx="1"></rect>
-                <rect width="5" height="5" x="3" y="16" rx="1"></rect>
-                <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
-                <path d="M21 21v.01"></path>
-                <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
-                <path d="M3 12h.01"></path>
-                <path d="M12 3h.01"></path>
-                <path d="M12 16v.01"></path>
-                <path d="M16 12h1"></path>
-                <path d="M21 12v.01"></path>
-                <path d="M12 21v-1"></path>
-              </svg>
-            </div>
-            <p class="text-sm font-medium">Escanea para pedir</p>
-            <p class="mt-2 text-xs text-neutral-600 dark:text-neutral-400">
-              Demo interactivo del flujo QR
-            </p>
-          </div>
+          <DemoFlow />
         </IPhoneMockup>
       </div>
     </div>

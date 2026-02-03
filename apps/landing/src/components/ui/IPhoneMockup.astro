@@ -40,25 +40,34 @@ const {
   :global(.device-screen) {
     overflow: hidden !important;
     border-radius: 49px !important;
+    padding: 0 !important;
   }
 
-  /* Ajustes responsive para el mockup */
-  @media (max-width: 640px) {
-    .device-iphone-14-pro {
-      transform: scale(0.65);
-      margin: -100px auto;
-    }
+  /* Safe area para contenido dentro del mockup */
+  :global(.device-screen > *) {
+    min-height: 100%;
+    width: 100%;
   }
 
-  @media (min-width: 641px) and (max-width: 1024px) {
-    .device-iphone-14-pro {
-      transform: scale(0.75);
-      margin: -50px auto;
-    }
-  }
-
-  /* Smooth transitions for animations */
+  /* Escala del mockup basada en viewport (original: 868px alto) */
   .device-iphone-14-pro {
+    transform: scale(0.55); /* Mobile: ~477px alto */
     transform-origin: center center;
+    /* Compensar espacio: (868 - 868*0.55)/2 = 195px vertical */
+    margin: -195px auto;
+  }
+
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .device-iphone-14-pro {
+      transform: scale(0.65); /* Tablet: ~564px alto */
+      margin: -152px auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .device-iphone-14-pro {
+      transform: scale(0.75); /* Desktop: 651px alto */
+      margin: -108px auto;
+    }
   }
 </style>

@@ -143,6 +143,10 @@
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
+  .container-app {
+    @apply mx-auto w-full max-w-md px-4;
+  }
+
   /* Screen reader only (hide visually but keep for assistive tech) */
   .sr-only {
     position: absolute;

@@ -1,0 +1,175 @@
+---
+/**
+ * DemoFlow - TAMAÑOS ORIGINALES, solo arreglando disposición
+ */
+---
+
+<div
+  x-data="{
+    step: 'trust',
+    isLoading: false,
+
+    async goToBill() {
+      this.isLoading = true;
+      await new Promise(r => setTimeout(r, 800));
+      this.isLoading = false;
+      this.step = 'bill';
+    }
+  }"
+  class="relative h-full w-full overflow-hidden bg-background"
+>
+  <!-- TRUST SCREEN -->
+  <main x-show="step === 'trust'" class="relative min-h-full overflow-hidden bg-background">
+
+    <!-- Subtle gradient background -->
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-transparent"></div>
+      <div class="absolute top-0 left-1/2 size-[600px] -translate-x-1/2 rounded-full bg-primary/[0.03] blur-3xl"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative flex min-h-full flex-col justify-between px-4 py-12">
+
+      <!-- Top: Powered by -->
+      <div class="flex justify-center">
+        <div class="flex flex-col items-center gap-1">
+          <span class="text-xs text-muted-foreground">powered by</span>
+          <span class="text-xl font-bold tracking-tight">
+            tally<span class="text-primary">.</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Center: Trust Card -->
+      <div class="flex flex-1 items-center justify-center py-8">
+        <div class="w-full space-y-8">
+
+          <!-- Restaurant branding -->
+          <div class="flex flex-col items-center space-y-6 text-center">
+            <!-- Animated Logo -->
+            <div class="relative flex size-24 items-center justify-center rounded-3xl border-2 border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent shadow-xl shadow-primary/10">
+              <div class="absolute -inset-0.75 rounded-3xl border border-primary/10"></div>
+              <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-transparent opacity-50 blur-xl"></div>
+              <span class="relative font-serif text-3xl font-bold text-primary">TP</span>
+            </div>
+
+            <!-- Name & Badge -->
+            <div class="space-y-3">
+              <h1 class="font-serif text-3xl font-bold tracking-tight">
+                La Taberna del Puerto
+              </h1>
+
+              <!-- Verified Badge -->
+              <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2">
+                <div class="flex size-5 items-center justify-center rounded-full bg-emerald-500">
+                  <svg class="size-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-emerald-700 dark:text-emerald-400">
+                  Restaurante verificado
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table confirmation -->
+          <div class="flex items-center gap-4 rounded-2xl border border-border bg-secondary/50 px-6 py-4">
+            <div class="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+              <span class="font-serif text-xl font-bold text-primary">7</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm text-muted-foreground">Tu mesa</p>
+              <p class="font-semibold">Mesa 7</p>
+            </div>
+            <div class="flex size-8 items-center justify-center rounded-full bg-emerald-500/10">
+              <svg class="size-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="space-y-4">
+            <button
+              @click="goToBill()"
+              :disabled="isLoading"
+              class="group relative h-16 w-full overflow-hidden rounded-2xl bg-primary text-lg font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform will-change-transform hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
+
+              <span x-show="!isLoading" class="relative flex items-center justify-center gap-3">
+                <span>Continuar al pago</span>
+                <svg class="size-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+
+              <span x-show="isLoading" class="relative flex items-center justify-center" style="display: none;">
+                <svg class="size-6 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+            </button>
+
+            <!-- Terms -->
+            <p class="text-center text-xs text-muted-foreground">
+              Al continuar, aceptas nuestros{' '}
+              <a href="#" class="underline underline-offset-2 hover:text-foreground">
+                Términos de Servicio
+              </a>
+            </p>
+          </div>
+
+          <!-- Security features -->
+          <div class="flex items-center justify-center gap-6">
+            <div class="flex items-center gap-2 text-muted-foreground">
+              <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"></path>
+              </svg>
+              <span class="text-xs">Pago seguro</span>
+            </div>
+            <div class="flex items-center gap-2 text-muted-foreground">
+              <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"></path>
+              </svg>
+              <span class="text-xs">Sin descargas</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom: Decorative dots -->
+      <div class="flex justify-center">
+        <div class="flex gap-1">
+          <div class="size-1.5 rounded-full bg-muted-foreground/30"></div>
+          <div class="size-1.5 rounded-full bg-muted-foreground/30"></div>
+          <div class="size-1.5 rounded-full bg-muted-foreground/30"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- BILL SCREEN (placeholder) -->
+  <div x-show="step === 'bill'" x-transition class="flex min-h-full items-center justify-center p-8" style="display: none;">
+    <div class="text-center">
+      <p class="text-sm text-muted-foreground">Bill Screen</p>
+      <button @click="step = 'trust'" class="mt-4 text-xs text-primary underline">
+        Volver
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  [x-cloak] { display: none !important; }
+
+  /* Forzar que todos los flex funcionen correctamente */
+  .device-screen {
+    display: block !important;
+  }
+</style>
